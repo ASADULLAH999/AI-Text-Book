@@ -1,14 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://zqyijbfkdomulinqnewb.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxeWlqYmZrZG9tdWxpbnFuZXdiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk1NzAwMjMsImV4cCI6MjA4NTE0NjAyM30.wkEKuTbkwFbce7Tgf-ZmtjUW_yG4ZPFPTp4SwH33chU';
+// SECURITY: Use environment variables instead of hardcoded values
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('⚠️ Missing Supabase environment variables. Please check your .env.local file.');
+}
 
 // Initialize Supabase client with proper configuration
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true, // Disable for client-side only auth
+    detectSessionInUrl: true,
     storage: typeof window !== 'undefined' ? window.localStorage : undefined,
   },
 });
