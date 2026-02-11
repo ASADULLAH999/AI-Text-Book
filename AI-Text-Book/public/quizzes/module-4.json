@@ -1,0 +1,148 @@
+{
+  "module_id": "4",
+  "module_name": "Voice to Action & Capstone",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "What is Voice-to-Action (VLA) in robotics?",
+      "options": [
+        "A voice recording system",
+        "Converting voice commands directly into robot actions",
+        "A text-to-speech system",
+        "An audio processing library"
+      ],
+      "correct_answer": 1,
+      "explanation": "Voice-to-Action systems enable robots to understand voice commands and translate them into physical actions or task execution.",
+      "difficulty": "easy",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q2",
+      "question": "Which component is essential for speech recognition in VLA systems?",
+      "options": [
+        "A microphone array and ASR (Automatic Speech Recognition) model",
+        "Only a speaker",
+        "A camera",
+        "GPS sensor"
+      ],
+      "correct_answer": 0,
+      "explanation": "Speech recognition requires a microphone to capture audio and an ASR model (like Whisper, Google Speech API) to convert speech to text.",
+      "difficulty": "easy",
+      "category": "Architecture"
+    },
+    {
+      "id": "q3",
+      "question": "What role do Large Language Models (LLMs) play in robotics?",
+      "options": [
+        "They replace all robot sensors",
+        "They enable natural language understanding and task planning",
+        "They control motor speed",
+        "They store sensor data"
+      ],
+      "correct_answer": 1,
+      "explanation": "LLMs like GPT-4 enable robots to understand complex natural language instructions and break them down into actionable task plans.",
+      "difficulty": "medium",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q4",
+      "question": "What is prompt engineering in the context of LLM-powered robots?",
+      "options": [
+        "Designing robot hardware",
+        "Crafting effective text prompts to guide LLM behavior for robotics tasks",
+        "Building network connections",
+        "Calibrating sensors"
+      ],
+      "correct_answer": 1,
+      "explanation": "Prompt engineering involves designing prompts that effectively communicate robot capabilities, constraints, and desired behaviors to the LLM.",
+      "difficulty": "medium",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q5",
+      "question": "What is the purpose of a 'safety layer' in VLA systems?",
+      "options": [
+        "To encrypt communications",
+        "To validate and filter potentially dangerous commands before execution",
+        "To improve speech recognition accuracy",
+        "To manage battery life"
+      ],
+      "correct_answer": 1,
+      "explanation": "Safety layers prevent execution of commands that could harm the robot, people, or environment by validating actions against safety constraints.",
+      "difficulty": "hard",
+      "category": "Safety"
+    },
+    {
+      "id": "q6",
+      "question": "What is 'grounding' in the context of LLM-robot integration?",
+      "options": [
+        "Electrical grounding for safety",
+        "Connecting abstract language to physical robot capabilities and environment state",
+        "Teaching the robot to walk",
+        "Network connection establishment"
+      ],
+      "correct_answer": 1,
+      "explanation": "Grounding connects abstract language concepts to concrete robot actions, objects, and spatial understanding of the environment.",
+      "difficulty": "hard",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q7",
+      "question": "Which of the following is a challenge in implementing VLA systems?",
+      "options": [
+        "Handling ambiguous or underspecified commands",
+        "Making robots lighter",
+        "Reducing robot cost",
+        "Increasing battery capacity"
+      ],
+      "correct_answer": 0,
+      "explanation": "VLA systems must handle ambiguous commands (e.g., 'put the cup over there') by using context, asking clarifying questions, or making reasonable assumptions.",
+      "difficulty": "medium",
+      "category": "Challenges"
+    },
+    {
+      "id": "q8",
+      "question": "What is few-shot learning in the context of LLMs for robotics?",
+      "options": [
+        "Training robots to shoot targets",
+        "Teaching the LLM new tasks with only a few examples in the prompt",
+        "Reducing the number of robot sensors",
+        "Simplifying robot designs"
+      ],
+      "correct_answer": 1,
+      "explanation": "Few-shot learning allows LLMs to adapt to new robotics tasks by providing a few examples in the prompt, without retraining the entire model.",
+      "difficulty": "hard",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q9",
+      "question": "What is a typical pipeline for a VLA system?",
+      "options": [
+        "Voice → ASR → LLM → Action Planner → Robot Execution",
+        "Voice → Robot Execution directly",
+        "ASR → Robot only",
+        "LLM → Voice synthesis only"
+      ],
+      "correct_answer": 0,
+      "explanation": "A complete VLA pipeline: capture voice, convert to text (ASR), understand intent (LLM), plan actions, and execute on robot.",
+      "difficulty": "medium",
+      "category": "Architecture"
+    },
+    {
+      "id": "q10",
+      "question": "What is a Capstone project in this robotics course?",
+      "options": [
+        "A helmet for robots",
+        "A comprehensive final project integrating multiple concepts from the course",
+        "The first module assignment",
+        "A theoretical exam"
+      ],
+      "correct_answer": 1,
+      "explanation": "A Capstone project is a culminating hands-on project that integrates ROS 2, simulation, AI/ML, and voice interaction to build a complete robotic system.",
+      "difficulty": "easy",
+      "category": "Fundamentals"
+    }
+  ],
+  "passing_score": 70,
+  "time_limit": 900
+}

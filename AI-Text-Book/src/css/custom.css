@@ -1,0 +1,256 @@
+/* Docusaurus Custom CSS - Integrates design system */
+
+@import './variables.css';
+@import './base.css';
+@import './animations.css';
+
+/* Docusaurus Theme Integration */
+:root[data-theme='dark'] {
+  --ifm-background-color: var(--bg-primary);
+  --ifm-background-surface-color: var(--bg-secondary);
+  --ifm-color-primary: var(--accent-cyan);
+  --ifm-color-primary-dark: #0099cc;
+  --ifm-color-primary-darker: #0077aa;
+  --ifm-color-primary-light: #33e0ff;
+  --ifm-color-primary-lighter: #66ffff;
+
+  --ifm-color-emphasis-100: var(--color-gray-800);
+  --ifm-color-emphasis-200: var(--color-gray-700);
+  --ifm-color-emphasis-300: var(--color-gray-600);
+
+  --ifm-font-color-base: var(--text-primary);
+  --ifm-font-color-base-inverse: var(--bg-primary);
+
+  --ifm-code-background: var(--bg-secondary);
+  --ifm-code-color: var(--accent-cyan);
+
+  --ifm-link-color: var(--accent-cyan);
+  --ifm-link-hover-color: var(--accent-orange);
+
+  --ifm-table-head-background: var(--bg-secondary);
+  --ifm-table-stripe-background: var(--bg-secondary);
+  --ifm-table-border-color: var(--border-color);
+
+  --ifm-blockquote-border-color: var(--accent-cyan);
+
+  --ifm-footer-background-color: var(--color-primary-darker);
+
+  --ifm-button-background-color: var(--accent-cyan);
+  --ifm-button-background-color-hover: var(--accent-orange);
+}
+
+/* Light Theme */
+:root[data-theme='light'] {
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8fafc;
+  --ifm-color-primary: #0891b2;
+  --ifm-color-primary-dark: #0e7490;
+  --ifm-color-primary-darker: #155e75;
+  --ifm-color-primary-light: #06b6d4;
+  --ifm-color-primary-lighter: #22d3ee;
+
+  --ifm-color-emphasis-100: #e2e8f0;
+  --ifm-color-emphasis-200: #cbd5e1;
+  --ifm-color-emphasis-300: #94a3b8;
+
+  --ifm-font-color-base: #0f172a;
+  --ifm-font-color-base-inverse: #ffffff;
+
+  --ifm-code-background: #f1f5f9;
+  --ifm-code-color: #0891b2;
+
+  --ifm-link-color: #0891b2;
+  --ifm-link-hover-color: #ea580c;
+
+  --ifm-table-head-background: #f8fafc;
+  --ifm-table-stripe-background: #f8fafc;
+  --ifm-table-border-color: #e2e8f0;
+
+  --ifm-blockquote-border-color: #0891b2;
+
+  --ifm-footer-background-color: #0f172a;
+  --ifm-footer-color: #cbd5e1;
+
+  --ifm-button-background-color: #0891b2;
+  --ifm-button-background-color-hover: #ea580c;
+
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-navbar-link-color: #0f172a;
+  --ifm-navbar-link-hover-color: #0891b2;
+}
+
+/* Custom Docusaurus Components */
+.navbar {
+  background-color: var(--bg-primary) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.navbar__brand {
+  color: var(--accent-cyan);
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-2xl);
+}
+
+.navbar__link {
+  color: var(--text-secondary) !important;
+  transition: color var(--duration-200);
+}
+
+.navbar__link:hover {
+  color: var(--accent-cyan) !important;
+}
+
+.navbar__link--active {
+  color: var(--accent-cyan) !important;
+  border-bottom: 2px solid var(--accent-cyan);
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: var(--bg-secondary);
+}
+
+.sidebar .menu__link {
+  color: var(--text-secondary);
+}
+
+.sidebar .menu__link:hover {
+  background-color: var(--color-gray-800);
+  color: var(--accent-cyan);
+}
+
+.sidebar .menu__link--active {
+  background-color: transparent;
+  color: var(--accent-cyan);
+  border-left: 3px solid var(--accent-cyan);
+}
+
+/* Main Content */
+.main-wrapper {
+  background-color: var(--bg-primary);
+}
+
+/* Article */
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6 {
+  color: var(--text-primary);
+}
+
+article > :first-child {
+  margin-top: 0;
+}
+
+/* Code Blocks */
+.prism-code {
+  background-color: var(--bg-secondary);
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 212, 255, 0.1);
+}
+
+/* Links */
+article a {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-cyan);
+  transition: all var(--duration-200);
+}
+
+article a:hover {
+  color: var(--accent-orange);
+  border-bottom-color: var(--accent-orange);
+}
+
+/* Alerts/Admonitions */
+.alert {
+  border-left: 4px solid var(--accent-cyan);
+  background-color: var(--bg-secondary);
+}
+
+.alert.alert--info {
+  border-left-color: var(--accent-cyan);
+}
+
+.alert.alert--warning {
+  border-left-color: var(--accent-orange);
+}
+
+.alert.alert--danger {
+  border-left-color: var(--color-error);
+}
+
+.alert.alert--success {
+  border-left-color: var(--color-success);
+}
+
+/* Footer */
+.footer {
+  background-color: var(--color-primary-darker) !important;
+}
+
+.footer__links {
+  color: var(--text-secondary);
+}
+
+.footer__link-item {
+  color: var(--accent-cyan);
+}
+
+.footer__link-item:hover {
+  color: var(--accent-orange);
+}
+
+/* Pagination */
+.pagination-nav__link {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.pagination-nav__link:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+/* Search Bar */
+.DocSearch-Button {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.DocSearch-Button:hover {
+  border-color: var(--accent-cyan);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: var(--space-2);
+  }
+
+  article {
+    padding: var(--space-4);
+  }
+}
+
+/* RTL Support */
+html[dir='rtl'] {
+  direction: rtl;
+}
+
+html[dir='rtl'] .sidebar {
+  border-left: 1px solid var(--border-color);
+  border-right: none;
+}
+
+html[dir='rtl'] article {
+  padding-right: var(--space-8);
+  padding-left: var(--space-4);
+}

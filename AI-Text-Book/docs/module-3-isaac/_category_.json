@@ -1,0 +1,8 @@
+{
+  "label": "Module 3: NVIDIA Isaac Sim",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Advanced robotics simulation with NVIDIA Isaac Sim platform"
+  }
+}

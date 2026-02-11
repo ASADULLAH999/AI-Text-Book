@@ -1,0 +1,148 @@
+{
+  "module_id": "2",
+  "module_name": "Digital Twins & Simulation",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "What is a Digital Twin in the context of robotics?",
+      "options": [
+        "A backup copy of robot software",
+        "A virtual replica of a physical robot that mirrors its behavior and state",
+        "A second robot that works in parallel",
+        "A debugging tool for robots"
+      ],
+      "correct_answer": 1,
+      "explanation": "A Digital Twin is a virtual replica that continuously updates to mirror the state and behavior of its physical counterpart, enabling simulation and analysis.",
+      "difficulty": "easy",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q2",
+      "question": "Which of the following is a primary benefit of using simulation in robotics development?",
+      "options": [
+        "Eliminating the need for physical robots entirely",
+        "Testing and validating robot behaviors safely before deploying to hardware",
+        "Making robots faster",
+        "Reducing robot weight"
+      ],
+      "correct_answer": 1,
+      "explanation": "Simulation allows developers to test and validate robot behaviors in a safe virtual environment before deploying to physical hardware, reducing risks and costs.",
+      "difficulty": "easy",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q3",
+      "question": "What is Gazebo primarily used for in robotics?",
+      "options": [
+        "3D modeling software",
+        "A physics-based robot simulation environment",
+        "A programming language",
+        "A robot assembly tool"
+      ],
+      "correct_answer": 1,
+      "explanation": "Gazebo is a physics-based simulator that provides realistic environments for testing robot algorithms and behaviors.",
+      "difficulty": "easy",
+      "category": "Tools"
+    },
+    {
+      "id": "q4",
+      "question": "In the context of simulation, what does 'sim-to-real' transfer refer to?",
+      "options": [
+        "Converting simulation files to real-world blueprints",
+        "Transferring learned behaviors and models from simulation to physical robots",
+        "Sending simulation data to a server",
+        "Creating backups of simulation sessions"
+      ],
+      "correct_answer": 1,
+      "explanation": "Sim-to-real transfer is the process of applying behaviors, models, and policies learned in simulation to physical robots in the real world.",
+      "difficulty": "medium",
+      "category": "Concepts"
+    },
+    {
+      "id": "q5",
+      "question": "What is a URDF file in robotics simulation?",
+      "options": [
+        "A robot programming script",
+        "An XML format describing robot structure, joints, and links",
+        "A 3D model file format",
+        "A network configuration file"
+      ],
+      "correct_answer": 1,
+      "explanation": "URDF (Unified Robot Description Format) is an XML format used to describe robot kinematics, geometry, and visual properties for simulation.",
+      "difficulty": "medium",
+      "category": "Tools"
+    },
+    {
+      "id": "q6",
+      "question": "Which physics engine is commonly used in Gazebo simulations?",
+      "options": [
+        "PhysX",
+        "ODE (Open Dynamics Engine)",
+        "Havok",
+        "Box2D"
+      ],
+      "correct_answer": 1,
+      "explanation": "Gazebo commonly uses ODE (Open Dynamics Engine) as its default physics engine, though it supports multiple physics engines.",
+      "difficulty": "hard",
+      "category": "Architecture"
+    },
+    {
+      "id": "q7",
+      "question": "What is Unity primarily known for in the robotics context?",
+      "options": [
+        "Hardware manufacturing",
+        "Game engine used for robot simulation and visualization",
+        "A robot operating system",
+        "A sensor manufacturer"
+      ],
+      "correct_answer": 1,
+      "explanation": "Unity is a game engine that provides high-quality graphics and physics simulation, increasingly used for robotics simulation and AI training.",
+      "difficulty": "easy",
+      "category": "Tools"
+    },
+    {
+      "id": "q8",
+      "question": "What is the 'reality gap' in robotics simulation?",
+      "options": [
+        "The time delay between simulation and real-world deployment",
+        "The difference between simulated and real-world behavior due to modeling imperfections",
+        "The cost difference between simulation and hardware",
+        "The gap in computational power"
+      ],
+      "correct_answer": 1,
+      "explanation": "The reality gap refers to discrepancies between simulation and real-world performance caused by imperfect models of physics, sensors, and environments.",
+      "difficulty": "hard",
+      "category": "Concepts"
+    },
+    {
+      "id": "q9",
+      "question": "In Gazebo, what is a 'world file'?",
+      "options": [
+        "A map of real-world locations",
+        "An XML/SDF file describing the simulation environment, objects, and settings",
+        "A physics configuration file",
+        "A robot blueprint"
+      ],
+      "correct_answer": 1,
+      "explanation": "A world file (typically in SDF format) defines the simulation environment including terrain, objects, lighting, and physics settings.",
+      "difficulty": "medium",
+      "category": "Tools"
+    },
+    {
+      "id": "q10",
+      "question": "What is domain randomization used for in robotics simulation?",
+      "options": [
+        "Encrypting simulation data",
+        "Varying simulation parameters to improve sim-to-real transfer",
+        "Randomizing robot movements",
+        "Generating random environments"
+      ],
+      "correct_answer": 1,
+      "explanation": "Domain randomization varies simulation parameters (lighting, textures, physics) during training to make learned behaviors more robust when transferred to real robots.",
+      "difficulty": "hard",
+      "category": "Concepts"
+    }
+  ],
+  "passing_score": 70,
+  "time_limit": 900
+}

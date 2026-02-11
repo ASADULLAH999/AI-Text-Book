@@ -1,0 +1,34 @@
+{
+  "include": [
+    "api/src",
+    "api/scripts"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/build",
+    "**/.docusaurus",
+    "**/.*"
+  ],
+  "executionEnvironments": [
+    {
+      "root": "api/src",
+      "pythonVersion": "3.11",
+      "pythonPlatform": "Windows",
+      "extraPaths": []
+    },
+    {
+      "root": "api/scripts",
+      "pythonVersion": "3.11",
+      "pythonPlatform": "Windows",
+      "extraPaths": [
+        "api/src"
+      ]
+    }
+  ],
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "venvPath": ".",
+  "venv": "venv",
+  "typeCheckingMode": "basic"
+}

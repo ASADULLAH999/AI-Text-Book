@@ -1,0 +1,8 @@
+{
+  "label": "Module 1: ROS 2 Fundamentals",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn ROS 2 architecture, nodes, topics, and services for robotics development"
+  }
+}

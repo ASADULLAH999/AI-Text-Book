@@ -1,0 +1,147 @@
+{
+  "id": "module-1",
+  "title": "ROS 2 Fundamentals Quiz",
+  "description": "Test your knowledge of ROS 2 core concepts, nodes, topics, and services",
+  "passing_score": 70,
+  "time_limit_minutes": 15,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What does ROS stand for?",
+      "options": [
+        "Robot Operating System",
+        "Real-time Operating Solution",
+        "Robotic Object Service",
+        "Reactive Operating Software"
+      ],
+      "correct_answer": 0,
+      "explanation": "ROS (Robot Operating System) is a flexible framework for writing robot software.",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q2",
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "In ROS 2, what is a node?",
+      "options": [
+        "A network endpoint",
+        "A process that performs computation",
+        "A network interface",
+        "A communication protocol"
+      ],
+      "correct_answer": 1,
+      "explanation": "A node is a process that performs computation. Nodes are connected via ROS communication infrastructure.",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q3",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is a topic in ROS?",
+      "options": [
+        "A request-response communication pattern",
+        "A one-way publish-subscribe communication channel",
+        "A file storage location",
+        "A debugging tool"
+      ],
+      "correct_answer": 1,
+      "explanation": "Topics implement a publish-subscribe pattern where publishers send data and subscribers receive it asynchronously.",
+      "category": "Communication"
+    },
+    {
+      "id": "q4",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the key difference between a topic and a service in ROS?",
+      "options": [
+        "Topics are synchronous, services are asynchronous",
+        "Topics are publish-subscribe, services are request-reply",
+        "Topics have better performance",
+        "Services are only for debugging"
+      ],
+      "correct_answer": 1,
+      "explanation": "Topics use publish-subscribe (asynchronous), while services use request-reply (synchronous) communication.",
+      "category": "Communication"
+    },
+    {
+      "id": "q5",
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is a subscriber in ROS?",
+      "options": [
+        "A tool for downloading packages",
+        "A process that receives messages from a topic",
+        "A method for authentication",
+        "A package manager"
+      ],
+      "correct_answer": 1,
+      "explanation": "A subscriber is a process that receives messages published to a topic.",
+      "category": "Communication"
+    },
+    {
+      "id": "q6",
+      "type": "true_false",
+      "difficulty": "easy",
+      "question": "ROS 2 is a real-time operating system.",
+      "correct_answer": 0,
+      "explanation": "ROS 2 provides tools for robotics but is not a real-time OS itself. It can run on real-time systems.",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q7",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the DDS (Data Distribution Service) in ROS 2?",
+      "options": [
+        "A debugging tool",
+        "The middleware layer that handles communication between nodes",
+        "A data storage system",
+        "A network router"
+      ],
+      "correct_answer": 1,
+      "explanation": "DDS is the middleware standard that ROS 2 uses for inter-process communication.",
+      "category": "Architecture"
+    },
+    {
+      "id": "q8",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What are message types in ROS?",
+      "options": [
+        "Email protocols",
+        "Data structures that define the content of messages",
+        "Network protocols",
+        "File formats"
+      ],
+      "correct_answer": 1,
+      "explanation": "Message types are data structures that define the format of data communicated between nodes.",
+      "category": "Communication"
+    },
+    {
+      "id": "q9",
+      "type": "true_false",
+      "difficulty": "medium",
+      "question": "In ROS 2, multiple subscribers can receive data from the same topic.",
+      "correct_answer": 1,
+      "explanation": "Yes, the publish-subscribe model allows multiple subscribers to receive data from one publisher topic.",
+      "category": "Communication"
+    },
+    {
+      "id": "q10",
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the purpose of the ROS parameter server?",
+      "options": [
+        "To store login credentials",
+        "To serve web pages",
+        "To store and provide runtime configuration parameters",
+        "To manage network routing"
+      ],
+      "correct_answer": 2,
+      "explanation": "The parameter server is a centralized store for runtime configuration parameters that nodes can access.",
+      "category": "Configuration"
+    }
+  ]
+}

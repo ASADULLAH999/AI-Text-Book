@@ -1,0 +1,605 @@
+openapi: 3.1.0
+info:
+  title: RAG-Powered Textbook Chatbot API
+  description: |
+    Production-grade RAG (Retrieval-Augmented Generation) chatbot API for AI textbook platform.
+    Provides semantic search over textbook content with citation-backed answers.
+  version: 1.0.0
+  contact:
+    name: AI Textbook Platform Team
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://textbook.example.com/api/v1
+    description: Production server
+  - url: http://localhost:3000/api/v1
+    description: Development server
+
+tags:
+  - name: chat
+    description: Chat endpoint for question answering
+  - name: health
+    description: Health check and monitoring
+  - name: admin
+    description: Admin endpoints for chunk inspection
+
+paths:
+  /chat:
+    post:
+      summary: Submit question and receive answer
+      description: |
+        Execute RAG pipeline: embed query → retrieve chunks → generate answer → validate citations.
+        Supports three answering modes: book_only (default), selected_text, general_knowledge.
+      operationId: createChatCompletion
+      tags:
+        - chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            examples:
+              book_only_mode:
+                summary: Book-Only Mode
+                value:
+                  query: "What is backpropagation?"
+                  mode: "book_only"
+                  options:
+                    top_k: 10
+                    similarity_threshold: 0.7
+              selected_text_mode:
+                summary: Selected-Text Mode
+                value:
+                  query: "Explain this concept"
+                  mode: "selected_text"
+                  context:
+                    selected_text: "Backpropagation is a supervised learning algorithm..."
+              general_knowledge_mode:
+                summary: General Knowledge Mode
+                value:
+                  query: "What are the latest trends in AI?"
+                  mode: "general_knowledge"
+      responses:
+        '200':
+          description: Successful response with answer and citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+      security:
+        - BearerAuth: []
+        - {}  # Allow anonymous requests
+
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Verify API service availability and dependency health
+      operationId: getHealthStatus
+      tags:
+        - health
+      responses:
+        '200':
+          description: Service is healthy or degraded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /chunks:
+    get:
+      summary: Retrieve chunks for inspection
+      description: Admin endpoint for chunk inspection and debugging
+      operationId: listChunks
+      tags:
+        - admin
+      parameters:
+        - name: chapter
+          in: query
+          description: Filter by chapter
+          schema:
+            type: string
+          example: "Chapter 3"
+        - name: page
+          in: query
+          description: Pagination page number
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          description: Results per page
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Successful response with chunks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChunksResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      security:
+        - BearerAuth: []
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: User question (max 500 characters)
+          example: "What is backpropagation?"
+        mode:
+          $ref: '#/components/schemas/AnswerMode'
+        context:
+          $ref: '#/components/schemas/QueryContext'
+        options:
+          $ref: '#/components/schemas/QueryOptions'
+
+    AnswerMode:
+      type: string
+      enum:
+        - book_only
+        - selected_text
+        - general_knowledge
+      default: book_only
+      description: |
+        Answering mode:
+        - book_only: Answers derived exclusively from textbook (default)
+        - selected_text: Uses only user-selected text as context
+        - general_knowledge: Opt-in enhancement using LLM general knowledge
+
+    QueryContext:
+      type: object
+      properties:
+        selected_text:
+          type: string
+          maxLength: 5000
+          nullable: true
+          description: User-selected text for Selected-Text mode
+        chapter_filter:
+          type: string
+          nullable: true
+          description: Restrict search to specific chapter
+          example: "Chapter 3"
+        session_id:
+          type: string
+          nullable: true
+          description: Session identifier for analytics tracking
+
+    QueryOptions:
+      type: object
+      properties:
+        top_k:
+          type: integer
+          minimum: 5
+          maximum: 20
+          default: 10
+          description: Number of chunks to retrieve before reranking
+        similarity_threshold:
+          type: number
+          format: float
+          minimum: 0.5
+          maximum: 1.0
+          default: 0.7
+          description: Minimum cosine similarity for chunk inclusion
+        include_citations:
+          type: boolean
+          default: true
+          description: Include citation metadata in response
+
+    ChatResponse:
+      type: object
+      required:
+        - answer
+        - mode
+        - sources
+        - metadata
+      properties:
+        answer:
+          type: string
+          minLength: 1
+          description: Generated answer text
+        mode:
+          $ref: '#/components/schemas/AnswerMode'
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+          description: Citation sources (empty if mode=general_knowledge)
+        metadata:
+          $ref: '#/components/schemas/ResponseMetadata'
+
+    Source:
+      type: object
+      required:
+        - chunk_id
+        - chapter
+        - section
+        - title
+        - confidence
+        - confidence_level
+        - excerpt
+      properties:
+        chunk_id:
+          type: string
+          description: Unique chunk identifier
+          example: "chunk_4589"
+        chapter:
+          type: string
+          description: Source chapter
+          example: "Chapter 3"
+        section:
+          type: string
+          description: Source section
+          example: "Section 2.1"
+        title:
+          type: string
+          description: Heading title
+          example: "Neural Network Training"
+        confidence:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Confidence score (0.0-1.0)
+          example: 0.92
+        confidence_level:
+          type: string
+          enum: [high, medium, low]
+          description: Human-readable confidence level
+        excerpt:
+          type: string
+          maxLength: 500
+          description: Text excerpt from chunk (max 500 chars)
+
+    ResponseMetadata:
+      type: object
+      required:
+        - request_id
+        - latency_ms
+        - chunks_retrieved
+        - chunks_used
+      properties:
+        request_id:
+          type: string
+          description: Unique request identifier for tracing
+          example: "req_xyz789"
+        latency_ms:
+          type: integer
+          minimum: 0
+          description: Total response time in milliseconds
+          example: 1234
+        chunks_retrieved:
+          type: integer
+          minimum: 0
+          description: Number of chunks retrieved from vector search
+          example: 5
+        chunks_used:
+          type: integer
+          minimum: 0
+          description: Number of chunks used in final answer generation
+          example: 2
+        model:
+          type: string
+          default: "gpt-4-turbo"
+          description: LLM model used for generation
+        embeddings_model:
+          type: string
+          default: "text-embedding-3-small"
+          description: Embedding model used
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+
+    ErrorDetail:
+      type: object
+      required:
+        - code
+        - message
+        - details
+        - timestamp
+        - request_id
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional context about the error
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp
+        request_id:
+          type: string
+          description: Request ID for tracing
+
+    ErrorCode:
+      type: string
+      enum:
+        - RETRIEVAL_FAILED
+        - GENERATION_FAILED
+        - INVALID_MODE
+        - RATE_LIMIT_EXCEEDED
+        - VALIDATION_ERROR
+        - INSUFFICIENT_CONTEXT
+        - AMBIGUOUS_QUERY
+        - TIMEOUT_ERROR
+        - SERVICE_UNAVAILABLE
+        - AUTHENTICATION_REQUIRED
+      description: Machine-readable error code
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - version
+        - timestamp
+        - dependencies
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+          description: Overall service health status
+        version:
+          type: string
+          description: API version
+          example: "1.0.0"
+        timestamp:
+          type: string
+          format: date-time
+          description: Current server timestamp
+        dependencies:
+          type: object
+          properties:
+            qdrant:
+              type: string
+              enum: [connected, disconnected]
+            postgres:
+              type: string
+              enum: [connected, disconnected]
+            openai:
+              type: string
+              enum: [available, unavailable]
+        warnings:
+          type: array
+          items:
+            type: string
+          description: Warning messages for degraded status
+        errors:
+          type: array
+          items:
+            type: string
+          description: Error messages for unhealthy status
+        uptime_seconds:
+          type: integer
+          minimum: 0
+          description: Server uptime in seconds
+
+    ChunksResponse:
+      type: object
+      required:
+        - chunks
+        - pagination
+      properties:
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChunkWithMetadata'
+        pagination:
+          type: object
+          required:
+            - page
+            - per_page
+            - total_chunks
+            - total_pages
+          properties:
+            page:
+              type: integer
+              minimum: 1
+            per_page:
+              type: integer
+              minimum: 1
+              maximum: 100
+            total_chunks:
+              type: integer
+              minimum: 0
+            total_pages:
+              type: integer
+              minimum: 0
+
+    ChunkWithMetadata:
+      type: object
+      required:
+        - chunk_id
+        - text
+        - metadata
+      properties:
+        chunk_id:
+          type: string
+          example: "chunk_4589"
+        text:
+          type: string
+          description: Raw chunk text content
+        metadata:
+          type: object
+          required:
+            - chapter
+            - section
+            - heading
+            - word_count
+            - token_count
+            - created_at
+          properties:
+            chapter:
+              type: string
+            section:
+              type: string
+            page_number:
+              type: integer
+              nullable: true
+            heading:
+              type: string
+            word_count:
+              type: integer
+              minimum: 0
+            token_count:
+              type: integer
+              minimum: 0
+              maximum: 1024
+            created_at:
+              type: string
+              format: date-time
+
+  responses:
+    BadRequest:
+      description: Bad request - validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "Query exceeds maximum length"
+              details: "Query length: 523 characters (max: 500)"
+              timestamp: "2026-02-05T10:30:00Z"
+              request_id: "req_abc123"
+
+    NotFound:
+      description: Not found - no relevant content
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "RETRIEVAL_FAILED"
+              message: "No relevant textbook content found"
+              details: "Query: 'quantum mechanics basics'. No chunks exceeded similarity threshold (0.7)."
+              timestamp: "2026-02-05T10:30:00Z"
+              request_id: "req_abc123"
+
+    Unauthorized:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "AUTHENTICATION_REQUIRED"
+              message: "Authentication required for admin endpoint"
+              details: "Provide JWT token in Authorization header"
+              timestamp: "2026-02-05T10:30:00Z"
+              request_id: "req_abc123"
+
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      headers:
+        X-RateLimit-Limit:
+          description: Rate limit ceiling for current tier
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          description: Requests remaining in current window
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          description: Unix timestamp when rate limit resets
+          schema:
+            type: integer
+        Retry-After:
+          description: Seconds until rate limit reset
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "RATE_LIMIT_EXCEEDED"
+              message: "Rate limit exceeded for anonymous users"
+              details: "Limit: 10 requests/hour. Retry after 3420 seconds."
+              timestamp: "2026-02-05T10:30:00Z"
+              request_id: "req_abc123"
+
+    InternalServerError:
+      description: Internal server error - service failure
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "GENERATION_FAILED"
+              message: "Failed to generate answer"
+              details: "OpenAI API error: Rate limit exceeded"
+              timestamp: "2026-02-05T10:30:00Z"
+              request_id: "req_abc123"
+
+    GatewayTimeout:
+      description: Gateway timeout - request exceeded timeout limit
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "TIMEOUT_ERROR"
+              message: "Request exceeded timeout limit"
+              details: "RAG pipeline exceeded 10s timeout. Query routed to fallback service."
+              timestamp: "2026-02-05T10:30:00Z"
+              request_id: "req_abc123"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Optional JWT authentication for rate limit tier upgrade.
+        Anonymous users: 10 requests/hour
+        Authenticated users: 100 requests/hour
+        Premium users: 1000 requests/hour

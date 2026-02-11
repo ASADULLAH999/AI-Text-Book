@@ -1,0 +1,148 @@
+{
+  "module_id": "3",
+  "module_name": "NVIDIA Isaac Sim",
+  "questions": [
+    {
+      "id": "q1",
+      "question": "What is NVIDIA Isaac Sim built on?",
+      "options": [
+        "Unity Engine",
+        "Unreal Engine",
+        "NVIDIA Omniverse platform",
+        "Gazebo"
+      ],
+      "correct_answer": 2,
+      "explanation": "Isaac Sim is built on NVIDIA's Omniverse platform, providing photorealistic rendering and physics simulation for robotics.",
+      "difficulty": "easy",
+      "category": "Fundamentals"
+    },
+    {
+      "id": "q2",
+      "question": "What is a key advantage of Isaac Sim over traditional simulators?",
+      "options": [
+        "It's free and open-source",
+        "Photorealistic rendering and RTX ray tracing",
+        "Requires less computational power",
+        "Simpler user interface"
+      ],
+      "correct_answer": 1,
+      "explanation": "Isaac Sim leverages NVIDIA RTX technology for photorealistic ray-traced rendering, enabling more realistic sensor simulation (cameras, LIDAR).",
+      "difficulty": "medium",
+      "category": "Features"
+    },
+    {
+      "id": "q3",
+      "question": "What is PhysX in the context of Isaac Sim?",
+      "options": [
+        "A programming language",
+        "NVIDIA's physics simulation engine",
+        "A robot model format",
+        "A rendering technique"
+      ],
+      "correct_answer": 1,
+      "explanation": "PhysX is NVIDIA's powerful physics engine that provides accurate simulation of rigid bodies, soft bodies, cloth, and fluids.",
+      "difficulty": "easy",
+      "category": "Architecture"
+    },
+    {
+      "id": "q4",
+      "question": "What is synthetic data generation (SDG) used for in Isaac Sim?",
+      "options": [
+        "Creating robot blueprints",
+        "Generating labeled training data for AI models",
+        "Compressing simulation files",
+        "Network communication"
+      ],
+      "correct_answer": 1,
+      "explanation": "SDG in Isaac Sim automatically generates large amounts of labeled data (images, point clouds) for training perception AI models.",
+      "difficulty": "medium",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q5",
+      "question": "What format does Isaac Sim use for 3D scene description?",
+      "options": [
+        "URDF",
+        "GLTF",
+        "USD (Universal Scene Description)",
+        "FBX"
+      ],
+      "correct_answer": 2,
+      "explanation": "Isaac Sim uses Pixar's USD (Universal Scene Description) format for composable, collaborative 3D scene workflows.",
+      "difficulty": "medium",
+      "category": "Tools"
+    },
+    {
+      "id": "q6",
+      "question": "What is Isaac Gym?",
+      "options": [
+        "A physical training facility",
+        "A reinforcement learning framework integrated with Isaac Sim",
+        "A robot assembly toolkit",
+        "A sensor calibration tool"
+      ],
+      "correct_answer": 1,
+      "explanation": "Isaac Gym is a high-performance RL training environment that enables training thousands of parallel robot simulations for deep reinforcement learning.",
+      "difficulty": "hard",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q7",
+      "question": "Which sensors can Isaac Sim simulate realistically?",
+      "options": [
+        "Only cameras",
+        "Cameras, LIDAR, depth sensors, IMU, and more",
+        "Only LIDAR",
+        "Temperature sensors only"
+      ],
+      "correct_answer": 1,
+      "explanation": "Isaac Sim simulates a wide range of sensors including RGB cameras, LIDAR, depth cameras, IMUs, contact sensors, and force/torque sensors.",
+      "difficulty": "easy",
+      "category": "Features"
+    },
+    {
+      "id": "q8",
+      "question": "What is the purpose of domain randomization in Isaac Sim?",
+      "options": [
+        "To confuse the robot",
+        "To improve generalization of learned behaviors to real-world scenarios",
+        "To save computational resources",
+        "To encrypt simulation data"
+      ],
+      "correct_answer": 1,
+      "explanation": "Domain randomization varies simulation parameters (lighting, materials, object positions) to train more robust models that generalize to real-world conditions.",
+      "difficulty": "medium",
+      "category": "AI/ML"
+    },
+    {
+      "id": "q9",
+      "question": "Can Isaac Sim integrate with ROS 2?",
+      "options": [
+        "No, it only works with proprietary protocols",
+        "Yes, through ROS 2 bridges and interfaces",
+        "Only with ROS 1",
+        "It has its own incompatible messaging system"
+      ],
+      "correct_answer": 1,
+      "explanation": "Isaac Sim provides ROS 2 integration through bridges, allowing seamless communication with ROS 2 nodes and ecosystems.",
+      "difficulty": "medium",
+      "category": "Integration"
+    },
+    {
+      "id": "q10",
+      "question": "What is the primary use case for Isaac Sim's multi-GPU scaling?",
+      "options": [
+        "Rendering prettier graphics",
+        "Training multiple robots in parallel for faster RL convergence",
+        "Reducing electricity costs",
+        "Improving network bandwidth"
+      ],
+      "correct_answer": 1,
+      "explanation": "Multi-GPU scaling enables training thousands of robot instances in parallel, dramatically accelerating reinforcement learning training times.",
+      "difficulty": "hard",
+      "category": "Performance"
+    }
+  ],
+  "passing_score": 70,
+  "time_limit": 900
+}

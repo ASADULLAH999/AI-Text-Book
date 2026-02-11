@@ -1,0 +1,59 @@
+{
+  "createdAt": "2026-01-26T10:32:54.840Z",
+  "modules": [
+    {
+      "id": "module-1-ros2",
+      "name": "ROS 2 Fundamentals",
+      "topics": [
+        "introduction",
+        "core-concepts",
+        "code-examples",
+        "hands-on-tutorial",
+        "best-practices",
+        "quiz",
+        "summary"
+      ]
+    },
+    {
+      "id": "module-2-digital-twins",
+      "name": "Digital Twins & Simulation",
+      "topics": [
+        "introduction",
+        "core-concepts",
+        "code-examples",
+        "hands-on-tutorial",
+        "best-practices",
+        "quiz",
+        "summary"
+      ]
+    },
+    {
+      "id": "module-3-isaac-sim",
+      "name": "NVIDIA Isaac Sim",
+      "topics": [
+        "introduction",
+        "core-concepts",
+        "code-examples",
+        "hands-on-tutorial",
+        "best-practices",
+        "quiz",
+        "summary"
+      ]
+    },
+    {
+      "id": "module-4-voice-action",
+      "name": "Voice to Action & Capstone",
+      "topics": [
+        "introduction",
+        "core-concepts",
+        "code-examples",
+        "hands-on-tutorial",
+        "best-practices",
+        "quiz",
+        "summary"
+      ]
+    }
+  ],
+  "totalModules": 4,
+  "totalTopics": 28
+}
