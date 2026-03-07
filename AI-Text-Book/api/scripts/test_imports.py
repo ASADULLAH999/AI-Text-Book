@@ -32,9 +32,6 @@ def test_imports():
         from middleware.rate_limiter import RateLimiterMiddleware
         print("✓ middleware.rate_limiter")
 
-        from middleware.auth_middleware import AuthMiddleware
-        print("✓ middleware.auth_middleware")
-
         # Model imports
         from models.chunk import Chunk
         print("✓ models.chunk")

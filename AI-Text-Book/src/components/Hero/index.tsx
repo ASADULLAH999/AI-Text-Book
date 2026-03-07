@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { useHistory } from '@docusaurus/router';
-// import { useAuth } from '../../hooks/useAuth'; // DISABLED - Authentication removed
 import styles from './styles.module.css';
 
 interface HeroProps {
@@ -9,7 +8,6 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onStartReading }) => {
   const history = useHistory();
-  // const { isAuthenticated } = useAuth(); // DISABLED - Authentication removed
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const orbsRef = useRef<Orb[]>([]);

@@ -119,7 +119,8 @@ class InfrastructureVerifier:
 
                 if collection_exists:
                     collection_info = client.get_collection(collection_name)
-                    logger.info(f"  Vectors: {collection_info.vectors_count}")
+                    vectors = getattr(collection_info, "vectors_count", None) or collection_info.points_count
+                    logger.info(f"  Vectors: {vectors}")
                     logger.info(f"  Points: {collection_info.points_count}")
                 else:
                     logger.info(f"  Collection is empty (ready for ingestion)")

@@ -1,0 +1,240 @@
+[
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\INFRASTRUCTURE_SETUP.md",
+    "relative_path": "INFRASTRUCTURE_SETUP.md",
+    "file_name": "INFRASTRUCTURE_SETUP.md",
+    "size_bytes": 12554,
+    "directory": "."
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\QUICKSTART_INFRASTRUCTURE.md",
+    "relative_path": "QUICKSTART_INFRASTRUCTURE.md",
+    "file_name": "QUICKSTART_INFRASTRUCTURE.md",
+    "size_bytes": 8762,
+    "directory": "."
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\best-practices.md",
+    "relative_path": "module-1-ros2\\best-practices.md",
+    "file_name": "best-practices.md",
+    "size_bytes": 10654,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\code-examples.md",
+    "relative_path": "module-1-ros2\\code-examples.md",
+    "file_name": "code-examples.md",
+    "size_bytes": 19457,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\core-concepts.md",
+    "relative_path": "module-1-ros2\\core-concepts.md",
+    "file_name": "core-concepts.md",
+    "size_bytes": 16496,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\hands-on-tutorial.md",
+    "relative_path": "module-1-ros2\\hands-on-tutorial.md",
+    "file_name": "hands-on-tutorial.md",
+    "size_bytes": 11876,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\index.md",
+    "relative_path": "module-1-ros2\\index.md",
+    "file_name": "index.md",
+    "size_bytes": 6629,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\introduction.md",
+    "relative_path": "module-1-ros2\\introduction.md",
+    "file_name": "introduction.md",
+    "size_bytes": 10520,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\quiz.md",
+    "relative_path": "module-1-ros2\\quiz.md",
+    "file_name": "quiz.md",
+    "size_bytes": 10802,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\summary.md",
+    "relative_path": "module-1-ros2\\summary.md",
+    "file_name": "summary.md",
+    "size_bytes": 9198,
+    "directory": "module-1-ros2"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\best-practices.md",
+    "relative_path": "module-2-simulation\\best-practices.md",
+    "file_name": "best-practices.md",
+    "size_bytes": 15320,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\code-examples.md",
+    "relative_path": "module-2-simulation\\code-examples.md",
+    "file_name": "code-examples.md",
+    "size_bytes": 25748,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\core-concepts.md",
+    "relative_path": "module-2-simulation\\core-concepts.md",
+    "file_name": "core-concepts.md",
+    "size_bytes": 18226,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\hands-on-tutorial.md",
+    "relative_path": "module-2-simulation\\hands-on-tutorial.md",
+    "file_name": "hands-on-tutorial.md",
+    "size_bytes": 16243,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\index.md",
+    "relative_path": "module-2-simulation\\index.md",
+    "file_name": "index.md",
+    "size_bytes": 7817,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\introduction.md",
+    "relative_path": "module-2-simulation\\introduction.md",
+    "file_name": "introduction.md",
+    "size_bytes": 14436,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\quiz.md",
+    "relative_path": "module-2-simulation\\quiz.md",
+    "file_name": "quiz.md",
+    "size_bytes": 13632,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\summary.md",
+    "relative_path": "module-2-simulation\\summary.md",
+    "file_name": "summary.md",
+    "size_bytes": 12586,
+    "directory": "module-2-simulation"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\best-practices.md",
+    "relative_path": "module-3-isaac\\best-practices.md",
+    "file_name": "best-practices.md",
+    "size_bytes": 17936,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\code-examples.md",
+    "relative_path": "module-3-isaac\\code-examples.md",
+    "file_name": "code-examples.md",
+    "size_bytes": 27788,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\core-concepts.md",
+    "relative_path": "module-3-isaac\\core-concepts.md",
+    "file_name": "core-concepts.md",
+    "size_bytes": 30191,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\hands-on-tutorial.md",
+    "relative_path": "module-3-isaac\\hands-on-tutorial.md",
+    "file_name": "hands-on-tutorial.md",
+    "size_bytes": 27901,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\index.md",
+    "relative_path": "module-3-isaac\\index.md",
+    "file_name": "index.md",
+    "size_bytes": 11717,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\introduction.md",
+    "relative_path": "module-3-isaac\\introduction.md",
+    "file_name": "introduction.md",
+    "size_bytes": 16397,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\quiz.md",
+    "relative_path": "module-3-isaac\\quiz.md",
+    "file_name": "quiz.md",
+    "size_bytes": 19883,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\summary.md",
+    "relative_path": "module-3-isaac\\summary.md",
+    "file_name": "summary.md",
+    "size_bytes": 14930,
+    "directory": "module-3-isaac"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\best-practices.md",
+    "relative_path": "module-4-voice\\best-practices.md",
+    "file_name": "best-practices.md",
+    "size_bytes": 10290,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\code-examples.md",
+    "relative_path": "module-4-voice\\code-examples.md",
+    "file_name": "code-examples.md",
+    "size_bytes": 13629,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\core-concepts.md",
+    "relative_path": "module-4-voice\\core-concepts.md",
+    "file_name": "core-concepts.md",
+    "size_bytes": 13301,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\hands-on-tutorial.md",
+    "relative_path": "module-4-voice\\hands-on-tutorial.md",
+    "file_name": "hands-on-tutorial.md",
+    "size_bytes": 16565,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\index.md",
+    "relative_path": "module-4-voice\\index.md",
+    "file_name": "index.md",
+    "size_bytes": 11913,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\introduction.md",
+    "relative_path": "module-4-voice\\introduction.md",
+    "file_name": "introduction.md",
+    "size_bytes": 14478,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\quiz.md",
+    "relative_path": "module-4-voice\\quiz.md",
+    "file_name": "quiz.md",
+    "size_bytes": 13895,
+    "directory": "module-4-voice"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\summary.md",
+    "relative_path": "module-4-voice\\summary.md",
+    "file_name": "summary.md",
+    "size_bytes": 12057,
+    "directory": "module-4-voice"
+  }
+]

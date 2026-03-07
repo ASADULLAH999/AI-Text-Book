@@ -103,34 +103,75 @@ class EmbeddingService:
         batch_size: int = 100,
     ) -> List[List[float]]:
         """
-        Generate embeddings for multiple texts in batches.
+        T099 — Generate embeddings for multiple texts using native batch API calls.
+
+        Sends up to *batch_size* texts per OpenAI request instead of one-by-one,
+        reducing network round-trips and latency significantly.
 
         Args:
             texts: List of texts to embed
-            batch_size: Number of texts per batch
+            batch_size: Max texts per API request (OpenAI supports up to 2048)
 
         Returns:
-            List of embedding vectors
+            List of embedding vectors in the same order as *texts*
         """
-        embeddings = []
+        if not texts:
+            return []
 
-        for i in range(0, len(texts), batch_size):
-            batch = texts[i:i + batch_size]
-            logger.info(f"Processing batch {i // batch_size + 1}/{(len(texts) + batch_size - 1) // batch_size}")
+        all_embeddings: List[List[float]] = []
+        total_batches = (len(texts) + batch_size - 1) // batch_size
 
-            # Process batch
-            batch_embeddings = []
-            for text in batch:
-                embedding = await self.embed_text(text)
-                batch_embeddings.append(embedding)
+        for batch_idx, i in enumerate(range(0, len(texts), batch_size)):
+            batch = texts[i : i + batch_size]
+            logger.info(
+                f"T099 batch embedding: batch {batch_idx + 1}/{total_batches} "
+                f"({len(batch)} texts)"
+            )
 
-                # Rate limiting: wait between requests
-                time.sleep(0.1)  # 10 requests/second limit
+            # Check per-text cache; only embed uncached texts
+            cached_map: Dict[int, List[float]] = {}
+            uncached_positions: List[int] = []
+            uncached_texts: List[str] = []
 
-            embeddings.extend(batch_embeddings)
+            for rel_idx, text in enumerate(batch):
+                if self.cache_enabled:
+                    ck = self._get_cache_key(text)
+                    if ck in self.cache:
+                        cached_map[rel_idx] = self.cache[ck]
+                        continue
+                uncached_positions.append(rel_idx)
+                uncached_texts.append(text)
 
-        logger.info(f"Generated {len(embeddings)} embeddings")
-        return embeddings
+            # Batch API call for uncached texts
+            if uncached_texts:
+                for attempt in range(3):
+                    try:
+                        response = self.client.embeddings.create(
+                            input=uncached_texts,
+                            model=self.model,
+                        )
+                        # response.data is ordered by index
+                        for data_item in response.data:
+                            rel_idx = uncached_positions[data_item.index]
+                            emb = data_item.embedding
+                            cached_map[rel_idx] = emb
+                            if self.cache_enabled:
+                                self.cache[self._get_cache_key(batch[rel_idx])] = emb
+                        break
+                    except openai.RateLimitError as e:
+                        if attempt < 2:
+                            delay = 1.0 * (2 ** attempt)
+                            logger.warning(f"Rate limit on batch, retry in {delay}s: {e}")
+                            time.sleep(delay)
+                        else:
+                            raise
+
+            # Reassemble in original order
+            for rel_idx in range(len(batch)):
+                all_embeddings.append(cached_map[rel_idx])
+
+        logger.info(f"T099 batch embedding complete: {len(all_embeddings)} vectors")
+        return all_embeddings
 
     def clear_cache(self):
         """Clear the embedding cache."""

@@ -4,7 +4,14 @@ RAG-Powered Textbook Chatbot API
 """
 
 import os
+import sys
 import logging
+
+# Ensure api/src/ is on the path so flat imports (middleware, db, services)
+# resolve correctly regardless of the working directory.
+_SRC_DIR = os.path.dirname(os.path.abspath(__file__))
+if _SRC_DIR not in sys.path:
+    sys.path.insert(0, _SRC_DIR)
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,7 +23,10 @@ from sentry_sdk.integrations.logging import LoggingIntegration
 # Import middleware
 from middleware.logger import StructuredLoggingMiddleware
 from middleware.rate_limiter import RateLimiterMiddleware
-from middleware.auth_middleware import AuthMiddleware
+from middleware.request_validator import RequestValidatorMiddleware
+from middleware.error_handler import ErrorHandlerMiddleware
+from middleware.captcha import CaptchaMiddleware
+from middleware.request_signing import RequestSigningMiddleware
 
 # Import database clients
 from db.qdrant_client import qdrant_client
@@ -99,25 +109,52 @@ app = FastAPI(
 )
 
 
-# CORS Configuration
+# T111 — CORS configuration with production domains
+# Allowed origins are sourced from env to avoid hardcoding domains.
+_CORS_ALLOWED_ORIGINS: list[str] = list(filter(None, [
+    "http://localhost:3000",        # Docusaurus dev server
+    "http://localhost:8000",        # API dev server
+    "http://127.0.0.1:3000",
+    os.getenv("FRONTEND_URL"),      # Primary production frontend
+    os.getenv("FRONTEND_URL_ALT"),  # Alternate / preview URL (e.g. Vercel preview)
+    os.getenv("CORS_ORIGIN_1"),     # Additional origins if needed
+    os.getenv("CORS_ORIGIN_2"),
+]))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",  # Docusaurus dev
-        "http://localhost:8000",  # API dev
-        os.getenv("FRONTEND_URL", ""),  # Production frontend
-    ],
+    allow_origins=_CORS_ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["*"],
-    expose_headers=["X-Request-ID", "X-RateLimit-Limit", "X-RateLimit-Remaining", "X-RateLimit-Reset"],
+    allow_headers=[
+        "Content-Type",
+        "Authorization",
+        "X-Request-ID",
+        "CF-Turnstile-Response",
+    ],
+    expose_headers=[
+        "X-Request-ID",
+        "X-RateLimit-Limit",
+        "X-RateLimit-Remaining",
+        "X-RateLimit-Reset",
+        "X-Captcha-Required",
+    ],
+    max_age=600,
 )
 
 
 # Add custom middleware (order matters: last added = first executed)
+# Error handler wraps everything
+app.add_middleware(ErrorHandlerMiddleware)
+# Request validator before business logic
+app.add_middleware(RequestValidatorMiddleware)
+# CAPTCHA challenge for anomalous traffic (T108)
+app.add_middleware(CaptchaMiddleware)
+# Request signing verification (T112)
+app.add_middleware(RequestSigningMiddleware)
+# Structured logging and rate limiting
 app.add_middleware(StructuredLoggingMiddleware)
 app.add_middleware(RateLimiterMiddleware)
-app.add_middleware(AuthMiddleware)
 
 
 # Global exception handler
@@ -203,11 +240,10 @@ async def health_check():
 
 
 # Import and include routers
-# Note: Routes will be added as they're implemented
-# from routes.chat import router as chat_router
-# from routes.chunks import router as chunks_router
-# app.include_router(chat_router, prefix="/api/v1", tags=["chat"])
-# app.include_router(chunks_router, prefix="/api/v1", tags=["chunks"])
+from api.v1.chat import router as chat_router
+
+# Include routers
+app.include_router(chat_router)
 
 
 if __name__ == "__main__":

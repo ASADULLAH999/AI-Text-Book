@@ -1,0 +1,196 @@
+/**
+ * KeyTerm Component Styles
+ * T090/T091 [US5] — Term highlighting and tooltip styles.
+ */
+
+/* =========================================================
+ * T090 — Highlighted key term span
+ * ========================================================= */
+
+.termHighlight {
+  /* Subtle underline — visible but not distracting */
+  border-bottom: 1.5px dashed var(--ifm-color-primary, #0070f3);
+  cursor: pointer;
+  color: inherit;
+  border-radius: 1px;
+  transition: background 0.15s, border-color 0.15s;
+  padding: 0 1px;
+}
+
+.termHighlight:hover,
+.termHighlight:focus {
+  background: rgba(0, 112, 243, 0.08);
+  border-bottom-style: solid;
+  outline: none;
+}
+
+.termHighlight:focus-visible {
+  outline: 2px solid var(--ifm-color-primary, #0070f3);
+  outline-offset: 1px;
+}
+
+/* =========================================================
+ * T091 — Definition tooltip card
+ * ========================================================= */
+
+.termTooltip {
+  max-width: 310px;
+  background: var(--ifm-background-color, #fff);
+  border: 1px solid var(--ifm-color-emphasis-300, #ddd);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 12px 14px;
+  animation: tooltipFadeIn 0.1s ease-out;
+  pointer-events: all;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-100% + 4px));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-100%);
+  }
+}
+
+/* Header row */
+.termTooltipHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.termTooltipIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.termTooltipTitle {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ifm-font-color-base, #111);
+  flex: 1;
+}
+
+.termTooltipCategory {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--ifm-color-emphasis-200, #eee);
+  color: var(--ifm-color-emphasis-600, #555);
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+}
+
+.termTooltipClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ifm-color-emphasis-500, #999);
+  padding: 0 2px;
+  flex-shrink: 0;
+  transition: color 0.1s;
+}
+
+.termTooltipClose:hover {
+  color: var(--ifm-color-emphasis-800, #333);
+}
+
+/* Definition text */
+.termTooltipDefinition {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ifm-font-color-base, #333);
+  margin: 0 0 8px 0;
+}
+
+/* Related terms */
+.termTooltipRelated {
+  font-size: 11px;
+  color: var(--ifm-color-emphasis-600, #666);
+  margin-bottom: 10px;
+}
+
+.termTooltipRelatedLabel {
+  font-weight: 600;
+}
+
+/* T094 — "More about" CTA button */
+.termTooltipAskMore {
+  width: 100%;
+  padding: 6px 10px;
+  background: var(--ifm-color-primary-lightest, #e0f0ff);
+  border: 1px solid var(--ifm-color-primary-light, #7cc4ff);
+  border-radius: 6px;
+  color: var(--ifm-color-primary-darkest, #003a75);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+
+.termTooltipAskMore:hover {
+  background: var(--ifm-color-primary-lighter, #c0e0ff);
+  border-color: var(--ifm-color-primary, #0070f3);
+}
+
+/* =========================================================
+ * T093 — Toggle switch (used in settings panel)
+ * ========================================================= */
+
+.termHighlightToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  color: var(--ifm-font-color-base, #333);
+}
+
+.termHighlightToggleInput {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  appearance: none;
+  background: var(--ifm-color-emphasis-300, #ccc);
+  border-radius: 10px;
+  transition: background 0.2s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.termHighlightToggleInput::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.termHighlightToggleInput:checked {
+  background: var(--ifm-color-primary, #0070f3);
+}
+
+.termHighlightToggleInput:checked::after {
+  transform: translateX(16px);
+}
+
+.termHighlightToggleInput:focus-visible {
+  outline: 2px solid var(--ifm-color-primary, #0070f3);
+  outline-offset: 2px;
+}

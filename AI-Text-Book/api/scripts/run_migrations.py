@@ -3,10 +3,10 @@ Run Database Migrations
 Executes all SQL migration files against Neon Postgres database.
 """
 
-import os
 import sys
 import asyncio
 from pathlib import Path
+from typing import Optional  # Fix: Add Optional
 import logging
 from dotenv import load_dotenv
 
@@ -28,7 +28,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def run_all_migrations(migrations_dir: str = None) -> bool:
+async def run_all_migrations(migrations_dir: Optional[str] = None) -> bool:  # Fix: Optional type
     """
     Run all migration files in order.
 
@@ -38,12 +38,13 @@ async def run_all_migrations(migrations_dir: str = None) -> bool:
     Returns:
         True if all migrations succeeded
     """
+    # Fix: Proper type handling
     if migrations_dir is None:
         # Default to src/db/migrations
         script_dir = Path(__file__).parent
-        migrations_dir = script_dir.parent / "src" / "db" / "migrations"
-
-    migrations_path = Path(migrations_dir)
+        migrations_path = script_dir.parent / "src" / "db" / "migrations"
+    else:
+        migrations_path = Path(migrations_dir)
 
     if not migrations_path.exists():
         logger.error(f"Migrations directory not found: {migrations_path}")

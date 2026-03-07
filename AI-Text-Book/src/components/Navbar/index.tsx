@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAppState } from '../../context/AppStateContext';
-// import GitHubAuth from '../AuthControls'; // DISABLED - Authentication removed
 import styles from './styles.module.css';
 
 export const Navbar: React.FC = () => {
@@ -43,8 +42,6 @@ export const Navbar: React.FC = () => {
             <option value="es">Español</option>
           </select>
 
-          {/* Auth Section - DISABLED */}
-          {/* <GitHubAuth /> */}
         </div>
       </div>
     </nav>

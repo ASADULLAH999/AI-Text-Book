@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline — Physical AI Textbook</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 1rem;
+    }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    p { color: #aaa; max-width: 400px; line-height: 1.6; }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 6px;
+      background: #3578e5;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { background: #2563c5; }
+  </style>
+</head>
+<body>
+  <h1>You're offline</h1>
+  <p>
+    The Physical AI Textbook requires an internet connection for the chat assistant.
+    Please check your network and try again.
+  </p>
+  <button onclick="window.location.reload()">Try again</button>
+  <script>
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
+</body>
+</html>

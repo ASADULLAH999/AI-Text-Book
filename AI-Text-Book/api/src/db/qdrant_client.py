@@ -4,6 +4,7 @@ Manages connections to Qdrant Cloud for semantic search operations.
 """
 
 import os
+import uuid
 from typing import List, Optional, Dict, Any
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
@@ -13,8 +14,7 @@ from qdrant_client.models import (
     Filter,
     FieldCondition,
     MatchValue,
-    SearchRequest,
-)
+)  # Fix: Remove unused SearchRequest
 import logging
 
 logger = logging.getLogger(__name__)
@@ -41,7 +41,7 @@ class QdrantClientSingleton:
                 cls._instance = QdrantClient(
                     url=qdrant_url,
                     api_key=qdrant_api_key,
-                    timeout=10.0,
+                    timeout=10,
                 )
 
                 logger.info(f"Connected to Qdrant at {qdrant_url}")
@@ -70,11 +70,11 @@ class QdrantClientSingleton:
             exists = any(c.name == collection_name for c in collections.collections)
 
             if not exists:
-                # Create collection with 1536-dimensional vectors (OpenAI embeddings)
+                # Create collection with 3072-dimensional vectors (text-embedding-3-large)
                 client.create_collection(
                     collection_name=collection_name,
                     vectors_config=VectorParams(
-                        size=1536,
+                        size=3072,
                         distance=Distance.COSINE,
                     ),
                 )
@@ -125,26 +125,27 @@ class QdrantClientSingleton:
                 search_filter = Filter(must=conditions)
 
             # Perform search
-            results = client.search(
+            results = client.query_points(
                 collection_name=collection_name,
-                query_vector=query_vector,
+                query=query_vector,
                 limit=top_k,
                 score_threshold=score_threshold,
                 query_filter=search_filter,
-            )
+            ).points
 
             # Format results
             formatted_results = []
             for hit in results:
+                payload = hit.payload or {}
                 formatted_results.append({
-                    "chunk_id": hit.payload.get("chunk_id"),
-                    "text": hit.payload.get("text"),
+                    "chunk_id": payload.get("chunk_id"),
+                    "text": payload.get("text"),
                     "score": hit.score,
                     "metadata": {
-                        "chapter": hit.payload.get("chapter"),
-                        "section": hit.payload.get("section"),
-                        "heading": hit.payload.get("heading"),
-                        "page_number": hit.payload.get("page_number"),
+                        "chapter": payload.get("chapter"),
+                        "section": payload.get("section"),
+                        "heading": payload.get("heading"),
+                        "page_number": payload.get("page_number"),
                     },
                 })
 
@@ -176,8 +177,12 @@ class QdrantClientSingleton:
             # Convert chunks to Qdrant points
             points = []
             for chunk in chunks:
+                # Generate UUID from chunk_id string for Qdrant point ID
+                # Use UUID v5 (deterministic) with DNS namespace
+                point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, chunk["chunk_id"]))
+
                 point = PointStruct(
-                    id=chunk["chunk_id"],
+                    id=point_id,
                     vector=chunk["embedding"],
                     payload={
                         "chunk_id": chunk["chunk_id"],
@@ -213,21 +218,25 @@ class QdrantClientSingleton:
             client = cls.get_client()
             collection_name = cls.get_collection_name()
 
+            # Convert chunk_id to UUID for Qdrant point ID
+            point_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, chunk_id))
+
             result = client.retrieve(
                 collection_name=collection_name,
-                ids=[chunk_id],
+                ids=[point_id],
             )
 
             if result:
                 point = result[0]
+                payload = point.payload or {}
                 return {
-                    "chunk_id": point.payload.get("chunk_id"),
-                    "text": point.payload.get("text"),
+                    "chunk_id": payload.get("chunk_id"),
+                    "text": payload.get("text"),
                     "metadata": {
-                        "chapter": point.payload.get("chapter"),
-                        "section": point.payload.get("section"),
-                        "heading": point.payload.get("heading"),
-                        "page_number": point.payload.get("page_number"),
+                        "chapter": payload.get("chapter"),
+                        "section": payload.get("section"),
+                        "heading": payload.get("heading"),
+                        "page_number": payload.get("page_number"),
                     },
                 }
             return None

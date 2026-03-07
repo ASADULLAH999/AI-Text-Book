@@ -1,467 +1,263 @@
 # Feature Specification: RAG-Powered Textbook Chatbot
 
-**Feature ID:** 002-rag-chatbot
-**Feature Name:** Interactive Textbook with Embedded RAG Chatbot
-**Version:** 1.0.0
-**Status:** Draft
-**Created:** 2026-02-05 
-**Last Updated:** 2026-02-05
+**Feature Branch**: `002-rag-chatbot`
+**Created**: 2026-02-14
+**Status**: Draft
+**Input**: RAG-powered chatbot for interactive textbook platform with strict grounding, citations, and multiple answering modes
+
+## User Scenarios & Testing *(mandatory)*
+
+### User Story 1 - Ask Questions About Textbook Content (Priority: P1)
+
+Students reading the textbook can ask questions and receive accurate, cited answers derived exclusively from the textbook content.
+
+**Why this priority**: This is the core value proposition - helping students understand textbook material through interactive Q&A.
+
+**Independent Test**: Can be fully tested by asking questions about textbook content and verifying answers are accurate, cited, and grounded in the source material.
+
+**Acceptance Scenarios**:
+
+1. **Given** a student is reading Chapter 3, **When** they ask "What caused World War I?", **Then** the system provides an answer with citations to relevant textbook sections and confidence scores
+2. **Given** a student asks a question not covered in the textbook, **When** the system cannot find relevant content, **Then** it displays a clear refusal message with suggested alternatives
+3. **Given** a student receives an answer, **When** they click on a citation, **Then** they can view the source text and navigate to that section in the textbook
 
 ---
 
-## Executive Summary
+### User Story 2 - Select Text for Contextual Questions (Priority: P2)
 
-Build a production-grade, serverless RAG (Retrieval-Augmented Generation) chatbot embedded within the AI textbook platform. The chatbot enables students to ask questions and receive accurate, citation-backed answers grounded in textbook content, with strict mode boundaries and explicit error handling.
+Students can highlight specific text passages and ask questions constrained to only that selection, enabling focused deep-dives into specific concepts.
 
----
+**Why this priority**: Enables students to get precise answers about specific passages without retrieval noise from the entire textbook.
 
-## Problem Statement
+**Independent Test**: Can be tested by highlighting text, asking a question, and verifying the answer uses only the selected text without additional retrieval.
 
-Students reading technical textbooks need immediate answers to questions without leaving the reading experience. Traditional solutions either:
-- Redirect to external Q&A forums (context loss)
-- Provide uncited AI answers (hallucination risk)
-- Require manual search through dense material (friction)
+**Acceptance Scenarios**:
 
-**Goal:** Embed an intelligent chatbot that answers questions using only textbook content, with full citation traceability and configurable answering modes.
-
----
-
-## Core Requirements
-
-### 1. Answering Modes
-
-The system supports **exactly three answering modes**:
-
-#### 1.1 Book-Only Mode (Default)
-- **Behavior:** Answers derived exclusively from textbook content
-- **Constraint:** General knowledge strictly forbidden
-- **Fallback Response:** "I cannot answer this question based on the available textbook content."
-- **Validation:** Every sentence maps to a chunk ID with functional citation links
-
-#### 1.2 Selected-Text-Only Mode
-- **Behavior:** Uses only user-selected text as context
-- **Constraint:** No additional chunks, summaries, or semantic expansion allowed
-- **Fallback Response:** "The selected text does not contain enough information to answer this question."
-- **Technical:** Selection boundaries preserved exactly; metadata logged
-
-#### 1.3 General Knowledge Mode
-- **Behavior:** Opt-in enhancement using LLM general knowledge
-- **Constraint:** Requires explicit user activation
-- **Visual Indicator:** Badge/banner with warning
-- **Disclaimer:** "⚠️ General AI Knowledge: This answer is not grounded in your textbook and may contain inaccuracies."
-
-**Mode Enforcement Rule:** Mode boundaries are mandatory and non-bypassable. Silent mode switching or cross-mode contamination is forbidden.
+1. **Given** a student highlights a paragraph about photosynthesis, **When** they click "Ask AI about this", **Then** a contextual menu appears near the selection
+2. **Given** a student has selected text and asks a question, **When** the selected text contains sufficient information, **Then** the answer is derived only from the selection
+3. **Given** a student asks a question about selected text, **When** the selection doesn't contain enough information, **Then** the system suggests selecting additional context or switching modes
 
 ---
 
-### 2. RAG Pipeline Architecture
+### User Story 3 - Use Different Answering Modes (Priority: P2)
 
-#### 2.1 Document Processing
-- **Chunking Strategy:** Semantic chunking with 10-15% overlap
-- **Chunk Size:** 512-1024 tokens (configurable per textbook structure)
-- **Metadata:** Chapter, section, page number, heading hierarchy
-- **Deduplication:** Identical chunks merged with provenance tracking
+Students can switch between three distinct answering modes based on their learning needs: textbook-only (strict grounding), selected-text-only (focused context), or general knowledge (exploratory learning).
 
-#### 2.2 Retrieval Process (Non-Negotiable Order)
-1. Query embedding generation
-2. Vector similarity search (top-k candidates)
-3. Metadata filtering (if applicable)
-4. Reranking with cross-encoder
-5. Context window enforcement
-6. Final candidate selection
+**Why this priority**: Different learning contexts require different levels of constraint - exam prep needs strict grounding, while exploratory learning benefits from general knowledge.
 
-**Parameters:**
-- `top_k`: 5-20 (configurable)
-- `similarity_threshold`: 0.7 minimum
-- `rerank_top_n`: 3-5 final chunks
+**Independent Test**: Can be tested by switching modes and verifying each mode respects its boundaries (textbook-only refuses non-textbook queries, general knowledge provides broader answers with clear labeling).
 
-#### 2.3 Quality Assurance Checks
-- Relevance scoring for every retrieved chunk
-- Cross-validation between query and answer
-- Citation integrity verification
-- Hallucination detection via grounding check
+**Acceptance Scenarios**:
+
+1. **Given** a student is in Book-Only mode (default), **When** they ask about a topic not in the textbook, **Then** they receive a refusal with options to rephrase or enable General Knowledge mode
+2. **Given** a student enables General Knowledge mode, **When** they ask any question, **Then** they see a clear visual indicator (amber badge, warning banner) and disclaimer that content is not textbook-grounded
+3. **Given** a student switches from General Knowledge back to Book-Only mode, **When** they ask questions, **Then** answers are strictly grounded in textbook content again
 
 ---
 
-### 3. Citation & Attribution
+### User Story 4 - Customize Response Tone (Priority: P3)
 
-**Every book-grounded answer MUST include:**
-- Source chapter and section reference
-- Unique chunk identifier for audit trail
-- Confidence indicator (Low/Medium/High or numerical score)
-- Visual distinction for cited vs. generated text
+Students can select response tone (Academic, Beginner-Friendly, Concise, Detailed, Neutral) to match their learning level and preferences.
 
-**Citation Format Example:**
-```
-[Answer content here]
+**Why this priority**: Personalization improves learning experience, but the feature is still valuable without it.
 
-📚 Sources:
-• Chapter 3, Section 2.1 — "The Causes of World War I" (Confidence: High)
-• Chapter 3, Section 2.3 — "Economic Factors" (Confidence: Medium)
-```
+**Independent Test**: Can be tested by selecting different tones and verifying responses adjust language style while maintaining factual accuracy.
 
-**Validation Rules:**
-- Citations must link to actual retrievable chunks
-- Chunk content must support the cited claim
-- Broken citation links trigger error alerts
-- Users can view source text on demand
+**Acceptance Scenarios**:
+
+1. **Given** a student selects "Beginner-Friendly" tone, **When** they ask a technical question, **Then** the answer uses simple language with analogies
+2. **Given** a student selects "Academic" tone, **When** they ask a question, **Then** the answer uses formal scholarly language with technical terminology
+3. **Given** a student switches tones, **When** they ask the same question again, **Then** citations and factual content remain consistent while language style changes
 
 ---
 
-### 4. Failure Handling
+### User Story 5 - Explore Key Terms (Priority: P3)
 
-| Scenario | Required Response |
-|----------|------------------|
-| No relevant chunks | "I couldn't find relevant information in the textbook to answer your question." |
-| Partial relevance | "Based on partial information from [source], here's what I can answer: [content]. However, [missing aspects] are not covered." |
-| Ambiguous query | "Your question could refer to multiple topics: [options]. Which did you mean?" |
-| Context overflow | "The answer requires more context than can fit in a single response. Would you like me to focus on [specific aspect]?" |
+Students can hover over or click domain-specific terms in the textbook and chat responses to see definitions and explanations without interrupting reading flow.
 
-**Prohibited Behaviors:**
-- Silent failures
-- Defaulting to general knowledge without warning
-- Returning irrelevant content with high confidence
-- Inventing citations
+**Why this priority**: Enhances learning but not critical to core chatbot functionality.
 
----
+**Independent Test**: Can be tested by hovering over detected terms and verifying tooltips/cards appear with accurate definitions.
 
-## Technical Architecture
+**Acceptance Scenarios**:
 
-### Technology Stack
-
-**Tier 1 (Required):**
-- **LLM Orchestration:** OpenAI Agents / ChatKit SDK
-- **Vector Database:** Qdrant Cloud (Free Tier minimum)
-- **Relational Database:** Neon Serverless Postgres
-- **Embeddings:** OpenAI `text-embedding-3-small` or `text-embedding-3-large`
-- **API Framework:** FastAPI (serverless deployment only)
-
-**Tier 2 (Approved Hosting):**
-- Vercel (preferred for frontend + serverless functions)
-- Fly.io (alternative for API services)
-- Cloudflare Workers (alternative for edge computing)
-- AWS Lambda (alternative for serverless backend)
-
-**Tier 3 (Support Services):**
-- Sentry (error tracking)
-- LogTail / BetterStack (logging)
-- Upstash (rate limiting via Redis-compatible edge KV)
-
-### Forbidden Technologies
-
-The following are **permanently prohibited**:
-- ❌ Redis (local or managed) for session state
-- ❌ Client-side FastAPI processes
-- ❌ Manually started background servers
-- ❌ Long-running workers or daemons
-- ❌ Stateful in-memory session storage
-- ❌ Unmanaged databases requiring manual maintenance
-- ❌ Custom vector indexing without managed services
-- ❌ Synchronous blocking operations in request paths
-
-**Rationale:** Serverless-first architecture eliminates operational overhead and ensures production reliability.
+1. **Given** a student is reading and encounters a highlighted key term, **When** they hover (desktop) or tap (mobile), **Then** a definition appears in a tooltip or expandable card
+2. **Given** a student clicks "More about [term]", **When** the action is triggered, **Then** the chatbot is opened with a pre-filled query about that term
+3. **Given** a student wants to disable highlighting, **When** they toggle the setting, **Then** terms are no longer highlighted but remain searchable
 
 ---
 
-## API Contract
+### Edge Cases
 
-### Request Schema
+- What happens when a student's question is ambiguous or has multiple valid interpretations?
+- How does the system handle very long questions (> 500 characters)?
+- What happens when the selected text is too short (< 50 tokens) or too long (> 4,000 tokens)?
+- How does the system respond when vector database or LLM service is unavailable?
+- What happens when a citation link is broken or chunk is no longer available?
 
-```json
-{
-  "query": "What is backpropagation?",
-  "mode": "book_only",
-  "context": {
-    "selected_text": null,
-    "chapter_filter": null,
-    "session_id": "sess_abc123"
-  },
-  "options": {
-    "top_k": 10,
-    "similarity_threshold": 0.7,
-    "include_citations": true
-  }
-}
-```
+## Requirements *(mandatory)*
 
-### Response Schema
+### Functional Requirements
 
-```json
-{
-  "answer": "Backpropagation is a supervised learning algorithm...",
-  "mode": "book_only",
-  "sources": [
-    {
-      "chunk_id": "chunk_4589",
-      "chapter": "Chapter 3",
-      "section": "Section 2.1",
-      "title": "Neural Network Training",
-      "confidence": 0.92,
-      "excerpt": "Backpropagation computes gradients..."
-    }
-  ],
-  "metadata": {
-    "request_id": "req_xyz789",
-    "latency_ms": 1234,
-    "chunks_retrieved": 5,
-    "chunks_used": 2
-  }
-}
-```
+#### Core Question Answering
 
-### Error Response
+- **FR-001**: System MUST answer questions using exclusively textbook content in default (Book-Only) mode
+- **FR-002**: System MUST provide citations for every factual claim in Book-Only and Selected-Text modes
+- **FR-003**: System MUST include source references with chapter, section, and chunk identifiers in all citations
+- **FR-004**: System MUST display confidence scores (Low/Medium/High) for all grounded responses
+- **FR-005**: System MUST refuse to answer when textbook content is insufficient, providing clear refusal message with suggested actions
 
-```json
-{
-  "error": {
-    "code": "RETRIEVAL_FAILED",
-    "message": "No relevant textbook content found",
-    "details": "Query: 'quantum mechanics basics'",
-    "timestamp": "2026-02-05T10:30:00Z",
-    "request_id": "req_abc123"
-  }
-}
-```
+#### Answering Modes
 
----
+- **FR-006**: System MUST support exactly three answering modes with strict boundary enforcement
+- **FR-007**: System MUST default to Book-Only mode (textbook-grounded only)
+- **FR-008**: System MUST enable Selected-Text-Only mode when user highlights text and asks a question
+- **FR-009**: System MUST enable General Knowledge mode only via explicit user opt-in
+- **FR-010**: System MUST display clear visual indicators for the active mode at all times
+- **FR-011**: System MUST show warning banner and disclaimer when General Knowledge mode is active
+- **FR-012**: System MUST persist mode selection within a reading session but reset to Book-Only between sessions
 
-## User Experience Requirements
+#### Text Selection & Context
 
-### Visual Integration
-- **Embedding Philosophy:** Chatbot feels embedded, not bolted on
-- **UI Integration:** Seamless with textbook design
-- **Persistent History:** Chat history within reading session
-- **Mobile Responsive:** Full functionality on mobile devices
+- **FR-013**: System MUST detect text selections within 100ms
+- **FR-014**: System MUST display contextual "Ask AI" menu near selected text within 200ms
+- **FR-015**: System MUST automatically pass selected text as context when chat is initiated
+- **FR-016**: System MUST allow users to modify or remove selected text before submitting question
+- **FR-017**: System MUST enforce selection size limits (50-4,000 tokens)
 
-### Visual Distinction
-- **Book-Grounded Answers:** Blue accent, book icon, citation badges
-- **General AI Answers:** Yellow/amber accent, warning icon, disclaimer banner
-- **Selected-Text Answers:** Purple accent, selection indicator
+#### Citations & Attribution
 
-### Interaction Patterns
+- **FR-018**: System MUST make all citations clickable, linking to source location in textbook
+- **FR-019**: System MUST display citation previews on hover (desktop) or tap (mobile)
+- **FR-020**: System MUST show full source text and metadata when citation is clicked
+- **FR-021**: System MUST validate citations before displaying to user (chunk exists, link resolves, content supports claim)
 
-**Required Features:**
-- Expandable citation previews (accordion or modal)
-- Smooth scroll to source location in textbook
-- Inline follow-up questions
-- Reload-free interactions (SPA behavior)
+#### User Interface Integration
 
-**Prohibited Patterns:**
-- Disruptive popups for primary interactions
-- Full-page reloads on question submission
-- Hidden loading states
-- Dead-end error states
+- **FR-022**: Chat interface MUST be embedded as a persistent, collapsible panel within textbook reading interface
+- **FR-023**: Chat interactions MUST NOT cause page reloads or interrupt reading flow
+- **FR-024**: Chat panel MUST visually integrate with existing textbook design system (colors, typography, spacing)
+- **FR-025**: Chat panel MUST be accessible via keyboard navigation
+- **FR-026**: Chat interface MUST be fully functional on mobile devices (iOS/Android) and tablets
 
-### Performance Benchmarks
-- Response time: < 3 seconds (95th percentile)
-- Time to first token: < 500ms
-- Citation rendering: < 100ms after answer completion
-- Scroll to source: < 200ms smooth animation
+#### Personalization
 
----
+- **FR-027**: System MUST support tone selection (Academic, Beginner-Friendly, Concise, Detailed, Neutral)
+- **FR-028**: Tone customization MUST NOT alter factual accuracy, citations, or confidence scores
+- **FR-029**: System MUST support predefined text actions (Explain, Summarize, Examples, Elaborate, Simplify, Compare)
+- **FR-030**: Text actions MUST respect active answering mode constraints
 
-## Security & Reliability
+#### Key Term Highlighting
 
-### Rate Limiting (Mandatory)
+- **FR-031**: System MUST detect domain-specific terms in textbook content and chat responses
+- **FR-032**: System MUST visually highlight detected terms with accessible styling
+- **FR-033**: System MUST provide term definitions via hover tooltip (desktop) or expandable card (mobile)
+- **FR-034**: Term highlighting MUST be toggleable via user settings
 
-| User Type | Requests/Hour |
-|-----------|--------------|
-| Anonymous | 10 |
-| Authenticated | 100 |
-| Premium | 1000 |
+#### Performance & Reliability
 
-**Implementation:**
-- Edge-based rate limiting (Upstash)
-- Graceful error messages with retry-after headers
-- Burst allowance: 2x base rate for 10 seconds
+- **FR-035**: System MUST respond to queries within 3 seconds (p95 latency target)
+- **FR-036**: System MUST provide streaming responses with first token appearing within 500ms
+- **FR-037**: System MUST handle at least 100 concurrent users without performance degradation
+- **FR-038**: System MUST gracefully degrade when dependencies fail (show clear error messages with recovery actions)
 
-### Secrets Management
-- No API keys in client-side code
-- Environment variable injection only
-- Secret rotation capability required
-- No logging of sensitive data
+#### Data & Privacy
 
-### Abuse Protection
-- Input validation (max query length: 500 characters)
-- Profanity and injection detection
-- CAPTCHA for suspicious patterns
-- IP-based temporary blocks
+- **FR-039**: System MUST persist conversation history within reading sessions for context continuity
+- **FR-040**: System MUST allow users to provide feedback on responses (thumbs up/down, star ratings, comments)
+- **FR-041**: System MUST NOT log user queries containing personally identifiable information
+- **FR-042**: System MUST comply with data retention policies (90 days for analytics)
 
-### Graceful Degradation
+### Key Entities *(feature involves data)*
 
-| Dependency | Fallback Strategy |
-|------------|------------------|
-| Vector DB | Keyword search |
-| LLM API | Queue + retry with backoff |
-| Postgres | Serve cached responses |
-| Embedding API | Use pre-computed embeddings |
+- **Conversation**: Represents a chat session between student and AI, containing mode settings, book context, and message history
+- **Message**: Individual query or response within a conversation, with role (user/assistant), content, citations, confidence score, and metadata
+- **Citation**: Reference to source content, including chunk identifier, chapter/section, confidence level, and preview text
+- **Text Selection**: User-highlighted passage with position metadata, used to constrain query context
+- **Key Term**: Domain-specific vocabulary item with definition, source reference, and usage examples
+- **Feedback**: User rating or comment linked to specific response, used for quality monitoring
 
-### Data Privacy
-- No persistent storage of queries without consent
-- Anonymized analytics only
-- GDPR-compliant data handling
-- User data deletion capability
+## Success Criteria *(mandatory)*
 
----
+### Measurable Outcomes
 
-## Observability & Monitoring
+#### Core Functionality
+- **SC-001**: Students can ask questions and receive cited, accurate answers within 3 seconds for 95% of queries
+- **SC-002**: Citation accuracy rate exceeds 95% (citations correctly support claims)
+- **SC-003**: Hallucination rate remains below 5% (unsupported claims in responses)
+- **SC-004**: System maintains 99.9% uptime (less than 43 minutes downtime per month)
 
-### Logging Requirements
+#### User Experience
+- **SC-005**: 90% of students successfully switch between answering modes without confusion
+- **SC-006**: Students can complete highlight-to-ask flow in under 10 seconds
+- **SC-007**: Chat interface loads and becomes interactive within 2 seconds on standard connections
+- **SC-008**: 95% of students find citations helpful for verifying information (measured via feedback)
 
-**Log Levels:**
-- **ERROR:** System failures, exceptions
-- **WARN:** Degraded performance, fallback activations
-- **INFO:** Request flow, mode switches
-- **DEBUG:** Retrieval details, chunking operations
+#### Learning Outcomes
+- **SC-009**: Students using the chatbot complete reading comprehension tasks 40% faster than without
+- **SC-010**: 80% of student questions are answered satisfactorily without needing human intervention
+- **SC-011**: Students rate response helpfulness at 4.0 or higher (5-point scale)
+- **SC-012**: 60% of students return to use the chatbot within 7 days
 
-**Structured Format:**
-```json
-{
-  "timestamp": "2026-02-05T10:30:00Z",
-  "level": "INFO",
-  "request_id": "req_abc123",
-  "user_id": "user_xyz789",
-  "mode": "book_only",
-  "query": "What caused WWI?",
-  "chunks_retrieved": 5,
-  "response_time_ms": 1234
-}
-```
+#### Quality & Accuracy
+- **SC-013**: Grounding rate exceeds 90% (responses fully grounded in source material)
+- **SC-014**: Retrieval relevance exceeds 80% (retrieved chunks relevant to query)
+- **SC-015**: Mode boundary violations occur in less than 1% of interactions
+- **SC-016**: Students can verify information sources in under 5 seconds via citation navigation
 
-### Metrics & Alerting
+## Assumptions
 
-**Required Metrics:**
-- Request latency (p50, p95, p99)
-- Error rate by type
-- Retrieval success rate
-- Citation accuracy (manual sampling)
-- User satisfaction scores
+1. **Content Availability**: Textbook content is available in machine-readable format (markdown, HTML, or structured text)
+2. **User Context**: Students are reading on devices with internet connectivity; offline mode is out of scope for v1
+3. **Authentication**: User authentication and session management are handled by existing platform infrastructure
+4. **Content Updates**: Textbook content updates are infrequent enough that re-processing/re-indexing doesn't need real-time automation
+5. **Language**: Primary language is English; internationalization is out of scope for v1
+6. **Accessibility**: Users have standard web browsing capabilities; specialized assistive technologies will be supported via web standards
 
-**Alert Thresholds:**
-- Error rate > 5% → Page on-call
-- Latency p95 > 5s → Warning
-- Vector DB unavailable → Critical
+## Non-Functional Constraints
 
-### Tracing (OpenTelemetry)
+1. **Serverless Architecture**: System must operate entirely on serverless infrastructure with no manually-started background processes
+2. **Cost**: Per-query cost must remain under $0.10 including LLM, vector search, and database operations
+3. **Data Privacy**: User queries must not be shared with third parties; compliance with GDPR required
+4. **Browser Compatibility**: Must support latest versions of Chrome, Firefox, Safari, Edge
+5. **Mobile Responsiveness**: Must be fully functional on devices with screen width as small as 320px (iPhone SE)
 
-**Trace Spans:**
-- Query processing
-- Embedding generation
-- Vector search
-- Reranking
-- LLM generation
-- Citation resolution
+## Out of Scope (v1)
 
----
+The following capabilities are explicitly excluded from this specification:
 
-## Success Criteria
-
-### Technical Validation
-- ✅ Zero runtime conflicts in production
-- ✅ No manual servers required
-- ✅ All answers traceable to sources
-- ✅ 99.9% uptime over 30 days
-- ✅ < 1% error rate under normal load
-- ✅ All API contracts validated
-
-### Quality Validation
-- ✅ 95%+ citation accuracy (sampled review)
-- ✅ < 5% hallucination rate
-- ✅ User satisfaction > 4.0/5.0
-- ✅ Mode boundaries never violated
-
-### Operational Validation
-- ✅ One-command deployment
-- ✅ Automated rollback capability
-- ✅ Zero-downtime updates
-- ✅ Self-service troubleshooting docs
-
-### Maintainability Validation
-- ✅ Linting and type checking pass
-- ✅ 80%+ test coverage
-- ✅ Architecture docs up-to-date
-- ✅ Runbook for common incidents
-
----
-
-## Testing Requirements
-
-### Test Coverage
-
-**Mandatory Test Types:**
-- Unit Tests: 80%+ coverage, all critical paths
-- Integration Tests: API contracts, RAG pipeline
-- End-to-End Tests: All three mode user journeys
-- Regression Tests: Citation accuracy, mode enforcement
-
-### Test Data
-- Representative textbook samples (3+ chapters)
-- Edge case queries (ambiguous, malformed, adversarial)
-- Known ground truth Q&A pairs (50+ minimum)
-
-### Continuous Testing
-- Pre-commit hooks for linting
-- CI pipeline for test execution
-- Nightly regression suite
-- Weekly performance benchmarking
-
----
+1. **Multi-Book Cross-Referencing**: Querying across multiple textbooks simultaneously
+2. **Collaborative Features**: Shared conversations, study groups, teacher/student annotations
+3. **Advanced Personalization**: Adaptive tone based on user history, difficulty levels, learning path recommendations
+4. **Multimedia Support**: Diagram explanations, video summaries, audio responses (text-to-speech)
+5. **Offline Mode**: Cached responses, local embeddings for mobile apps
+6. **Content Authoring**: Tools for authors to create or edit textbook content
+7. **Real-time Collaboration**: Multiple users editing or discussing simultaneously
 
 ## Dependencies
 
-**External Services:**
-- Qdrant Cloud (vector database)
-- Neon Postgres (relational database)
-- OpenAI API (embeddings + LLM)
-- Vercel/Fly.io (hosting)
-- Upstash (rate limiting)
+1. **External Services**:
+   - LLM API for text generation and embeddings
+   - Vector database for semantic search
+   - Relational database for conversation persistence
+   - CDN for static asset delivery
 
-**Internal Dependencies:**
-- Existing textbook content (Docusaurus platform)
-- Authentication system (if applicable)
-- Analytics tracking system
+2. **Platform Requirements**:
+   - Existing textbook reading interface must expose hooks for chat panel integration
+   - Design system tokens (colors, typography, spacing) must be accessible for chat UI
+   - User authentication state must be accessible to chatbot component
 
----
+3. **Content Requirements**:
+   - Textbook content must be structured with chapter/section hierarchy
+   - Optional: Pre-existing glossary of key terms for highlighting feature
 
-## Non-Goals
+## Risks & Mitigation
 
-**Explicitly Out of Scope:**
-- Real-time collaborative chat between students
-- Voice-based query input
-- Image or diagram-based question answering
-- Content generation or textbook editing
-- Integration with external knowledge bases beyond textbook
-- Multi-turn dialogue state management across sessions
-
----
-
-## Open Questions
-
-1. **Textbook Content Format:** Are all chapters already in Markdown? Any PDFs requiring extraction?
-2. **Authentication:** Should chatbot be accessible to anonymous users or require login?
-3. **Analytics:** What user interaction metrics are most valuable for instructors?
-4. **Localization:** Should chatbot support multiple languages beyond English?
-5. **Offline Mode:** Is offline functionality required for mobile apps?
-
----
-
-## Appendix: Glossary
-
-**Chunk:** Semantically coherent segment of textbook content (512-1024 tokens) with embeddings and metadata.
-
-**Grounding:** Verification that generated content is supported by retrieved source material.
-
-**Hallucination:** Generated content not supported by textbook or factually incorrect.
-
-**Mode Contamination:** Violation of mode boundaries (e.g., using general knowledge in Book-Only mode).
-
-**Reranking:** Secondary scoring of retrieved chunks using cross-encoder models.
-
-**Serverless:** Architecture where compute resources are managed by cloud provider with auto-scaling.
-
----
-
-**Spec Version:** 1.0.0
-**Next Review:** 2026-03-05
-**Owner:** AI Textbook Platform Team
-**Status:** Draft - Awaiting Approval
+| Risk | Impact | Likelihood | Mitigation |
+|------|--------|------------|------------|
+| LLM hallucinations despite grounding | High (accuracy) | Medium | Implement strict validation, citation requirements, and confidence scoring |
+| Vector search returns irrelevant results | High (UX) | Medium | Use reranking, metadata filtering, and similarity thresholds |
+| Poor performance at scale | Medium (UX) | Low | Load testing, caching strategies, auto-scaling |
+| Users confused by multiple modes | Medium (UX) | Medium | Clear visual indicators, helpful refusal messages, user education |
+| Citation links break due to content updates | Medium (trust) | Low | Batch validation, graceful fallbacks, update detection |
+| Privacy concerns with query logging | High (legal) | Low | Anonymization, clear privacy policy, opt-out mechanisms |

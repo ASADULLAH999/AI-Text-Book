@@ -3,13 +3,18 @@ Generate Embeddings Script
 Batch processes chunks and generates embeddings using OpenAI API.
 """
 
-import os
 import sys
 import json
 import asyncio
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional  # Fix: Add Optional
 import logging
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from api/.env
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -28,7 +33,7 @@ async def generate_embeddings_for_chunks(
     chunks_file: str,
     output_file: str,
     batch_size: int = 100,
-    cache_file: str = None,
+    cache_file: Optional[str] = None,  # Fix: Optional type
 ) -> List[Dict]:
     """
     Generate embeddings for all chunks.
@@ -160,7 +165,7 @@ def main():
     parser.add_argument(
         "--cache",
         type=str,
-        default="data/embeddings_cache.json",
+        default="../data/embeddings_cache.json",
         help="Cache file for resuming interrupted runs",
     )
 

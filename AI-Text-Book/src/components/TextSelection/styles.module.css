@@ -1,0 +1,130 @@
+/**
+ * TextSelection Component Styles
+ * T058/T059 [US2]
+ */
+
+/* Floating contextual menu */
+.selectionMenu {
+  display: flex;
+  align-items: center;
+  background: var(--ifm-color-emphasis-900, #1a1a2e);
+  border: 1px solid var(--ifm-color-emphasis-700, #333);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 0.12s ease-out;
+  user-select: none;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* "Ask AI about this" button */
+.askAIButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.askAIButton:hover {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  transform: scale(1.02);
+}
+
+.askAIButton:active {
+  transform: scale(0.98);
+}
+
+.askAIButton:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+}
+
+.askAIIcon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Invalid selection feedback */
+.invalidSelection {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  color: var(--ifm-color-warning, #f59e0b);
+  font-size: 12px;
+  cursor: default;
+}
+
+.invalidIcon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.invalidText {
+  white-space: nowrap;
+}
+
+/* Selection preview (shown in ChatInput) */
+.selectionPreview {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(99, 102, 241, 0.08);
+  border-left: 3px solid #6366f1;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.selectionPreviewLabel {
+  flex-shrink: 0;
+  font-weight: 600;
+  color: #6366f1;
+  white-space: nowrap;
+}
+
+.selectionPreviewText {
+  color: var(--ifm-color-emphasis-700, #666);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  font-style: italic;
+}
+
+.selectionPreviewClear {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--ifm-color-emphasis-500, #999);
+  cursor: pointer;
+  padding: 0 2px;
+  font-size: 14px;
+  line-height: 1;
+  transition: color 0.1s;
+}
+
+.selectionPreviewClear:hover {
+  color: var(--ifm-color-danger, #ef4444);
+}

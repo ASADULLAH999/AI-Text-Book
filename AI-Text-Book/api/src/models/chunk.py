@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class ChunkMetadata(BaseModel):
@@ -25,7 +25,7 @@ class ChunkMetadata(BaseModel):
         ..., ge=0, le=1024, description="Token count (512-1024 range)"
     )
     created_at: datetime = Field(
-        default_factory=datetime.utcnow,
+        default_factory=lambda: datetime.now(timezone.utc),
         description="Timestamp when chunk was created",
     )
 

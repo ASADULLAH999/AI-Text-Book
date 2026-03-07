@@ -4,7 +4,6 @@ Manages connections to Neon Postgres for metadata and analytics storage.
 """
 
 import os
-import asyncio
 from typing import Optional, List, Dict, Any
 import psycopg
 from psycopg import AsyncConnection
@@ -17,22 +16,24 @@ logger = logging.getLogger(__name__)
 class PostgresClientSingleton:
     """Singleton wrapper for Postgres client with async connection pooling."""
 
-    _connection: Optional[AsyncConnection] = None
-    _connection_string: str = ""
+    _connection: Optional[AsyncConnection[Any]] = None  # Fix: Use Any for row type
+    _connection_string: Optional[str] = None
 
     @classmethod
-    async def get_connection(cls) -> AsyncConnection:
+    async def get_connection(cls) -> AsyncConnection[Any]:
         """Get or create async Postgres connection."""
         if cls._connection is None or cls._connection.closed:
             try:
-                cls._connection_string = os.getenv("NEON_DATABASE_URL")
+                # Fix: Safe fallback
+                cls._connection_string = os.getenv("NEON_DATABASE_URL") or ""
 
                 if not cls._connection_string:
                     raise ValueError("NEON_DATABASE_URL must be set")
 
+                # Fix: type ignore for psycopg generic issue
                 cls._connection = await psycopg.AsyncConnection.connect(
                     conninfo=cls._connection_string,
-                    row_factory=dict_row,
+                    row_factory=dict_row,  # type: ignore[arg-type]
                     autocommit=False,
                 )
 
@@ -64,10 +65,11 @@ class PostgresClientSingleton:
         conn = await cls.get_connection()
         try:
             async with conn.cursor() as cur:
-                await cur.execute(query, params)
+                await cur.execute(query, params)  # type: ignore
                 if fetch:
                     results = await cur.fetchall()
-                    return results
+                    # Fix: Convert rows to Dict
+                    return [dict(row) for row in results]
                 else:
                     await conn.commit()
                     return None

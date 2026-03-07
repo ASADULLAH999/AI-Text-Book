@@ -1,5 +1,6 @@
 import {Config} from '@docusaurus/types';
 import * as preset from '@docusaurus/preset-classic';
+import type {Configuration} from 'webpack';
 
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics',
@@ -89,6 +90,51 @@ const config: Config = {
   ],
 
   plugins: [
+    // T103 — Custom webpack config for bundle size optimization
+    function webpackBundleOptimizer() {
+      return {
+        name: 'webpack-bundle-optimizer',
+        configureWebpack(_config: Configuration, isServer: boolean): any {
+          if (isServer) return {};
+          return {
+            optimization: {
+              splitChunks: {
+                chunks: 'all',
+                maxInitialRequests: 25,
+                minSize: 20000,
+                cacheGroups: {
+                  defaultVendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    reuseExistingChunk: true,
+                    name(module: {context?: string | null}) {
+                      const packageName = module.context?.match(
+                        /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                      )?.[1];
+                      return packageName
+                        ? `npm.${packageName.replace('@', '')}`
+                        : 'vendors';
+                    },
+                  },
+                  react: {
+                    test: /[\\/]node_modules[\\/](react|react-dom|react-router)[\\/]/,
+                    name: 'react-bundle',
+                    priority: 20,
+                    chunks: 'all',
+                  },
+                  docusaurus: {
+                    test: /[\\/]node_modules[\\/]@docusaurus[\\/]/,
+                    name: 'docusaurus-bundle',
+                    priority: 15,
+                    chunks: 'all',
+                  },
+                },
+              },
+            },
+          };
+        },
+      };
+    },
   ],
 
 
@@ -175,6 +221,18 @@ const config: Config = {
         name: 'apple-mobile-web-app-capable',
         content: 'yes',
       },
+    },
+    // T105 — Register service worker for offline error handling
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML: `
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').catch(function() {});
+          });
+        }
+      `,
     },
   ],
 };

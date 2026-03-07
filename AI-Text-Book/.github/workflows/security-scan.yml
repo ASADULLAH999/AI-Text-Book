@@ -1,0 +1,85 @@
+# T127 — Security scanning: Bandit (Python) + OWASP ZAP
+name: Security Scan
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 3 * * 1'  # Weekly Monday 03:00 UTC
+
+jobs:
+  bandit:
+    name: Bandit Python Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Bandit
+        run: pip install bandit[toml]
+
+      - name: Run Bandit
+        run: |
+          bandit -r api/src/ \
+            --severity-level medium \
+            --confidence-level medium \
+            --format json \
+            --output bandit-results.json \
+            --exclude api/src/__pycache__ \
+            || true
+
+      - name: Check for high severity issues
+        run: |
+          HIGH=$(python -c "
+          import json
+          with open('bandit-results.json') as f:
+              data = json.load(f)
+          high = [r for r in data.get('results', []) if r['issue_severity'] == 'HIGH']
+          print(len(high))
+          for r in high:
+              print(f\"  {r['filename']}:{r['line_number']} — {r['issue_text']}\")
+          ")
+          echo "High severity issues: $HIGH"
+          COUNT=$(echo "$HIGH" | head -1)
+          if [ "$COUNT" -gt "0" ]; then
+            echo "::error::Found $COUNT high-severity security issues"
+            exit 1
+          fi
+
+      - name: Upload Bandit results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-results
+          path: bandit-results.json
+          retention-days: 30
+
+  owasp-zap:
+    name: OWASP ZAP API Scan
+    runs-on: ubuntu-latest
+    # Only run on main branch (needs deployed API)
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: OWASP ZAP API Scan
+        uses: zaproxy/action-api-scan@v0.9.0
+        with:
+          target: 'https://ai-textbook-chatbot-api.vercel.app/api/v1/openapi.json'
+          format: openapi
+          fail_action: false  # Don't fail CI; review report manually
+          cmd_options: '-a'
+
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: report_json.json
+          retention-days: 30

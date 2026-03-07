@@ -1,0 +1,184 @@
+/**
+ * Citation Component Styles
+ */
+
+/* Citation Card */
+.citationCard {
+  position: relative;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.citationCard:hover {
+  background: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.citationHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.citationBadge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  background: var(--ifm-background-color);
+}
+
+.citationInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.citationSource {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-800);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.citationHeading {
+  font-size: 11px;
+  color: var(--ifm-color-emphasis-600);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.confidenceIndicator {
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ifm-color-emphasis-200);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.confidenceFill {
+  height: 100%;
+  transition: width 0.3s;
+}
+
+/* Citation Preview */
+.citationPreview {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 8px 8px 0 0;
+}
+
+.previewTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.previewIcon {
+  font-size: 14px;
+}
+
+.previewClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--ifm-color-emphasis-600);
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.previewClose:hover {
+  color: var(--ifm-color-emphasis-800);
+}
+
+.previewMeta {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.previewMetaItem {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.previewLabel {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+  min-width: 70px;
+}
+
+.previewContent {
+  padding: 10px 12px;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.previewText {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ifm-color-emphasis-700);
+  margin-top: 6px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.previewFooter {
+  padding: 8px 12px;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-color-emphasis-50);
+  border-radius: 0 0 8px 8px;
+}
+
+.previewHint {
+  font-size: 11px;
+  color: var(--ifm-color-emphasis-600);
+  font-style: italic;
+}

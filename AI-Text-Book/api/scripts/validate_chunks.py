@@ -3,11 +3,10 @@ Validate Chunks Script
 Verifies chunk quality: coverage, overlap correctness, metadata completeness.
 """
 
-import os
 import sys
 import json
 from pathlib import Path
-from typing import List, Dict, Set
+from typing import List, Dict, Optional  # Fix: Add Optional, remove unused Set
 from collections import defaultdict
 import logging
 
@@ -213,7 +212,7 @@ def validate_chunk_sizes(chunks: List[Dict], min_words: int = 10, max_words: int
 def generate_validation_report(
     chunks: List[Dict],
     metadata: List[Dict],
-    output_file: str = None,
+    output_file: Optional[str] = None,  # Fix: Optional type
 ) -> Dict:
     """
     Generate comprehensive validation report.

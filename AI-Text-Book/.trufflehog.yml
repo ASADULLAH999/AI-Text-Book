@@ -1,0 +1,45 @@
+# T110 — Trufflehog secret scanning configuration
+# Run: trufflehog git file://. --config .trufflehog.yml
+
+version: "3"
+
+detectors:
+  - name: openai
+  - name: cohere
+  - name: aws
+  - name: github
+  - name: generic-api-key
+  - name: private-key
+  - name: sendgrid
+  - name: stripe
+  - name: twilio
+
+allow_paths: []
+
+exclude_paths:
+  - "node_modules/"
+  - ".git/"
+  - "build/"
+  - ".next/"
+  - "dist/"
+  - "**/*.lock"
+  - "**/*.snap"
+  - "api/__pycache__/"
+  - "**/__pycache__/"
+  - "**/*.pyc"
+  - ".claude/"
+  - "history/"
+
+# Custom regex detectors for project-specific secrets
+custom_detectors:
+  - name: vercel-env-reference
+    keywords:
+      - "@qdrant_api_key"
+      - "@openai_api_key"
+      - "@cohere_api_key"
+      - "@neon_database_url"
+      - "@upstash_redis_token"
+    regex:
+      # Only alert on actual values, not references
+      - "sk-[A-Za-z0-9]{48}"
+      - "qdrant_[A-Za-z0-9]{32}"

@@ -3,17 +3,16 @@ Extract Markdown Files from Textbook
 Extracts all markdown files from TextBook/docs/ directory with metadata preservation.
 """
 
-import os
 import sys
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional, Any  # Fix: Add Optional, Any
 import json
 
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 
-def extract_markdown_files(textbook_dir: str, output_file: str = None) -> List[Dict[str, any]]:
+def extract_markdown_files(textbook_dir: str, output_file: Optional[str] = None) -> List[Dict[str, Any]]:  # Fix: Optional type, Any capitalized
     """
     Extract all markdown files from the textbook directory.
 
@@ -46,7 +45,7 @@ def extract_markdown_files(textbook_dir: str, output_file: str = None) -> List[D
 
         relative_path = file_path.relative_to(docs_path)
         file_metadata = {
-            "file_path": str(file_path),
+            "file_path": str(file_path.absolute()),  # Use absolute path
             "relative_path": str(relative_path),
             "file_name": file_path.name,
             "size_bytes": file_path.stat().st_size,

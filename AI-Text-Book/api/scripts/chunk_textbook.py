@@ -15,7 +15,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 
-def create_chunk_id(chapter: str, section: str, index: int, content_hash: str = None) -> str:
+def create_chunk_id(chapter: str, section: str, index: int, content_hash: str = "") -> str:  # Fix: Safe default
     """
     Generate a unique chunk ID.
 
@@ -159,6 +159,12 @@ def chunk_all_documents(
     for doc_metadata in all_metadata:
         # Read file content
         file_path = doc_metadata["file_path"]
+
+        # Handle relative paths - prepend current directory if path is not absolute
+        from pathlib import Path as PathLib
+        if not PathLib(file_path).is_absolute():
+            file_path = str(PathLib.cwd() / file_path)
+
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()

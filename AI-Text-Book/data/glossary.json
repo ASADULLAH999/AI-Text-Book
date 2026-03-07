@@ -1,0 +1,255 @@
+{
+  "version": "1.0",
+  "generated": "2026-02-28",
+  "description": "Domain-specific glossary for the AI Robotics Textbook (ROS2, Simulation, Isaac, Voice).",
+  "terms": [
+    {
+      "id": "ros2",
+      "term": "ROS2",
+      "aliases": ["ROS 2", "Robot Operating System 2"],
+      "definition": "Robot Operating System 2 — a flexible, open-source middleware framework for building robot software. ROS2 provides communication infrastructure (topics, services, actions), a build system (colcon/ament), and a rich ecosystem of reusable packages.",
+      "category": "framework",
+      "related": ["node", "topic", "service", "action", "DDS", "colcon"]
+    },
+    {
+      "id": "node",
+      "term": "Node",
+      "aliases": ["ROS node", "ROS2 node"],
+      "definition": "A node is a single-purpose executable in the ROS2 graph. Nodes communicate with each other by publishing or subscribing to topics, calling services, or using action servers. Each node is independently lifecycle-managed.",
+      "category": "ros2",
+      "related": ["topic", "service", "action", "executor", "lifecycle node"]
+    },
+    {
+      "id": "topic",
+      "term": "Topic",
+      "aliases": ["ROS topic", "pub-sub channel"],
+      "definition": "A named communication channel in ROS2 using the publish-subscribe pattern. Publishers send messages to a topic; subscribers receive them asynchronously. Topics are typed using message definitions (e.g., sensor_msgs/Image).",
+      "category": "ros2",
+      "related": ["publisher", "subscriber", "QoS", "message", "node"]
+    },
+    {
+      "id": "service",
+      "term": "Service",
+      "aliases": ["ROS service", "request-response"],
+      "definition": "A synchronous request-response communication pattern in ROS2. A service server exposes a named endpoint; a client sends a request and blocks until a response is returned. Services are defined by a .srv file specifying request and response types.",
+      "category": "ros2",
+      "related": ["node", "topic", "action", "client"]
+    },
+    {
+      "id": "action",
+      "term": "Action",
+      "aliases": ["ROS action", "ROS2 action"],
+      "definition": "A long-running task communication pattern in ROS2 built on top of services and topics. Actions provide goal submission, real-time feedback streaming, and cancellation support — suitable for tasks like navigation or arm trajectories.",
+      "category": "ros2",
+      "related": ["service", "topic", "goal", "feedback", "result"]
+    },
+    {
+      "id": "dds",
+      "term": "DDS",
+      "aliases": ["Data Distribution Service", "OMG DDS"],
+      "definition": "Data Distribution Service — the underlying middleware standard that powers ROS2 communication. DDS provides real-time, peer-to-peer, QoS-configurable data transport. Common implementations include Fast-DDS, CycloneDDS, and Connext.",
+      "category": "ros2",
+      "related": ["ROS2", "QoS", "topic", "rmw"]
+    },
+    {
+      "id": "qos",
+      "term": "QoS",
+      "aliases": ["Quality of Service", "QoS policy"],
+      "definition": "Quality of Service policies in ROS2 that govern how messages are delivered over DDS. Key policies include reliability (best-effort vs reliable), durability (volatile vs transient-local), and history (keep-last vs keep-all).",
+      "category": "ros2",
+      "related": ["DDS", "topic", "publisher", "subscriber"]
+    },
+    {
+      "id": "launch-file",
+      "term": "Launch File",
+      "aliases": ["launch file", "ros launch", "ROS2 launch"],
+      "definition": "A Python or XML script in ROS2 that starts, configures, and connects multiple nodes. Launch files can set parameters, remap topic names, conditionally include other launch files, and manage lifecycle events.",
+      "category": "ros2",
+      "related": ["node", "parameter", "colcon", "composable node"]
+    },
+    {
+      "id": "tf2",
+      "term": "TF2",
+      "aliases": ["transform library", "tf"],
+      "definition": "The transform library in ROS2 that tracks coordinate frame relationships over time. TF2 lets any node query the position and orientation of one frame relative to another (e.g., base_link to camera_optical_frame) at a given timestamp.",
+      "category": "ros2",
+      "related": ["URDF", "sensor fusion", "localization", "navigation"]
+    },
+    {
+      "id": "urdf",
+      "term": "URDF",
+      "aliases": ["Unified Robot Description Format", "robot description"],
+      "definition": "Unified Robot Description Format — an XML format that describes a robot's physical structure, joints, links, sensors, and visual meshes. URDF is consumed by simulation environments, TF2, and robot state publishers.",
+      "category": "robotics",
+      "related": ["TF2", "Gazebo", "Isaac Sim", "SDF", "xacro"]
+    },
+    {
+      "id": "gazebo",
+      "term": "Gazebo",
+      "aliases": ["Gazebo Classic", "gz sim", "Ignition Gazebo"],
+      "definition": "An open-source 3D robotics simulator that provides physics simulation, sensor simulation, and a plugin system. Gazebo integrates with ROS2 via ros_gz_bridge to allow virtual robot testing without physical hardware.",
+      "category": "simulation",
+      "related": ["SDF", "URDF", "ros_gz_bridge", "plugin", "Isaac Sim"]
+    },
+    {
+      "id": "isaac-sim",
+      "term": "Isaac Sim",
+      "aliases": ["NVIDIA Isaac Sim", "Isaac"],
+      "definition": "NVIDIA's high-fidelity robotics simulation platform built on Omniverse and USD. Isaac Sim provides physically accurate rendering, GPU-accelerated physics (PhysX), and native ROS2 bridge support for sim-to-real transfer.",
+      "category": "simulation",
+      "related": ["USD", "Omniverse", "ROS2", "Isaac Lab", "PhysX", "Gazebo"]
+    },
+    {
+      "id": "isaac-lab",
+      "term": "Isaac Lab",
+      "aliases": ["IsaacLab", "NVIDIA Isaac Lab"],
+      "definition": "A reinforcement learning and robot learning framework built on Isaac Sim. Isaac Lab provides parallel environment simulation, curriculum learning utilities, and direct integration with popular RL frameworks like RL-Games and RSL-RL.",
+      "category": "simulation",
+      "related": ["Isaac Sim", "reinforcement learning", "sim-to-real", "GPU simulation"]
+    },
+    {
+      "id": "slam",
+      "term": "SLAM",
+      "aliases": ["Simultaneous Localization and Mapping"],
+      "definition": "Simultaneous Localization and Mapping — the computational problem of constructing or updating a map of an unknown environment while simultaneously tracking the robot's location within it. Common ROS2 implementations include slam_toolbox and Cartographer.",
+      "category": "navigation",
+      "related": ["localization", "mapping", "lidar", "Nav2", "occupancy grid"]
+    },
+    {
+      "id": "nav2",
+      "term": "Nav2",
+      "aliases": ["Navigation2", "ROS2 navigation"],
+      "definition": "The Navigation2 stack for ROS2 — a framework for autonomous robot navigation. Nav2 provides global and local planners, costmap management, behavior trees, and lifecycle-managed navigation servers for mobile robots.",
+      "category": "navigation",
+      "related": ["SLAM", "costmap", "BehaviorTree.CPP", "DWB planner", "TF2"]
+    },
+    {
+      "id": "costmap",
+      "term": "Costmap",
+      "aliases": ["cost map", "occupancy costmap"],
+      "definition": "A 2D grid used in robot navigation where each cell stores a cost value representing obstacle proximity. Nav2 maintains two costmaps: a global costmap for path planning and a local costmap for real-time obstacle avoidance.",
+      "category": "navigation",
+      "related": ["Nav2", "occupancy grid", "inflation layer", "obstacle layer"]
+    },
+    {
+      "id": "behavior-tree",
+      "term": "Behavior Tree",
+      "aliases": ["BT", "BehaviorTree"],
+      "definition": "A hierarchical task decomposition model used to control robot decision-making. Nav2 uses BehaviorTree.CPP to define navigation logic as composable trees of action, condition, and control nodes, enabling modular and reactive behaviors.",
+      "category": "navigation",
+      "related": ["Nav2", "BehaviorTree.CPP", "action", "condition node"]
+    },
+    {
+      "id": "lidar",
+      "term": "LiDAR",
+      "aliases": ["lidar", "laser scanner", "2D lidar", "3D lidar"],
+      "definition": "Light Detection and Ranging — a sensor that emits laser pulses and measures return time to build a point cloud or 2D scan of the environment. In ROS2, LiDAR data is published as sensor_msgs/LaserScan (2D) or sensor_msgs/PointCloud2 (3D).",
+      "category": "sensors",
+      "related": ["SLAM", "point cloud", "sensor_msgs", "obstacle detection"]
+    },
+    {
+      "id": "imu",
+      "term": "IMU",
+      "aliases": ["Inertial Measurement Unit"],
+      "definition": "Inertial Measurement Unit — a sensor that measures linear acceleration and angular velocity (and optionally orientation via magnetometer). IMU data in ROS2 is published as sensor_msgs/Imu and is critical for odometry fusion and SLAM.",
+      "category": "sensors",
+      "related": ["sensor fusion", "EKF", "odometry", "TF2"]
+    },
+    {
+      "id": "ekf",
+      "term": "EKF",
+      "aliases": ["Extended Kalman Filter", "robot_localization"],
+      "definition": "Extended Kalman Filter — a nonlinear state estimator used for sensor fusion in robotics. The robot_localization ROS2 package provides an EKF node that fuses odometry, IMU, and GPS data to produce a smooth, accurate pose estimate.",
+      "category": "localization",
+      "related": ["IMU", "odometry", "localization", "SLAM", "sensor fusion"]
+    },
+    {
+      "id": "moveit2",
+      "term": "MoveIt2",
+      "aliases": ["MoveIt", "motion planning"],
+      "definition": "The primary motion planning framework for ROS2. MoveIt2 provides inverse kinematics, collision-aware path planning (OMPL, Pilz), execution interfaces, and a Python/C++ API for controlling robot arms and manipulators.",
+      "category": "manipulation",
+      "related": ["URDF", "SRDF", "IK", "OMPL", "joint trajectory", "collision object"]
+    },
+    {
+      "id": "ik",
+      "term": "IK",
+      "aliases": ["Inverse Kinematics"],
+      "definition": "Inverse Kinematics — the calculation of joint angles required to position a robot's end-effector at a desired pose. MoveIt2 supports multiple IK solvers including KDL, TRAC-IK, and BioIK for redundant and non-redundant manipulators.",
+      "category": "manipulation",
+      "related": ["MoveIt2", "forward kinematics", "end-effector", "joint trajectory"]
+    },
+    {
+      "id": "sim-to-real",
+      "term": "Sim-to-Real",
+      "aliases": ["sim2real", "domain transfer"],
+      "definition": "The process of transferring a robot policy or controller trained in simulation to a physical robot. Key challenges include the reality gap (physics mismatches), sensor noise differences, and contact dynamics. Techniques include domain randomization and system identification.",
+      "category": "simulation",
+      "related": ["Isaac Lab", "domain randomization", "reinforcement learning", "Isaac Sim"]
+    },
+    {
+      "id": "domain-randomization",
+      "term": "Domain Randomization",
+      "aliases": ["DR"],
+      "definition": "A sim-to-real transfer technique that randomizes physics parameters (friction, mass, lighting, texture) during training so the learned policy becomes robust to variations in the real world. Widely used with Isaac Lab and OpenAI research.",
+      "category": "simulation",
+      "related": ["sim-to-real", "Isaac Lab", "reinforcement learning"]
+    },
+    {
+      "id": "wakeword",
+      "term": "Wake Word",
+      "aliases": ["hotword", "keyword detection", "wakeword"],
+      "definition": "A specific word or phrase (e.g., 'Hey Robot') that activates a voice assistant from its idle state. Wake word detection typically runs on-device using lightweight models like Porcupine or Snowboy to minimize latency and power consumption.",
+      "category": "voice",
+      "related": ["ASR", "voice interface", "speech recognition", "NLP"]
+    },
+    {
+      "id": "asr",
+      "term": "ASR",
+      "aliases": ["Automatic Speech Recognition", "speech-to-text", "STT"],
+      "definition": "Automatic Speech Recognition — the technology that converts spoken audio into text. In robotics voice interfaces, ASR engines like Whisper or Vosk transcribe commands which are then processed by a natural language understanding pipeline.",
+      "category": "voice",
+      "related": ["wake word", "NLU", "NLP", "voice interface"]
+    },
+    {
+      "id": "tts",
+      "term": "TTS",
+      "aliases": ["Text-to-Speech", "speech synthesis"],
+      "definition": "Text-to-Speech — synthesis of natural-sounding spoken audio from text. TTS is used in robot voice interfaces to provide spoken feedback. Engines range from lightweight (pyttsx3, Festival) to neural (Coqui TTS, ElevenLabs).",
+      "category": "voice",
+      "related": ["ASR", "NLP", "voice interface"]
+    },
+    {
+      "id": "point-cloud",
+      "term": "Point Cloud",
+      "aliases": ["pointcloud", "3D point cloud", "PointCloud2"],
+      "definition": "A set of data points in 3D space, typically produced by 3D LiDAR or depth cameras. In ROS2, point clouds are published as sensor_msgs/PointCloud2 and processed by libraries like PCL or Open3D for segmentation, registration, and object detection.",
+      "category": "sensors",
+      "related": ["LiDAR", "depth camera", "PCL", "SLAM", "3D mapping"]
+    },
+    {
+      "id": "colcon",
+      "term": "colcon",
+      "aliases": ["colcon build", "collective construction"],
+      "definition": "The default build tool for ROS2 workspaces. colcon discovers packages via CMakeLists.txt or setup.py, resolves build order by dependency graph, and places build artifacts in install/ for sourcing. Replaces catkin from ROS1.",
+      "category": "tools",
+      "related": ["ament", "CMake", "ROS2", "workspace", "package"]
+    },
+    {
+      "id": "odometry",
+      "term": "Odometry",
+      "aliases": ["odom", "wheel odometry"],
+      "definition": "The use of motion sensor data (wheel encoders, IMU) to estimate a robot's position and orientation over time by integrating velocity measurements. Odometry drifts over time and is typically fused with absolute sensors (LiDAR, GPS) via EKF.",
+      "category": "navigation",
+      "related": ["EKF", "IMU", "localization", "TF2", "SLAM"]
+    },
+    {
+      "id": "reinforcement-learning",
+      "term": "Reinforcement Learning",
+      "aliases": ["RL", "deep RL"],
+      "definition": "A machine learning paradigm where an agent learns a policy by maximizing cumulative reward through environment interactions. In robotics, RL is applied to locomotion, manipulation, and navigation, often trained in Isaac Lab with GPU parallelism.",
+      "category": "learning",
+      "related": ["Isaac Lab", "sim-to-real", "policy", "reward function", "PPO"]
+    }
+  ]
+}

@@ -70,3 +70,10 @@ api/logs/
 api/tmp/
 api/data/
 *.json.cache
+
+# Large generated data files (embeddings are regenerated via scripts)
+data/chunks_with_embeddings.json
+data/embeddings_cache.json
+
+# Claude Code internal state
+.claude/

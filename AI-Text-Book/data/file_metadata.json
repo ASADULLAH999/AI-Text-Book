@@ -1,0 +1,7099 @@
+[
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\INFRASTRUCTURE_SETUP.md",
+    "frontmatter": {},
+    "headings": [
+      {
+        "level": 1,
+        "text": "Infrastructure Setup Guide",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Overview",
+        "line": 5
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites",
+        "line": 13
+      },
+      {
+        "level": 2,
+        "text": "1. Qdrant Cloud Setup (T004)",
+        "line": 23
+      },
+      {
+        "level": 3,
+        "text": "Create Qdrant Account",
+        "line": 25
+      },
+      {
+        "level": 3,
+        "text": "Create a Cluster",
+        "line": 31
+      },
+      {
+        "level": 3,
+        "text": "Get API Credentials",
+        "line": 42
+      },
+      {
+        "level": 3,
+        "text": "Configure Environment",
+        "line": 50
+      },
+      {
+        "level": 1,
+        "text": "Add to .env file",
+        "line": 53
+      },
+      {
+        "level": 3,
+        "text": "Provision Collection",
+        "line": 58
+      },
+      {
+        "level": 1,
+        "text": "Install dependencies",
+        "line": 61
+      },
+      {
+        "level": 1,
+        "text": "Create the collection",
+        "line": 64
+      },
+      {
+        "level": 1,
+        "text": "Verify collection",
+        "line": 67
+      },
+      {
+        "level": 3,
+        "text": "Troubleshooting Qdrant",
+        "line": 79
+      },
+      {
+        "level": 1,
+        "text": "Check existing collection",
+        "line": 88
+      },
+      {
+        "level": 1,
+        "text": "Delete and recreate if needed",
+        "line": 91
+      },
+      {
+        "level": 2,
+        "text": "2. Neon Serverless Postgres Setup (T005)",
+        "line": 98
+      },
+      {
+        "level": 3,
+        "text": "Create Neon Account",
+        "line": 100
+      },
+      {
+        "level": 3,
+        "text": "Create a Project",
+        "line": 106
+      },
+      {
+        "level": 3,
+        "text": "Get Connection String",
+        "line": 116
+      },
+      {
+        "level": 3,
+        "text": "Configure Environment",
+        "line": 126
+      },
+      {
+        "level": 1,
+        "text": "Add to .env file",
+        "line": 129
+      },
+      {
+        "level": 1,
+        "text": "OR configure individually",
+        "line": 132
+      },
+      {
+        "level": 3,
+        "text": "Initialize Database",
+        "line": 141
+      },
+      {
+        "level": 1,
+        "text": "Test connection",
+        "line": 144
+      },
+      {
+        "level": 1,
+        "text": "Run migrations to create tables",
+        "line": 147
+      },
+      {
+        "level": 1,
+        "text": "Verify database status",
+        "line": 150
+      },
+      {
+        "level": 3,
+        "text": "Enable Neon Features",
+        "line": 163
+      },
+      {
+        "level": 3,
+        "text": "Troubleshooting Neon",
+        "line": 174
+      },
+      {
+        "level": 2,
+        "text": "3. OpenAI API Setup",
+        "line": 190
+      },
+      {
+        "level": 3,
+        "text": "Get API Key",
+        "line": 192
+      },
+      {
+        "level": 3,
+        "text": "Configure Environment",
+        "line": 201
+      },
+      {
+        "level": 1,
+        "text": "Add to .env file",
+        "line": 204
+      },
+      {
+        "level": 3,
+        "text": "Set Usage Limits (Recommended)",
+        "line": 212
+      },
+      {
+        "level": 3,
+        "text": "Test API Access",
+        "line": 218
+      },
+      {
+        "level": 1,
+        "text": "Run a test embedding",
+        "line": 221
+      },
+      {
+        "level": 2,
+        "text": "4. GitHub Repository Setup (T008)",
+        "line": 242
+      },
+      {
+        "level": 3,
+        "text": "Initialize Repository",
+        "line": 244
+      },
+      {
+        "level": 1,
+        "text": "Initialize git",
+        "line": 249
+      },
+      {
+        "level": 1,
+        "text": "Add remote",
+        "line": 252
+      },
+      {
+        "level": 1,
+        "text": "Create main branch",
+        "line": 255
+      },
+      {
+        "level": 3,
+        "text": "Set Up Branch Protection Rules",
+        "line": 262
+      },
+      {
+        "level": 4,
+        "text": "Via GitHub Web UI:",
+        "line": 264
+      },
+      {
+        "level": 4,
+        "text": "Via GitHub CLI:",
+        "line": 289
+      },
+      {
+        "level": 1,
+        "text": "Install GitHub CLI if not already installed",
+        "line": 292
+      },
+      {
+        "level": 1,
+        "text": "macOS: brew install gh",
+        "line": 293
+      },
+      {
+        "level": 1,
+        "text": "Windows: winget install GitHub.cli",
+        "line": 294
+      },
+      {
+        "level": 1,
+        "text": "Linux: See https://cli.github.com/",
+        "line": 295
+      },
+      {
+        "level": 1,
+        "text": "Authenticate",
+        "line": 297
+      },
+      {
+        "level": 1,
+        "text": "Create branch protection rule",
+        "line": 300
+      },
+      {
+        "level": 3,
+        "text": "Create Development Branch",
+        "line": 315
+      },
+      {
+        "level": 1,
+        "text": "Create and switch to development branch",
+        "line": 318
+      },
+      {
+        "level": 1,
+        "text": "Set develop as default branch for PRs (optional)",
+        "line": 322
+      },
+      {
+        "level": 3,
+        "text": "Configure GitHub Actions (Optional)",
+        "line": 326
+      },
+      {
+        "level": 3,
+        "text": "Verify Branch Protection",
+        "line": 371
+      },
+      {
+        "level": 1,
+        "text": "Check branch protection status",
+        "line": 374
+      },
+      {
+        "level": 1,
+        "text": "Try to push directly to main (should fail)",
+        "line": 377
+      },
+      {
+        "level": 1,
+        "text": "Clean up test",
+        "line": 384
+      },
+      {
+        "level": 2,
+        "text": "5. Verify Complete Setup",
+        "line": 396
+      },
+      {
+        "level": 1,
+        "text": "Create verification script",
+        "line": 401
+      },
+      {
+        "level": 1,
+        "text": "Check Qdrant",
+        "line": 407
+      },
+      {
+        "level": 1,
+        "text": "Check Neon",
+        "line": 411
+      },
+      {
+        "level": 1,
+        "text": "Check OpenAI",
+        "line": 415
+      },
+      {
+        "level": 1,
+        "text": "Check GitHub",
+        "line": 419
+      },
+      {
+        "level": 2,
+        "text": "Cost Estimates (Free Tier Limits)",
+        "line": 432
+      },
+      {
+        "level": 3,
+        "text": "Qdrant Cloud (Free Tier)",
+        "line": 434
+      },
+      {
+        "level": 3,
+        "text": "Neon Serverless Postgres (Free Tier)",
+        "line": 440
+      },
+      {
+        "level": 3,
+        "text": "OpenAI API (Pay-as-you-go)",
+        "line": 446
+      },
+      {
+        "level": 3,
+        "text": "Total Infrastructure Cost",
+        "line": 454
+      },
+      {
+        "level": 2,
+        "text": "Security Checklist",
+        "line": 460
+      },
+      {
+        "level": 2,
+        "text": "Troubleshooting",
+        "line": 474
+      },
+      {
+        "level": 3,
+        "text": "Common Issues",
+        "line": 476
+      },
+      {
+        "level": 3,
+        "text": "Getting Help",
+        "line": 499
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 508
+      }
+    ],
+    "chapter": "Infrastructure Setup Guide",
+    "section": "Overview",
+    "page_number": null,
+    "heading_count": 74,
+    "word_count": 1614,
+    "relative_path": "INFRASTRUCTURE_SETUP.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\QUICKSTART_INFRASTRUCTURE.md",
+    "frontmatter": {},
+    "headings": [
+      {
+        "level": 1,
+        "text": "Quick Start: Infrastructure Setup (T004, T005, T008)",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites",
+        "line": 9
+      },
+      {
+        "level": 1,
+        "text": "Install required tools",
+        "line": 12
+      },
+      {
+        "level": 1,
+        "text": "macOS",
+        "line": 13
+      },
+      {
+        "level": 1,
+        "text": "Windows",
+        "line": 16
+      },
+      {
+        "level": 1,
+        "text": "Linux (Ubuntu/Debian)",
+        "line": 20
+      },
+      {
+        "level": 2,
+        "text": "Step 1: Install Python Dependencies (5 minutes)",
+        "line": 30
+      },
+      {
+        "level": 1,
+        "text": "Navigate to project root",
+        "line": 33
+      },
+      {
+        "level": 1,
+        "text": "Install Python dependencies",
+        "line": 36
+      },
+      {
+        "level": 1,
+        "text": "Verify installation",
+        "line": 39
+      },
+      {
+        "level": 2,
+        "text": "Step 2: Set Up Qdrant Cloud (T004) - 15 minutes",
+        "line": 45
+      },
+      {
+        "level": 3,
+        "text": "2.1 Create Qdrant Account",
+        "line": 47
+      },
+      {
+        "level": 3,
+        "text": "2.2 Create a Cluster",
+        "line": 53
+      },
+      {
+        "level": 3,
+        "text": "2.3 Get API Credentials",
+        "line": 62
+      },
+      {
+        "level": 3,
+        "text": "2.4 Configure and Provision",
+        "line": 69
+      },
+      {
+        "level": 1,
+        "text": "Create .env file from template",
+        "line": 72
+      },
+      {
+        "level": 1,
+        "text": "Edit .env and add Qdrant credentials",
+        "line": 75
+      },
+      {
+        "level": 1,
+        "text": "QDRANT_URL=https://your-cluster.qdrant.io:6333",
+        "line": 76
+      },
+      {
+        "level": 1,
+        "text": "QDRANT_API_KEY=your-api-key-here",
+        "line": 77
+      },
+      {
+        "level": 1,
+        "text": "Source environment",
+        "line": 79
+      },
+      {
+        "level": 1,
+        "text": "Create the collection",
+        "line": 82
+      },
+      {
+        "level": 1,
+        "text": "Verify",
+        "line": 85
+      },
+      {
+        "level": 2,
+        "text": "Step 3: Set Up Neon Postgres (T005) - 10 minutes",
+        "line": 101
+      },
+      {
+        "level": 3,
+        "text": "3.1 Create Neon Account",
+        "line": 103
+      },
+      {
+        "level": 3,
+        "text": "3.2 Create a Project",
+        "line": 109
+      },
+      {
+        "level": 3,
+        "text": "3.3 Get Connection String",
+        "line": 118
+      },
+      {
+        "level": 3,
+        "text": "3.4 Configure and Initialize",
+        "line": 128
+      },
+      {
+        "level": 1,
+        "text": "Add to .env file",
+        "line": 131
+      },
+      {
+        "level": 1,
+        "text": "DATABASE_URL=postgresql://user:pass@ep-xxxxx.region.aws.neon.tech/dbname?sslmode=require",
+        "line": 132
+      },
+      {
+        "level": 1,
+        "text": "Reload environment",
+        "line": 134
+      },
+      {
+        "level": 1,
+        "text": "Test connection",
+        "line": 137
+      },
+      {
+        "level": 1,
+        "text": "Initialize database schema",
+        "line": 140
+      },
+      {
+        "level": 1,
+        "text": "Verify",
+        "line": 143
+      },
+      {
+        "level": 2,
+        "text": "Step 4: Set Up GitHub Branch Protection (T008) - 10 minutes",
+        "line": 162
+      },
+      {
+        "level": 3,
+        "text": "4.1 Authenticate GitHub CLI",
+        "line": 164
+      },
+      {
+        "level": 1,
+        "text": "Login to GitHub",
+        "line": 167
+      },
+      {
+        "level": 1,
+        "text": "Follow prompts:",
+        "line": 170
+      },
+      {
+        "level": 1,
+        "text": "- Select: GitHub.com",
+        "line": 171
+      },
+      {
+        "level": 1,
+        "text": "- Select: HTTPS",
+        "line": 172
+      },
+      {
+        "level": 1,
+        "text": "- Authenticate: Login with browser",
+        "line": 173
+      },
+      {
+        "level": 1,
+        "text": "- Paste token or login in browser",
+        "line": 174
+      },
+      {
+        "level": 3,
+        "text": "4.2 Create CI Workflow (if needed)",
+        "line": 177
+      },
+      {
+        "level": 1,
+        "text": "The setup script will create this automatically",
+        "line": 180
+      },
+      {
+        "level": 1,
+        "text": "But you can verify it exists:",
+        "line": 181
+      },
+      {
+        "level": 3,
+        "text": "4.3 Apply Branch Protection",
+        "line": 185
+      },
+      {
+        "level": 1,
+        "text": "Run setup script (with dry-run first)",
+        "line": 188
+      },
+      {
+        "level": 1,
+        "text": "Review output, then apply for real",
+        "line": 191
+      },
+      {
+        "level": 1,
+        "text": "Verify",
+        "line": 194
+      },
+      {
+        "level": 3,
+        "text": "4.4 Test Protection",
+        "line": 211
+      },
+      {
+        "level": 1,
+        "text": "Try to push directly to main (should fail)",
+        "line": 214
+      },
+      {
+        "level": 1,
+        "text": "Expected: \u274c remote: error: GH006: Protected branch update failed",
+        "line": 221
+      },
+      {
+        "level": 1,
+        "text": "Clean up",
+        "line": 223
+      },
+      {
+        "level": 2,
+        "text": "Step 5: Verify All Infrastructure",
+        "line": 231
+      },
+      {
+        "level": 1,
+        "text": "Make sure all environment variables are loaded",
+        "line": 236
+      },
+      {
+        "level": 1,
+        "text": "Run verification",
+        "line": 239
+      },
+      {
+        "level": 2,
+        "text": "Troubleshooting",
+        "line": 254
+      },
+      {
+        "level": 3,
+        "text": "Qdrant Connection Issues",
+        "line": 256
+      },
+      {
+        "level": 1,
+        "text": "Test connection",
+        "line": 262
+      },
+      {
+        "level": 1,
+        "text": "Check API key format (should start with qdrant_)",
+        "line": 265
+      },
+      {
+        "level": 1,
+        "text": "Regenerate API key if needed",
+        "line": 268
+      },
+      {
+        "level": 3,
+        "text": "Neon Connection Issues",
+        "line": 271
+      },
+      {
+        "level": 1,
+        "text": "Ensure connection string has sslmode=require",
+        "line": 277
+      },
+      {
+        "level": 1,
+        "text": "Use pooled connection (not direct)",
+        "line": 280
+      },
+      {
+        "level": 1,
+        "text": "Pooled: ep-xxxxx.pooler.region.aws.neon.tech",
+        "line": 281
+      },
+      {
+        "level": 1,
+        "text": "Direct: ep-xxxxx.region.aws.neon.tech (don't use this)",
+        "line": 282
+      },
+      {
+        "level": 3,
+        "text": "GitHub CLI Issues",
+        "line": 285
+      },
+      {
+        "level": 1,
+        "text": "Install GitHub CLI",
+        "line": 291
+      },
+      {
+        "level": 1,
+        "text": "macOS: brew install gh",
+        "line": 292
+      },
+      {
+        "level": 1,
+        "text": "Windows: winget install GitHub.cli",
+        "line": 293
+      },
+      {
+        "level": 1,
+        "text": "Linux: See https://cli.github.com/",
+        "line": 294
+      },
+      {
+        "level": 1,
+        "text": "Verify installation",
+        "line": 296
+      },
+      {
+        "level": 2,
+        "text": "Cost Summary",
+        "line": 309
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 324
+      },
+      {
+        "level": 2,
+        "text": "Quick Reference",
+        "line": 347
+      },
+      {
+        "level": 3,
+        "text": "Useful Commands",
+        "line": 349
+      },
+      {
+        "level": 1,
+        "text": "Qdrant",
+        "line": 352
+      },
+      {
+        "level": 1,
+        "text": "Neon",
+        "line": 356
+      },
+      {
+        "level": 1,
+        "text": "GitHub",
+        "line": 360
+      },
+      {
+        "level": 1,
+        "text": "Full verification",
+        "line": 364
+      },
+      {
+        "level": 3,
+        "text": "Environment Variables",
+        "line": 368
+      },
+      {
+        "level": 1,
+        "text": "Quick check all variables",
+        "line": 371
+      },
+      {
+        "level": 3,
+        "text": "Documentation",
+        "line": 377
+      }
+    ],
+    "chapter": "Quick Start: Infrastructure Setup (T004, T005, T008)",
+    "section": "Prerequisites",
+    "page_number": null,
+    "heading_count": 82,
+    "word_count": 1057,
+    "relative_path": "QUICKSTART_INFRASTRUCTURE.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\best-practices.md",
+    "frontmatter": {
+      "sidebar_position": 6
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Best Practices & Professional Patterns",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "1. Node Design Principles",
+        "line": 7
+      },
+      {
+        "level": 3,
+        "text": "Single Responsibility Principle",
+        "line": 9
+      },
+      {
+        "level": 3,
+        "text": "Node Lifecycle Management",
+        "line": 29
+      },
+      {
+        "level": 2,
+        "text": "2. Communication Best Practices",
+        "line": 54
+      },
+      {
+        "level": 3,
+        "text": "QoS Profile Selection",
+        "line": 56
+      },
+      {
+        "level": 3,
+        "text": "Topic Naming Convention",
+        "line": 78
+      },
+      {
+        "level": 3,
+        "text": "Avoid Message Deadlocks",
+        "line": 97
+      },
+      {
+        "level": 1,
+        "text": "Publisher blocks until subscriber processes",
+        "line": 101
+      },
+      {
+        "level": 1,
+        "text": "If subscriber is slow, publisher waits",
+        "line": 102
+      },
+      {
+        "level": 1,
+        "text": "Use async publish",
+        "line": 107
+      },
+      {
+        "level": 1,
+        "text": "Publisher never blocks",
+        "line": 108
+      },
+      {
+        "level": 1,
+        "text": "Messages queued by middleware",
+        "line": 109
+      },
+      {
+        "level": 2,
+        "text": "3. Error Handling & Robustness",
+        "line": 115
+      },
+      {
+        "level": 3,
+        "text": "Wrap All Callbacks in Try-Except",
+        "line": 117
+      },
+      {
+        "level": 3,
+        "text": "Implement Timeouts",
+        "line": 132
+      },
+      {
+        "level": 1,
+        "text": "If no messages for 5 seconds, assume sensor failure",
+        "line": 135
+      },
+      {
+        "level": 3,
+        "text": "Validate Input Data",
+        "line": 146
+      },
+      {
+        "level": 2,
+        "text": "4. Debugging Techniques",
+        "line": 165
+      },
+      {
+        "level": 3,
+        "text": "Essential ROS 2 Debugging Commands",
+        "line": 167
+      },
+      {
+        "level": 1,
+        "text": "List active nodes",
+        "line": 170
+      },
+      {
+        "level": 1,
+        "text": "View node info",
+        "line": 173
+      },
+      {
+        "level": 1,
+        "text": "List topics",
+        "line": 176
+      },
+      {
+        "level": 1,
+        "text": "Listen to topic messages",
+        "line": 179
+      },
+      {
+        "level": 1,
+        "text": "Publish test message",
+        "line": 182
+      },
+      {
+        "level": 1,
+        "text": "List services",
+        "line": 186
+      },
+      {
+        "level": 1,
+        "text": "Call service",
+        "line": 189
+      },
+      {
+        "level": 1,
+        "text": "View parameters",
+        "line": 192
+      },
+      {
+        "level": 1,
+        "text": "Record messages",
+        "line": 197
+      },
+      {
+        "level": 1,
+        "text": "Replay messages",
+        "line": 200
+      },
+      {
+        "level": 1,
+        "text": "Graph visualization",
+        "line": 203
+      },
+      {
+        "level": 1,
+        "text": "Topic monitor GUI",
+        "line": 206
+      },
+      {
+        "level": 3,
+        "text": "Add Debug Logging",
+        "line": 210
+      },
+      {
+        "level": 1,
+        "text": "Different logging levels",
+        "line": 213
+      },
+      {
+        "level": 1,
+        "text": "View all debug messages",
+        "line": 223
+      },
+      {
+        "level": 3,
+        "text": "Use Ros 2 Introspection Tools",
+        "line": 228
+      },
+      {
+        "level": 1,
+        "text": "Install tools",
+        "line": 231
+      },
+      {
+        "level": 1,
+        "text": "Network monitoring",
+        "line": 234
+      },
+      {
+        "level": 1,
+        "text": "Message inspection",
+        "line": 237
+      },
+      {
+        "level": 1,
+        "text": "Service debugging",
+        "line": 240
+      },
+      {
+        "level": 2,
+        "text": "5. Performance Optimization",
+        "line": 246
+      },
+      {
+        "level": 3,
+        "text": "Measure Before Optimizing",
+        "line": 248
+      },
+      {
+        "level": 3,
+        "text": "Optimization Techniques",
+        "line": 276
+      },
+      {
+        "level": 1,
+        "text": "Bad: Publishing entire point cloud for simple distance",
+        "line": 280
+      },
+      {
+        "level": 1,
+        "text": "Good: Publish only the extracted distance value",
+        "line": 281
+      },
+      {
+        "level": 1,
+        "text": "Only compute complex value when needed",
+        "line": 298
+      },
+      {
+        "level": 2,
+        "text": "6. Testing Best Practices",
+        "line": 308
+      },
+      {
+        "level": 3,
+        "text": "Unit Test a ROS 2 Node",
+        "line": 310
+      },
+      {
+        "level": 1,
+        "text": "tests/test_my_node.py",
+        "line": 313
+      },
+      {
+        "level": 3,
+        "text": "Integration Testing",
+        "line": 353
+      },
+      {
+        "level": 1,
+        "text": "Launch all nodes",
+        "line": 356
+      },
+      {
+        "level": 1,
+        "text": "Record system behavior",
+        "line": 359
+      },
+      {
+        "level": 1,
+        "text": "Run tests",
+        "line": 362
+      },
+      {
+        "level": 1,
+        "text": "Analyze results",
+        "line": 365
+      },
+      {
+        "level": 2,
+        "text": "7. Common Mistakes to Avoid",
+        "line": 371
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 1: Blocking Operations in Callbacks",
+        "line": 373
+      },
+      {
+        "level": 1,
+        "text": "BAD: Blocks entire node",
+        "line": 376
+      },
+      {
+        "level": 1,
+        "text": "GOOD: Use threading or separate node",
+        "line": 381
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 2: Global Shared State",
+        "line": 386
+      },
+      {
+        "level": 1,
+        "text": "BAD: Global state, race conditions",
+        "line": 389
+      },
+      {
+        "level": 1,
+        "text": "GOOD: Instance variables, thread-safe",
+        "line": 395
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 3: Ignoring Message Ordering",
+        "line": 403
+      },
+      {
+        "level": 1,
+        "text": "BAD: Assumes messages arrive in order",
+        "line": 406
+      },
+      {
+        "level": 1,
+        "text": "GOOD: Handle out-of-order messages",
+        "line": 411
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 4: Not Handling ROS Shutdown",
+        "line": 418
+      },
+      {
+        "level": 1,
+        "text": "BAD: Resource leak",
+        "line": 421
+      },
+      {
+        "level": 1,
+        "text": "GOOD: Clean up resources",
+        "line": 426
+      },
+      {
+        "level": 2,
+        "text": "8. Production Checklist",
+        "line": 437
+      },
+      {
+        "level": 2,
+        "text": "Summary",
+        "line": 455
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "1. Node Design Principles",
+    "page_number": null,
+    "heading_count": 69,
+    "word_count": 1289,
+    "relative_path": "module-1-ros2\\best-practices.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\code-examples.md",
+    "frontmatter": {
+      "sidebar_position": 5
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Code Examples: Production-Quality ROS 2 Patterns",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Example 1: Publisher with Error Handling and Logging",
+        "line": 7
+      },
+      {
+        "level": 2,
+        "text": "Example 2: Subscriber with Callback and State Management",
+        "line": 123
+      },
+      {
+        "level": 2,
+        "text": "Example 3: Service Server for Computations",
+        "line": 235
+      },
+      {
+        "level": 1,
+        "text": "Define a custom service message (you'd normally use a .srv file)",
+        "line": 251
+      },
+      {
+        "level": 2,
+        "text": "Example 4: Parameter Server Integration",
+        "line": 376
+      },
+      {
+        "level": 1,
+        "text": "To test from command line:",
+        "line": 472
+      },
+      {
+        "level": 1,
+        "text": "ros2 param list",
+        "line": 473
+      },
+      {
+        "level": 1,
+        "text": "ros2 param get /configurable_robot max_speed",
+        "line": 474
+      },
+      {
+        "level": 1,
+        "text": "ros2 param set /configurable_robot max_speed 2.0",
+        "line": 475
+      },
+      {
+        "level": 2,
+        "text": "Example 5: Multi-Node Coordination",
+        "line": 486
+      },
+      {
+        "level": 2,
+        "text": "Using These Examples",
+        "line": 600
+      },
+      {
+        "level": 3,
+        "text": "To Run Example 1 (Battery Monitor):",
+        "line": 602
+      },
+      {
+        "level": 1,
+        "text": "In another terminal:",
+        "line": 605
+      },
+      {
+        "level": 3,
+        "text": "To Run Example 2 (Movement Tracker):",
+        "line": 609
+      },
+      {
+        "level": 1,
+        "text": "In another terminal:",
+        "line": 612
+      },
+      {
+        "level": 3,
+        "text": "To Run Example 3 (IK Service):",
+        "line": 616
+      },
+      {
+        "level": 1,
+        "text": "In another terminal, would call service (needs .srv file in production)",
+        "line": 619
+      },
+      {
+        "level": 3,
+        "text": "To Run Example 4 (Configurable Robot):",
+        "line": 622
+      },
+      {
+        "level": 1,
+        "text": "In another terminal:",
+        "line": 625
+      },
+      {
+        "level": 3,
+        "text": "To Run Example 5 (Coordinator):",
+        "line": 629
+      },
+      {
+        "level": 1,
+        "text": "Run coordinator",
+        "line": 631
+      },
+      {
+        "level": 1,
+        "text": "In other terminals, simulate sensors:",
+        "line": 633
+      },
+      {
+        "level": 2,
+        "text": "Production Patterns You See Here",
+        "line": 640
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "Example 1: Publisher with Error Handling and Logging",
+    "page_number": null,
+    "heading_count": 24,
+    "word_count": 1800,
+    "relative_path": "module-1-ros2\\code-examples.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\core-concepts.md",
+    "frontmatter": {
+      "sidebar_position": 3
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Core Concepts & Theory",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Five Pillars of ROS 2",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "1. Nodes: The Basic Building Block",
+        "line": 17
+      },
+      {
+        "level": 3,
+        "text": "What is a Node?",
+        "line": 19
+      },
+      {
+        "level": 3,
+        "text": "Characteristics of Nodes",
+        "line": 29
+      },
+      {
+        "level": 3,
+        "text": "Node Lifecycle",
+        "line": 39
+      },
+      {
+        "level": 3,
+        "text": "Example: Motor Controller Node",
+        "line": 69
+      },
+      {
+        "level": 1,
+        "text": "A simple ROS 2 node that controls a motor",
+        "line": 74
+      },
+      {
+        "level": 2,
+        "text": "2. Topics: Asynchronous Communication",
+        "line": 90
+      },
+      {
+        "level": 3,
+        "text": "What is a Topic?",
+        "line": 92
+      },
+      {
+        "level": 3,
+        "text": "Publisher-Subscriber Model",
+        "line": 101
+      },
+      {
+        "level": 3,
+        "text": "Topic Naming Convention",
+        "line": 116
+      },
+      {
+        "level": 3,
+        "text": "Message Types",
+        "line": 125
+      },
+      {
+        "level": 1,
+        "text": "Example: geometry_msgs.Twist (velocity commands)",
+        "line": 130
+      },
+      {
+        "level": 3,
+        "text": "QoS (Quality of Service)",
+        "line": 145
+      },
+      {
+        "level": 1,
+        "text": "Strict QoS for motor commands (must not be lost)",
+        "line": 158
+      },
+      {
+        "level": 3,
+        "text": "Topic Use Cases",
+        "line": 169
+      },
+      {
+        "level": 2,
+        "text": "3. Services: Synchronous Communication",
+        "line": 178
+      },
+      {
+        "level": 3,
+        "text": "What is a Service?",
+        "line": 180
+      },
+      {
+        "level": 3,
+        "text": "Service Call Model",
+        "line": 188
+      },
+      {
+        "level": 3,
+        "text": "Service Definition",
+        "line": 204
+      },
+      {
+        "level": 1,
+        "text": "Example: Image capture service",
+        "line": 209
+      },
+      {
+        "level": 1,
+        "text": "Request: Specify which camera (left, right, center)",
+        "line": 210
+      },
+      {
+        "level": 1,
+        "text": "Response: The captured image",
+        "line": 211
+      },
+      {
+        "level": 3,
+        "text": "When to Use Services vs Topics",
+        "line": 220
+      },
+      {
+        "level": 3,
+        "text": "Service Examples",
+        "line": 234
+      },
+      {
+        "level": 1,
+        "text": "Service 1: Get the current joint positions",
+        "line": 237
+      },
+      {
+        "level": 1,
+        "text": "Service 2: Compute path to target",
+        "line": 242
+      },
+      {
+        "level": 1,
+        "text": "Service 3: Enable/disable motor safety",
+        "line": 247
+      },
+      {
+        "level": 2,
+        "text": "4. Actions: Long-Running Tasks",
+        "line": 255
+      },
+      {
+        "level": 3,
+        "text": "What is an Action?",
+        "line": 257
+      },
+      {
+        "level": 3,
+        "text": "Action Structure",
+        "line": 268
+      },
+      {
+        "level": 3,
+        "text": "Action Use Cases",
+        "line": 290
+      },
+      {
+        "level": 3,
+        "text": "Action Example",
+        "line": 297
+      },
+      {
+        "level": 1,
+        "text": "Action: Navigate to position",
+        "line": 300
+      },
+      {
+        "level": 2,
+        "text": "5. Parameters: Configuration Values",
+        "line": 321
+      },
+      {
+        "level": 3,
+        "text": "What are Parameters?",
+        "line": 323
+      },
+      {
+        "level": 3,
+        "text": "Parameter Access",
+        "line": 334
+      },
+      {
+        "level": 1,
+        "text": "Set a parameter",
+        "line": 337
+      },
+      {
+        "level": 1,
+        "text": "Get a parameter",
+        "line": 341
+      },
+      {
+        "level": 1,
+        "text": "Listen for parameter changes",
+        "line": 344
+      },
+      {
+        "level": 3,
+        "text": "Parameter Organization",
+        "line": 348
+      },
+      {
+        "level": 2,
+        "text": "System Architecture Diagram",
+        "line": 365
+      },
+      {
+        "level": 2,
+        "text": "Communication Pattern Decision Tree",
+        "line": 398
+      },
+      {
+        "level": 2,
+        "text": "Building Blocks of a Complete System",
+        "line": 422
+      },
+      {
+        "level": 3,
+        "text": "Example: Robotic Arm Control System",
+        "line": 426
+      },
+      {
+        "level": 2,
+        "text": "The Middleware: DDS",
+        "line": 456
+      },
+      {
+        "level": 2,
+        "text": "Summary: The Five Concepts",
+        "line": 470
+      },
+      {
+        "level": 2,
+        "text": "Key Takeaways",
+        "line": 490
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "The Five Pillars of ROS 2",
+    "page_number": null,
+    "heading_count": 49,
+    "word_count": 1901,
+    "relative_path": "module-1-ros2\\core-concepts.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\hands-on-tutorial.md",
+    "frontmatter": {
+      "sidebar_position": 4
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Hands-On Tutorial: Build Your First ROS 2 System",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Goal",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites",
+        "line": 13
+      },
+      {
+        "level": 3,
+        "text": "Quick Install Check",
+        "line": 22
+      },
+      {
+        "level": 1,
+        "text": "Verify ROS 2 is installed",
+        "line": 25
+      },
+      {
+        "level": 1,
+        "text": "You should see: ROS 2 Jazzy Jalisco (version X.X.X)",
+        "line": 28
+      },
+      {
+        "level": 2,
+        "text": "Step 1: Create a ROS 2 Workspace",
+        "line": 31
+      },
+      {
+        "level": 1,
+        "text": "Create workspace directory",
+        "line": 36
+      },
+      {
+        "level": 1,
+        "text": "Create a ROS 2 package",
+        "line": 40
+      },
+      {
+        "level": 1,
+        "text": "Navigate into package",
+        "line": 43
+      },
+      {
+        "level": 3,
+        "text": "Workspace Structure",
+        "line": 47
+      },
+      {
+        "level": 2,
+        "text": "Step 2: Create the Sensor Node",
+        "line": 70
+      },
+      {
+        "level": 2,
+        "text": "Step 3: Create the Processor Node",
+        "line": 146
+      },
+      {
+        "level": 2,
+        "text": "Step 4: Create the Command Service",
+        "line": 231
+      },
+      {
+        "level": 2,
+        "text": "Step 5: Update setup.py",
+        "line": 299
+      },
+      {
+        "level": 2,
+        "text": "Step 6: Build Your Workspace",
+        "line": 332
+      },
+      {
+        "level": 1,
+        "text": "Navigate to workspace root",
+        "line": 335
+      },
+      {
+        "level": 1,
+        "text": "Build the package",
+        "line": 338
+      },
+      {
+        "level": 1,
+        "text": "Source the installation",
+        "line": 341
+      },
+      {
+        "level": 1,
+        "text": "Verify everything compiled",
+        "line": 344
+      },
+      {
+        "level": 2,
+        "text": "Step 7: Run the System",
+        "line": 348
+      },
+      {
+        "level": 3,
+        "text": "Expected Output",
+        "line": 372
+      },
+      {
+        "level": 2,
+        "text": "Step 8: Interact with the System",
+        "line": 395
+      },
+      {
+        "level": 1,
+        "text": "Call the reset service",
+        "line": 403
+      },
+      {
+        "level": 1,
+        "text": "View active nodes",
+        "line": 406
+      },
+      {
+        "level": 1,
+        "text": "View active topics",
+        "line": 409
+      },
+      {
+        "level": 1,
+        "text": "Listen to temperature messages",
+        "line": 412
+      },
+      {
+        "level": 1,
+        "text": "View services",
+        "line": 415
+      },
+      {
+        "level": 2,
+        "text": "Step 9: Visualize with RQT",
+        "line": 419
+      },
+      {
+        "level": 1,
+        "text": "View the system graph",
+        "line": 424
+      },
+      {
+        "level": 1,
+        "text": "View message data",
+        "line": 427
+      },
+      {
+        "level": 1,
+        "text": "View node information",
+        "line": 430
+      },
+      {
+        "level": 2,
+        "text": "What You've Built",
+        "line": 436
+      },
+      {
+        "level": 2,
+        "text": "Common Errors and Solutions",
+        "line": 449
+      },
+      {
+        "level": 3,
+        "text": "Error: \"Cannot find module 'robot_system'\"",
+        "line": 451
+      },
+      {
+        "level": 3,
+        "text": "Error: \"Node does not exist\"",
+        "line": 457
+      },
+      {
+        "level": 3,
+        "text": "Error: \"Topic not found\"",
+        "line": 464
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 472
+      },
+      {
+        "level": 2,
+        "text": "Summary",
+        "line": 488
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "Goal",
+    "page_number": null,
+    "heading_count": 39,
+    "word_count": 1320,
+    "relative_path": "module-1-ros2\\hands-on-tutorial.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\index.md",
+    "frontmatter": {
+      "sidebar_position": 1
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 1: ROS 2 Fundamentals",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Course Overview",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "What You'll Learn",
+        "line": 9
+      },
+      {
+        "level": 3,
+        "text": "Learning Outcomes",
+        "line": 21
+      },
+      {
+        "level": 4,
+        "text": "Knowledge Outcomes (Know)",
+        "line": 25
+      },
+      {
+        "level": 4,
+        "text": "Skill Outcomes (Do)",
+        "line": 32
+      },
+      {
+        "level": 4,
+        "text": "Application Outcomes (Apply)",
+        "line": 40
+      },
+      {
+        "level": 3,
+        "text": "Module Structure",
+        "line": 47
+      },
+      {
+        "level": 3,
+        "text": "Prerequisites",
+        "line": 60
+      },
+      {
+        "level": 3,
+        "text": "Time Commitment",
+        "line": 69
+      },
+      {
+        "level": 3,
+        "text": "How to Use This Module",
+        "line": 77
+      },
+      {
+        "level": 3,
+        "text": "What Makes This Different",
+        "line": 96
+      },
+      {
+        "level": 3,
+        "text": "Getting Help",
+        "line": 106
+      },
+      {
+        "level": 3,
+        "text": "Next Steps After This Module",
+        "line": 115
+      },
+      {
+        "level": 2,
+        "text": "Quick Reference",
+        "line": 126
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "Course Overview",
+    "page_number": null,
+    "heading_count": 15,
+    "word_count": 1012,
+    "relative_path": "module-1-ros2\\index.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\introduction.md",
+    "frontmatter": {
+      "sidebar_position": 2
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Introduction: Why ROS 2 Matters Today",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Robotics Revolution",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "The Problem ROS 2 Solves",
+        "line": 17
+      },
+      {
+        "level": 2,
+        "text": "Enter ROS (2005)",
+        "line": 35
+      },
+      {
+        "level": 2,
+        "text": "The ROS 2 Transition (2016-Present)",
+        "line": 55
+      },
+      {
+        "level": 3,
+        "text": "From ROS 1 Architecture to ROS 2",
+        "line": 68
+      },
+      {
+        "level": 2,
+        "text": "Why ROS 2 for Physical AI?",
+        "line": 84
+      },
+      {
+        "level": 3,
+        "text": "1. Distributed Intelligence",
+        "line": 88
+      },
+      {
+        "level": 3,
+        "text": "2. Real-Time Responsiveness",
+        "line": 92
+      },
+      {
+        "level": 3,
+        "text": "3. Scalability",
+        "line": 96
+      },
+      {
+        "level": 3,
+        "text": "4. Security",
+        "line": 100
+      },
+      {
+        "level": 3,
+        "text": "5. Interoperability",
+        "line": 104
+      },
+      {
+        "level": 3,
+        "text": "6. Developer Ecosystem",
+        "line": 108
+      },
+      {
+        "level": 2,
+        "text": "ROS 2 Today (2026)",
+        "line": 112
+      },
+      {
+        "level": 2,
+        "text": "Key Differences from ROS 1",
+        "line": 123
+      },
+      {
+        "level": 2,
+        "text": "How ROS 2 Works (Quick Overview)",
+        "line": 138
+      },
+      {
+        "level": 2,
+        "text": "Why Learn ROS 2 Now?",
+        "line": 165
+      },
+      {
+        "level": 3,
+        "text": "For Roboticists",
+        "line": 167
+      },
+      {
+        "level": 3,
+        "text": "For Physical AI Engineers",
+        "line": 173
+      },
+      {
+        "level": 3,
+        "text": "For Students",
+        "line": 179
+      },
+      {
+        "level": 2,
+        "text": "What This Module Covers",
+        "line": 185
+      },
+      {
+        "level": 2,
+        "text": "A Note on Timing",
+        "line": 198
+      },
+      {
+        "level": 2,
+        "text": "Looking Ahead",
+        "line": 210
+      },
+      {
+        "level": 2,
+        "text": "Summary",
+        "line": 222
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "The Robotics Revolution",
+    "page_number": null,
+    "heading_count": 24,
+    "word_count": 1528,
+    "relative_path": "module-1-ros2\\introduction.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\quiz.md",
+    "frontmatter": {
+      "sidebar_position": 8
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 1 Quiz: Test Your Understanding",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Quiz Instructions",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "Question 1: ROS 2 Architecture (Multiple Choice)",
+        "line": 13
+      },
+      {
+        "level": 2,
+        "text": "Question 2: Topic vs Service (Multiple Choice)",
+        "line": 28
+      },
+      {
+        "level": 2,
+        "text": "Question 3: Publisher-Subscriber Pattern (True/False)",
+        "line": 43
+      },
+      {
+        "level": 2,
+        "text": "Question 4: QoS Profiles (Multiple Choice)",
+        "line": 53
+      },
+      {
+        "level": 2,
+        "text": "Question 5: Parameters (True/False)",
+        "line": 68
+      },
+      {
+        "level": 2,
+        "text": "Question 6: Actions vs Services (Multiple Choice)",
+        "line": 78
+      },
+      {
+        "level": 2,
+        "text": "Question 7: Middleware (Multiple Choice)",
+        "line": 93
+      },
+      {
+        "level": 2,
+        "text": "Question 8: Node Independence (True/False)",
+        "line": 108
+      },
+      {
+        "level": 2,
+        "text": "Question 9: Message Types (Multiple Choice)",
+        "line": 118
+      },
+      {
+        "level": 2,
+        "text": "Question 10: System Design (Multiple Choice)",
+        "line": 133
+      },
+      {
+        "level": 2,
+        "text": "Answer Key & Scoring",
+        "line": 148
+      },
+      {
+        "level": 2,
+        "text": "Feedback for Each Score Range",
+        "line": 171
+      },
+      {
+        "level": 3,
+        "text": "If you scored 9-10 \u2b50\u2b50\u2b50",
+        "line": 173
+      },
+      {
+        "level": 3,
+        "text": "If you scored 7-8 \u2b50\u2b50",
+        "line": 179
+      },
+      {
+        "level": 3,
+        "text": "If you scored 6 \u2b50",
+        "line": 186
+      },
+      {
+        "level": 3,
+        "text": "If you scored less than 6 \ud83d\udd04",
+        "line": 193
+      },
+      {
+        "level": 2,
+        "text": "Common Quiz Mistakes",
+        "line": 203
+      },
+      {
+        "level": 3,
+        "text": "Misconception 1: \"ROS 2 has a central Master\"",
+        "line": 205
+      },
+      {
+        "level": 3,
+        "text": "Misconception 2: \"Topics are reliable by default\"",
+        "line": 208
+      },
+      {
+        "level": 3,
+        "text": "Misconception 3: \"All nodes must run on the same computer\"",
+        "line": 211
+      },
+      {
+        "level": 3,
+        "text": "Misconception 4: \"Services are always faster than topics\"",
+        "line": 214
+      },
+      {
+        "level": 2,
+        "text": "Study Tips for Next Time",
+        "line": 219
+      },
+      {
+        "level": 2,
+        "text": "After the Quiz",
+        "line": 230
+      },
+      {
+        "level": 3,
+        "text": "If You Passed (7+/10)",
+        "line": 232
+      },
+      {
+        "level": 3,
+        "text": "If You Didn't Pass (6/10)",
+        "line": 238
+      },
+      {
+        "level": 2,
+        "text": "Certificate & Badge",
+        "line": 246
+      },
+      {
+        "level": 2,
+        "text": "Additional Practice",
+        "line": 256
+      },
+      {
+        "level": 2,
+        "text": "Ready to Continue?",
+        "line": 277
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "Quiz Instructions",
+    "page_number": null,
+    "heading_count": 30,
+    "word_count": 1679,
+    "relative_path": "module-1-ros2\\quiz.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-1-ros2\\summary.md",
+    "frontmatter": {
+      "sidebar_position": 7
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Summary & Key Takeaways",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Module 1 Complete: You Now Understand ROS 2!",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "The Five Core Concepts",
+        "line": 9
+      },
+      {
+        "level": 3,
+        "text": "1. **Nodes** - Independent Processes",
+        "line": 11
+      },
+      {
+        "level": 3,
+        "text": "2. **Topics** - Asynchronous Pub-Sub Streams",
+        "line": 17
+      },
+      {
+        "level": 3,
+        "text": "3. **Services** - Synchronous Request-Response",
+        "line": 23
+      },
+      {
+        "level": 3,
+        "text": "4. **Actions** - Long-Running Tasks with Feedback",
+        "line": 29
+      },
+      {
+        "level": 3,
+        "text": "5. **Parameters** - Configuration Values",
+        "line": 35
+      },
+      {
+        "level": 2,
+        "text": "Architecture Overview",
+        "line": 43
+      },
+      {
+        "level": 2,
+        "text": "When to Use What",
+        "line": 59
+      },
+      {
+        "level": 2,
+        "text": "Quick Reference Commands",
+        "line": 70
+      },
+      {
+        "level": 3,
+        "text": "Node Management",
+        "line": 72
+      },
+      {
+        "level": 3,
+        "text": "Topic Operations",
+        "line": 78
+      },
+      {
+        "level": 3,
+        "text": "Services",
+        "line": 86
+      },
+      {
+        "level": 3,
+        "text": "Parameters",
+        "line": 92
+      },
+      {
+        "level": 3,
+        "text": "Debugging",
+        "line": 99
+      },
+      {
+        "level": 2,
+        "text": "Code Templates You Now Know",
+        "line": 108
+      },
+      {
+        "level": 3,
+        "text": "Simple Publisher",
+        "line": 110
+      },
+      {
+        "level": 3,
+        "text": "Simple Subscriber",
+        "line": 116
+      },
+      {
+        "level": 3,
+        "text": "Service Server",
+        "line": 121
+      },
+      {
+        "level": 3,
+        "text": "Parameter Usage",
+        "line": 126
+      },
+      {
+        "level": 2,
+        "text": "Common Patterns in Production",
+        "line": 134
+      },
+      {
+        "level": 3,
+        "text": "Error Handling",
+        "line": 136
+      },
+      {
+        "level": 3,
+        "text": "Graceful Shutdown",
+        "line": 144
+      },
+      {
+        "level": 3,
+        "text": "QoS for Reliability",
+        "line": 155
+      },
+      {
+        "level": 1,
+        "text": "Critical data: RELIABLE",
+        "line": 157
+      },
+      {
+        "level": 1,
+        "text": "Sensor streams: BEST_EFFORT",
+        "line": 158
+      },
+      {
+        "level": 2,
+        "text": "What You Can Now Do",
+        "line": 163
+      },
+      {
+        "level": 2,
+        "text": "Common Misconceptions Clarified",
+        "line": 176
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"ROS 2 is like a programming language\"",
+        "line": 178
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"Topics are reliable like messages queues\"",
+        "line": 181
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"I should use services for everything\"",
+        "line": 184
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"All my logic should be in one big node\"",
+        "line": 187
+      },
+      {
+        "level": 2,
+        "text": "Troubleshooting Guide",
+        "line": 192
+      },
+      {
+        "level": 3,
+        "text": "Node won't run",
+        "line": 194
+      },
+      {
+        "level": 3,
+        "text": "Topics not connecting",
+        "line": 199
+      },
+      {
+        "level": 3,
+        "text": "Service calls fail",
+        "line": 204
+      },
+      {
+        "level": 3,
+        "text": "Performance issues",
+        "line": 209
+      },
+      {
+        "level": 2,
+        "text": "Next Steps After This Module",
+        "line": 216
+      },
+      {
+        "level": 3,
+        "text": "For Learning",
+        "line": 218
+      },
+      {
+        "level": 3,
+        "text": "For Building Real Systems",
+        "line": 227
+      },
+      {
+        "level": 3,
+        "text": "For Career Development",
+        "line": 237
+      },
+      {
+        "level": 2,
+        "text": "Resources for Continued Learning",
+        "line": 245
+      },
+      {
+        "level": 3,
+        "text": "Official Documentation",
+        "line": 247
+      },
+      {
+        "level": 3,
+        "text": "Community",
+        "line": 252
+      },
+      {
+        "level": 3,
+        "text": "Books & Courses",
+        "line": 257
+      },
+      {
+        "level": 2,
+        "text": "Module 1 Competency Checklist",
+        "line": 264
+      },
+      {
+        "level": 3,
+        "text": "Knowledge (Know)",
+        "line": 268
+      },
+      {
+        "level": 3,
+        "text": "Skills (Do)",
+        "line": 274
+      },
+      {
+        "level": 3,
+        "text": "Application (Apply)",
+        "line": 282
+      },
+      {
+        "level": 2,
+        "text": "Key Insights to Remember",
+        "line": 292
+      },
+      {
+        "level": 2,
+        "text": "One More Thing: The Philosophy of ROS 2",
+        "line": 302
+      },
+      {
+        "level": 2,
+        "text": "Module Statistics",
+        "line": 320
+      }
+    ],
+    "chapter": "Module 1 Ros2",
+    "section": "Module 1 Complete: You Now Understand ROS 2!",
+    "page_number": null,
+    "heading_count": 53,
+    "word_count": 1341,
+    "relative_path": "module-1-ros2\\summary.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\best-practices.md",
+    "frontmatter": {
+      "sidebar_position": 14
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Best Practices & Professional Patterns for Simulation",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "1. Physics Tuning for Sim-to-Real Transfer",
+        "line": 7
+      },
+      {
+        "level": 3,
+        "text": "Physics Parameters from Hardware Datasheets",
+        "line": 11
+      },
+      {
+        "level": 1,
+        "text": "Load robot parameters from YAML (not hardcoded)",
+        "line": 16
+      },
+      {
+        "level": 1,
+        "text": "config/robot_params.yaml",
+        "line": 17
+      },
+      {
+        "level": 3,
+        "text": "Joint Friction Modeling",
+        "line": 30
+      },
+      {
+        "level": 3,
+        "text": "Contact Properties",
+        "line": 51
+      },
+      {
+        "level": 3,
+        "text": "Domain Randomization",
+        "line": 81
+      },
+      {
+        "level": 2,
+        "text": "2. Realistic Sensor Simulation",
+        "line": 114
+      },
+      {
+        "level": 3,
+        "text": "Camera Simulation with Noise",
+        "line": 118
+      },
+      {
+        "level": 3,
+        "text": "LiDAR Noise Modeling",
+        "line": 155
+      },
+      {
+        "level": 3,
+        "text": "IMU Simulation with Bias & Drift",
+        "line": 197
+      },
+      {
+        "level": 2,
+        "text": "3. Performance Optimization",
+        "line": 258
+      },
+      {
+        "level": 3,
+        "text": "Physics Step Size Tuning",
+        "line": 262
+      },
+      {
+        "level": 1,
+        "text": "config/gazebo_physics.yaml",
+        "line": 265
+      },
+      {
+        "level": 3,
+        "text": "Collision Mesh Simplification",
+        "line": 280
+      },
+      {
+        "level": 1,
+        "text": "Good practice: Simple collision, detailed visual",
+        "line": 283
+      },
+      {
+        "level": 3,
+        "text": "Sensor Update Rate Management",
+        "line": 301
+      },
+      {
+        "level": 1,
+        "text": "config/sensor_rates.yaml",
+        "line": 306
+      },
+      {
+        "level": 3,
+        "text": "GPU Acceleration",
+        "line": 322
+      },
+      {
+        "level": 1,
+        "text": "Enable GPU physics if available",
+        "line": 325
+      },
+      {
+        "level": 1,
+        "text": "Run with optimized settings",
+        "line": 329
+      },
+      {
+        "level": 2,
+        "text": "4. Debugging Simulation Problems",
+        "line": 335
+      },
+      {
+        "level": 3,
+        "text": "Physics Instability Detection",
+        "line": 337
+      },
+      {
+        "level": 1,
+        "text": "Monitor for instability",
+        "line": 342
+      },
+      {
+        "level": 3,
+        "text": "Sensor Data Validation",
+        "line": 366
+      },
+      {
+        "level": 3,
+        "text": "Visual Inspection Tools",
+        "line": 393
+      },
+      {
+        "level": 1,
+        "text": "Open Gazebo with visualization",
+        "line": 396
+      },
+      {
+        "level": 1,
+        "text": "Monitor topics in separate terminal",
+        "line": 399
+      },
+      {
+        "level": 1,
+        "text": "Use rqt for visualization",
+        "line": 402
+      },
+      {
+        "level": 2,
+        "text": "5. Testing Strategies for Simulation",
+        "line": 409
+      },
+      {
+        "level": 3,
+        "text": "Unit Test a Simulation Component",
+        "line": 411
+      },
+      {
+        "level": 3,
+        "text": "Integration Test: Simulation + Algorithm",
+        "line": 454
+      },
+      {
+        "level": 1,
+        "text": "test_sim_integration.sh",
+        "line": 458
+      },
+      {
+        "level": 1,
+        "text": "Start Gazebo in background",
+        "line": 460
+      },
+      {
+        "level": 1,
+        "text": "Run algorithm",
+        "line": 466
+      },
+      {
+        "level": 1,
+        "text": "Clean up",
+        "line": 469
+      },
+      {
+        "level": 2,
+        "text": "6. Common Mistakes to Avoid",
+        "line": 476
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 1: Over-Tuning to Simulation",
+        "line": 478
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 2: Ignoring Actuation Dynamics",
+        "line": 488
+      },
+      {
+        "level": 1,
+        "text": "Model actuator response",
+        "line": 494
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 3: Perfect Sensor Synchronization",
+        "line": 506
+      },
+      {
+        "level": 1,
+        "text": "Add jitter to sensor updates",
+        "line": 512
+      },
+      {
+        "level": 3,
+        "text": "\u274c Mistake 4: No Error Recovery",
+        "line": 518
+      },
+      {
+        "level": 2,
+        "text": "7. Production Readiness Checklist",
+        "line": 535
+      },
+      {
+        "level": 3,
+        "text": "Simulation Fidelity",
+        "line": 539
+      },
+      {
+        "level": 3,
+        "text": "Algorithm Robustness",
+        "line": 546
+      },
+      {
+        "level": 3,
+        "text": "Sim-to-Real Validation",
+        "line": 553
+      },
+      {
+        "level": 3,
+        "text": "Code Quality",
+        "line": 560
+      },
+      {
+        "level": 3,
+        "text": "Documentation",
+        "line": 567
+      },
+      {
+        "level": 2,
+        "text": "Summary of Best Practices",
+        "line": 576
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "1. Physics Tuning for Sim-to-Real Transfer",
+    "page_number": null,
+    "heading_count": 51,
+    "word_count": 1861,
+    "relative_path": "module-2-simulation\\best-practices.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\code-examples.md",
+    "frontmatter": {
+      "sidebar_position": 13
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Code Examples: Advanced Simulation Integration",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Example 1: Obstacle Detection from Simulated LiDAR",
+        "line": 7
+      },
+      {
+        "level": 2,
+        "text": "Example 2: Multi-Sensor Fusion (Camera + IMU)",
+        "line": 176
+      },
+      {
+        "level": 2,
+        "text": "Example 3: Trajectory Tracking & Validation",
+        "line": 351
+      },
+      {
+        "level": 2,
+        "text": "Example 4: Dynamic World Modification (Programmatic Obstacle Creation)",
+        "line": 533
+      },
+      {
+        "level": 2,
+        "text": "Example 5: Digital Twin State Synchronization",
+        "line": 676
+      },
+      {
+        "level": 2,
+        "text": "Summary of Code Patterns",
+        "line": 836
+      },
+      {
+        "level": 2,
+        "text": "Best Practices Used in All Examples",
+        "line": 848
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "Example 1: Obstacle Detection from Simulated LiDAR",
+    "page_number": null,
+    "heading_count": 8,
+    "word_count": 2372,
+    "relative_path": "module-2-simulation\\code-examples.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\core-concepts.md",
+    "frontmatter": {
+      "sidebar_position": 11
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Core Concepts: Gazebo, Digital Twins & Sensor Simulation",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "1. Gazebo Architecture: How It All Works",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "Core Components",
+        "line": 7
+      },
+      {
+        "level": 3,
+        "text": "Key Concepts",
+        "line": 30
+      },
+      {
+        "level": 2,
+        "text": "2. Robot Models: URDF & SDF",
+        "line": 62
+      },
+      {
+        "level": 3,
+        "text": "URDF (Unified Robot Description Format)",
+        "line": 66
+      },
+      {
+        "level": 3,
+        "text": "SDF (Simulation Description Format)",
+        "line": 127
+      },
+      {
+        "level": 2,
+        "text": "3. Physics Simulation: How the Virtual World Works",
+        "line": 141
+      },
+      {
+        "level": 3,
+        "text": "Newton's Laws in Software",
+        "line": 145
+      },
+      {
+        "level": 3,
+        "text": "Collision Detection & Response",
+        "line": 166
+      },
+      {
+        "level": 2,
+        "text": "4. Sensor Simulation: Creating Virtual Perception",
+        "line": 186
+      },
+      {
+        "level": 3,
+        "text": "Camera Simulation",
+        "line": 190
+      },
+      {
+        "level": 3,
+        "text": "LiDAR Simulation",
+        "line": 232
+      },
+      {
+        "level": 3,
+        "text": "IMU Simulation",
+        "line": 250
+      },
+      {
+        "level": 3,
+        "text": "Force/Torque Sensor Simulation",
+        "line": 268
+      },
+      {
+        "level": 2,
+        "text": "5. Digital Twins: Simulation Beyond Physics",
+        "line": 281
+      },
+      {
+        "level": 3,
+        "text": "Architecture of a Digital Twin",
+        "line": 285
+      },
+      {
+        "level": 3,
+        "text": "Key Difference: Simulation vs. Digital Twin",
+        "line": 322
+      },
+      {
+        "level": 3,
+        "text": "Digital Twin Use Cases",
+        "line": 332
+      },
+      {
+        "level": 2,
+        "text": "6. The Simulation Pipeline: From Design to Deployment",
+        "line": 359
+      },
+      {
+        "level": 3,
+        "text": "Pipeline Stages",
+        "line": 381
+      },
+      {
+        "level": 2,
+        "text": "7. Key Simulation Parameters to Understand",
+        "line": 408
+      },
+      {
+        "level": 3,
+        "text": "Physics Parameters",
+        "line": 412
+      },
+      {
+        "level": 3,
+        "text": "Sensor Parameters",
+        "line": 432
+      },
+      {
+        "level": 3,
+        "text": "Control Parameters",
+        "line": 448
+      },
+      {
+        "level": 2,
+        "text": "8. Common Simulation Challenges",
+        "line": 465
+      },
+      {
+        "level": 3,
+        "text": "Challenge 1: Physics Instability",
+        "line": 467
+      },
+      {
+        "level": 3,
+        "text": "Challenge 2: Sim-to-Real Discrepancy",
+        "line": 481
+      },
+      {
+        "level": 3,
+        "text": "Challenge 3: Performance (Slow Simulation)",
+        "line": 497
+      },
+      {
+        "level": 3,
+        "text": "Challenge 4: Sensor Accuracy",
+        "line": 513
+      },
+      {
+        "level": 2,
+        "text": "9. Connecting Gazebo to ROS 2",
+        "line": 531
+      },
+      {
+        "level": 3,
+        "text": "Gazebo ROS 2 Plugin",
+        "line": 535
+      },
+      {
+        "level": 3,
+        "text": "Default ROS 2 Topics from Gazebo",
+        "line": 543
+      },
+      {
+        "level": 3,
+        "text": "Example: Your Code Receives Simulated Data",
+        "line": 560
+      },
+      {
+        "level": 1,
+        "text": "Module 1 subscriber code - unchanged!",
+        "line": 563
+      },
+      {
+        "level": 2,
+        "text": "Summary of Key Concepts",
+        "line": 577
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "1. Gazebo Architecture: How It All Works",
+    "page_number": null,
+    "heading_count": 36,
+    "word_count": 2305,
+    "relative_path": "module-2-simulation\\core-concepts.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\hands-on-tutorial.md",
+    "frontmatter": {
+      "sidebar_position": 12
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Hands-On Tutorial: Your First Gazebo Simulation",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Goal",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites",
+        "line": 18
+      },
+      {
+        "level": 1,
+        "text": "Check ROS 2 is installed",
+        "line": 23
+      },
+      {
+        "level": 1,
+        "text": "Expected: ROS 2 Jazzy Jalisco (or similar)",
+        "line": 25
+      },
+      {
+        "level": 1,
+        "text": "Check Python 3",
+        "line": 27
+      },
+      {
+        "level": 1,
+        "text": "Expected: Python 3.10+",
+        "line": 29
+      },
+      {
+        "level": 1,
+        "text": "Check colcon (build system)",
+        "line": 31
+      },
+      {
+        "level": 1,
+        "text": "Expected: colcon command-line tool X.X.X",
+        "line": 33
+      },
+      {
+        "level": 2,
+        "text": "Step 1: Install Gazebo",
+        "line": 40
+      },
+      {
+        "level": 3,
+        "text": "Ubuntu/Linux Installation",
+        "line": 42
+      },
+      {
+        "level": 1,
+        "text": "Add Gazebo repository",
+        "line": 45
+      },
+      {
+        "level": 1,
+        "text": "Get latest Gazebo (version 8+)",
+        "line": 49
+      },
+      {
+        "level": 1,
+        "text": "Install Gazebo",
+        "line": 53
+      },
+      {
+        "level": 1,
+        "text": "Install Gazebo ROS 2 packages",
+        "line": 57
+      },
+      {
+        "level": 1,
+        "text": "Verify installation",
+        "line": 62
+      },
+      {
+        "level": 3,
+        "text": "macOS Installation",
+        "line": 66
+      },
+      {
+        "level": 1,
+        "text": "Using Homebrew",
+        "line": 69
+      },
+      {
+        "level": 3,
+        "text": "Verification",
+        "line": 74
+      },
+      {
+        "level": 1,
+        "text": "Launch Gazebo",
+        "line": 77
+      },
+      {
+        "level": 1,
+        "text": "You should see the Gazebo GUI open with an empty world",
+        "line": 80
+      },
+      {
+        "level": 1,
+        "text": "Close Gazebo (Ctrl+C in terminal)",
+        "line": 81
+      },
+      {
+        "level": 2,
+        "text": "Step 2: Install TurtleBot3 Package",
+        "line": 86
+      },
+      {
+        "level": 1,
+        "text": "Install TurtleBot3 packages",
+        "line": 91
+      },
+      {
+        "level": 1,
+        "text": "Install TurtleBot3 models (robot descriptions)",
+        "line": 94
+      },
+      {
+        "level": 1,
+        "text": "Set the TurtleBot3 model (we'll use waffle)",
+        "line": 98
+      },
+      {
+        "level": 1,
+        "text": "Verify installation",
+        "line": 101
+      },
+      {
+        "level": 1,
+        "text": "Expected: /opt/ros/jazzy/share/turtlebot3_gazebo",
+        "line": 103
+      },
+      {
+        "level": 2,
+        "text": "Step 3: Launch Gazebo with TurtleBot3",
+        "line": 108
+      },
+      {
+        "level": 3,
+        "text": "Terminal 1: Gazebo Server",
+        "line": 110
+      },
+      {
+        "level": 1,
+        "text": "Launch Gazebo with TurtleBot3 in empty world",
+        "line": 118
+      },
+      {
+        "level": 3,
+        "text": "Terminal 2: Gazebo Client (Visualization)",
+        "line": 136
+      },
+      {
+        "level": 2,
+        "text": "Step 4: Verify ROS 2 Topics from Gazebo",
+        "line": 149
+      },
+      {
+        "level": 3,
+        "text": "Terminal 3: List ROS 2 Topics",
+        "line": 151
+      },
+      {
+        "level": 3,
+        "text": "View Joint States",
+        "line": 173
+      },
+      {
+        "level": 3,
+        "text": "View Odometry",
+        "line": 198
+      },
+      {
+        "level": 3,
+        "text": "View LiDAR Scan",
+        "line": 216
+      },
+      {
+        "level": 2,
+        "text": "Step 5: Control the Robot via ROS 2",
+        "line": 226
+      },
+      {
+        "level": 3,
+        "text": "Send Movement Command",
+        "line": 230
+      },
+      {
+        "level": 1,
+        "text": "Move forward (linear velocity: 0.5 m/s, no rotation)",
+        "line": 233
+      },
+      {
+        "level": 3,
+        "text": "Rotate in Place",
+        "line": 242
+      },
+      {
+        "level": 1,
+        "text": "Rotate counter-clockwise (angular velocity: 0.5 rad/s)",
+        "line": 245
+      },
+      {
+        "level": 3,
+        "text": "Stop the Robot",
+        "line": 251
+      },
+      {
+        "level": 2,
+        "text": "Step 6: Visualize with RViz",
+        "line": 261
+      },
+      {
+        "level": 3,
+        "text": "Terminal 4: Launch RViz",
+        "line": 265
+      },
+      {
+        "level": 2,
+        "text": "Step 7: Record Sensor Data with rosbag",
+        "line": 288
+      },
+      {
+        "level": 3,
+        "text": "Terminal 5: Record All Topics",
+        "line": 292
+      },
+      {
+        "level": 1,
+        "text": "Create directory for recordings",
+        "line": 297
+      },
+      {
+        "level": 1,
+        "text": "Record all topics",
+        "line": 300
+      },
+      {
+        "level": 1,
+        "text": "Let it record for 10 seconds",
+        "line": 304
+      },
+      {
+        "level": 1,
+        "text": "(make the robot move during recording for interesting data)",
+        "line": 305
+      },
+      {
+        "level": 3,
+        "text": "Playback Recording",
+        "line": 316
+      },
+      {
+        "level": 1,
+        "text": "List recorded files",
+        "line": 321
+      },
+      {
+        "level": 1,
+        "text": "Play back (this replays all published topics)",
+        "line": 324
+      },
+      {
+        "level": 2,
+        "text": "Step 8: Create Your Own World",
+        "line": 332
+      },
+      {
+        "level": 3,
+        "text": "Launch with Your World",
+        "line": 451
+      },
+      {
+        "level": 1,
+        "text": "Create launch file",
+        "line": 457
+      },
+      {
+        "level": 1,
+        "text": "Run it",
+        "line": 476
+      },
+      {
+        "level": 2,
+        "text": "Step 9: Integrate with Your Module 1 Code",
+        "line": 484
+      },
+      {
+        "level": 3,
+        "text": "Run Both Together",
+        "line": 575
+      },
+      {
+        "level": 2,
+        "text": "Step 10: Common Errors & Solutions",
+        "line": 604
+      },
+      {
+        "level": 3,
+        "text": "Error: \"gazebo: command not found\"",
+        "line": 606
+      },
+      {
+        "level": 1,
+        "text": "If empty, reinstall: sudo apt-get install gazebo-8",
+        "line": 611
+      },
+      {
+        "level": 3,
+        "text": "Error: \"Could not load world\" (SDF file error)",
+        "line": 614
+      },
+      {
+        "level": 1,
+        "text": "Validate SDF file",
+        "line": 618
+      },
+      {
+        "level": 3,
+        "text": "Error: \"/scan topic not found\"",
+        "line": 622
+      },
+      {
+        "level": 3,
+        "text": "Error: \"TurtleBot3 doesn't move when I publish to /cmd_vel\"",
+        "line": 628
+      },
+      {
+        "level": 1,
+        "text": "Check if controller is running",
+        "line": 632
+      },
+      {
+        "level": 1,
+        "text": "If missing, the gazebo_ros2_control plugin didn't load",
+        "line": 635
+      },
+      {
+        "level": 1,
+        "text": "Verify: ros2 topic list should show many turtlebot topics",
+        "line": 636
+      },
+      {
+        "level": 3,
+        "text": "Gazebo Runs Slowly",
+        "line": 639
+      },
+      {
+        "level": 1,
+        "text": "Run with server only (no visualization)",
+        "line": 643
+      },
+      {
+        "level": 1,
+        "text": "Or use gzclient on separate machine",
+        "line": 646
+      },
+      {
+        "level": 2,
+        "text": "What You've Accomplished",
+        "line": 651
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 666
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "Goal",
+    "page_number": null,
+    "heading_count": 75,
+    "word_count": 1899,
+    "relative_path": "module-2-simulation\\hands-on-tutorial.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\index.md",
+    "frontmatter": {
+      "sidebar_position": 9
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 2: Simulation & Digital Twins",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Module Overview",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "What You'll Learn",
+        "line": 18
+      },
+      {
+        "level": 3,
+        "text": "Knowledge (Know)",
+        "line": 20
+      },
+      {
+        "level": 3,
+        "text": "Skills (Do)",
+        "line": 31
+      },
+      {
+        "level": 3,
+        "text": "Application (Apply)",
+        "line": 42
+      },
+      {
+        "level": 2,
+        "text": "Module Structure",
+        "line": 52
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites",
+        "line": 95
+      },
+      {
+        "level": 3,
+        "text": "Knowledge Prerequisites",
+        "line": 97
+      },
+      {
+        "level": 3,
+        "text": "Software Prerequisites",
+        "line": 102
+      },
+      {
+        "level": 3,
+        "text": "Quick Setup Check",
+        "line": 112
+      },
+      {
+        "level": 1,
+        "text": "Check ROS 2",
+        "line": 115
+      },
+      {
+        "level": 1,
+        "text": "Check Gazebo (if installed)",
+        "line": 118
+      },
+      {
+        "level": 1,
+        "text": "Check GPU (if applicable)",
+        "line": 121
+      },
+      {
+        "level": 2,
+        "text": "Learning Path",
+        "line": 127
+      },
+      {
+        "level": 3,
+        "text": "Recommended Sequence",
+        "line": 129
+      },
+      {
+        "level": 3,
+        "text": "Time Commitment",
+        "line": 138
+      },
+      {
+        "level": 2,
+        "text": "Real-World Context: Why Simulation Matters",
+        "line": 151
+      },
+      {
+        "level": 3,
+        "text": "Historical Perspective",
+        "line": 153
+      },
+      {
+        "level": 3,
+        "text": "Industry Examples",
+        "line": 159
+      },
+      {
+        "level": 2,
+        "text": "Module Goals",
+        "line": 179
+      },
+      {
+        "level": 2,
+        "text": "Connection to Module 1",
+        "line": 192
+      },
+      {
+        "level": 2,
+        "text": "Common Questions",
+        "line": 203
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 219
+      },
+      {
+        "level": 2,
+        "text": "Module Resources",
+        "line": 225
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "Module Overview",
+    "page_number": null,
+    "heading_count": 25,
+    "word_count": 1198,
+    "relative_path": "module-2-simulation\\index.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\introduction.md",
+    "frontmatter": {
+      "sidebar_position": 10
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Introduction: Why Simulation Matters for Physical AI",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Challenge: From Lab to Real World",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "What is Simulation in Robotics?",
+        "line": 17
+      },
+      {
+        "level": 2,
+        "text": "Historical Perspective: How Robot Simulation Evolved",
+        "line": 32
+      },
+      {
+        "level": 3,
+        "text": "The Early Days (2000s)",
+        "line": 34
+      },
+      {
+        "level": 3,
+        "text": "The Physics Revolution (2010s)",
+        "line": 44
+      },
+      {
+        "level": 3,
+        "text": "The AI Era (2018-Present)",
+        "line": 58
+      },
+      {
+        "level": 2,
+        "text": "Why Simulation is Critical for Physical AI",
+        "line": 77
+      },
+      {
+        "level": 3,
+        "text": "Problem 1: Cost",
+        "line": 81
+      },
+      {
+        "level": 3,
+        "text": "Problem 2: Development Speed",
+        "line": 96
+      },
+      {
+        "level": 3,
+        "text": "Problem 3: Safety",
+        "line": 116
+      },
+      {
+        "level": 3,
+        "text": "Problem 4: Reproducibility",
+        "line": 129
+      },
+      {
+        "level": 2,
+        "text": "Real-World Examples: Humanoid Robotics",
+        "line": 145
+      },
+      {
+        "level": 3,
+        "text": "Tesla Optimus (Boston, 2024)",
+        "line": 147
+      },
+      {
+        "level": 3,
+        "text": "Boston Dynamics Atlas (2023 Redesign)",
+        "line": 161
+      },
+      {
+        "level": 3,
+        "text": "DARPA Humanoid Robot Challenge (2015)",
+        "line": 173
+      },
+      {
+        "level": 2,
+        "text": "The Sim-to-Real Gap: What Breaks?",
+        "line": 185
+      },
+      {
+        "level": 3,
+        "text": "1. Physics Fidelity",
+        "line": 189
+      },
+      {
+        "level": 3,
+        "text": "2. Sensor Accuracy",
+        "line": 195
+      },
+      {
+        "level": 3,
+        "text": "3. Control Latency",
+        "line": 201
+      },
+      {
+        "level": 3,
+        "text": "4. Actuation Dynamics",
+        "line": 207
+      },
+      {
+        "level": 3,
+        "text": "5. Environmental Variation",
+        "line": 213
+      },
+      {
+        "level": 2,
+        "text": "Bridging the Gap: Best Practices",
+        "line": 221
+      },
+      {
+        "level": 3,
+        "text": "1. Realistic Simulation Tuning",
+        "line": 225
+      },
+      {
+        "level": 3,
+        "text": "2. Randomization (Domain Randomization)",
+        "line": 232
+      },
+      {
+        "level": 3,
+        "text": "3. Progressive Hardware Testing",
+        "line": 242
+      },
+      {
+        "level": 3,
+        "text": "4. Continuous Sim-to-Real Validation",
+        "line": 250
+      },
+      {
+        "level": 2,
+        "text": "Simulation Platforms: Gazebo vs. Isaac Sim",
+        "line": 259
+      },
+      {
+        "level": 2,
+        "text": "How Simulation Fits with ROS 2",
+        "line": 281
+      },
+      {
+        "level": 3,
+        "text": "In Module 1, you learned:",
+        "line": 285
+      },
+      {
+        "level": 3,
+        "text": "In Module 2, you'll see:",
+        "line": 290
+      },
+      {
+        "level": 2,
+        "text": "What You'll Build in This Module",
+        "line": 313
+      },
+      {
+        "level": 3,
+        "text": "Part 1: Gazebo Basics",
+        "line": 315
+      },
+      {
+        "level": 3,
+        "text": "Part 2: ROS 2 Integration",
+        "line": 321
+      },
+      {
+        "level": 3,
+        "text": "Part 3: Custom Simulation",
+        "line": 327
+      },
+      {
+        "level": 3,
+        "text": "Part 4: Advanced Patterns",
+        "line": 333
+      },
+      {
+        "level": 2,
+        "text": "Connection to Humanoid Robotics",
+        "line": 341
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites to Understand This Module",
+        "line": 368
+      },
+      {
+        "level": 2,
+        "text": "Learning Philosophy for This Module",
+        "line": 382
+      },
+      {
+        "level": 2,
+        "text": "Common Questions Answered",
+        "line": 398
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 417
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "The Challenge: From Lab to Real World",
+    "page_number": null,
+    "heading_count": 41,
+    "word_count": 2129,
+    "relative_path": "module-2-simulation\\introduction.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\quiz.md",
+    "frontmatter": {
+      "sidebar_position": 16
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 2 Quiz: Test Your Understanding",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Quiz Instructions",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "Question 1: Gazebo Physics Engine (Multiple Choice)",
+        "line": 13
+      },
+      {
+        "level": 2,
+        "text": "Question 2: Sensor Simulation vs. Real Sensors (True/False)",
+        "line": 28
+      },
+      {
+        "level": 2,
+        "text": "Question 3: URDF vs SDF (Multiple Choice)",
+        "line": 38
+      },
+      {
+        "level": 2,
+        "text": "Question 4: Sim-to-Real Gap (Multiple Choice)",
+        "line": 53
+      },
+      {
+        "level": 2,
+        "text": "Question 5: Digital Twins (True/False)",
+        "line": 68
+      },
+      {
+        "level": 2,
+        "text": "Question 6: ROS 2 Integration with Gazebo (Multiple Choice)",
+        "line": 78
+      },
+      {
+        "level": 2,
+        "text": "Question 7: Collision Detection & Contact Physics (True/False)",
+        "line": 93
+      },
+      {
+        "level": 2,
+        "text": "Question 8: Domain Randomization (Multiple Choice)",
+        "line": 103
+      },
+      {
+        "level": 2,
+        "text": "Question 9: Physics Timestep Tuning (Multiple Choice)",
+        "line": 118
+      },
+      {
+        "level": 2,
+        "text": "Question 10: Simulation Use Cases (Multiple Choice)",
+        "line": 133
+      },
+      {
+        "level": 2,
+        "text": "Answer Key & Scoring",
+        "line": 148
+      },
+      {
+        "level": 2,
+        "text": "Feedback for Each Score Range",
+        "line": 171
+      },
+      {
+        "level": 3,
+        "text": "If you scored 9-10 \u2b50\u2b50\u2b50",
+        "line": 173
+      },
+      {
+        "level": 3,
+        "text": "If you scored 7-8 \u2b50\u2b50",
+        "line": 188
+      },
+      {
+        "level": 3,
+        "text": "If you scored 6 \u2b50",
+        "line": 204
+      },
+      {
+        "level": 3,
+        "text": "If you scored less than 6 \ud83d\udd04",
+        "line": 220
+      },
+      {
+        "level": 2,
+        "text": "Common Quiz Mistakes",
+        "line": 237
+      },
+      {
+        "level": 3,
+        "text": "Misconception 1: \"Simulated sensors are perfect\"",
+        "line": 239
+      },
+      {
+        "level": 3,
+        "text": "Misconception 2: \"Simulation means no hardware testing\"",
+        "line": 242
+      },
+      {
+        "level": 3,
+        "text": "Misconception 3: \"URDF and SDF are the same\"",
+        "line": 245
+      },
+      {
+        "level": 3,
+        "text": "Misconception 4: \"Physics parameters don't matter much\"",
+        "line": 248
+      },
+      {
+        "level": 3,
+        "text": "Misconception 5: \"More solver iterations always means better simulation\"",
+        "line": 251
+      },
+      {
+        "level": 2,
+        "text": "Study Tips for Next Time",
+        "line": 256
+      },
+      {
+        "level": 2,
+        "text": "After the Quiz",
+        "line": 268
+      },
+      {
+        "level": 3,
+        "text": "If You Passed (7+/10)",
+        "line": 270
+      },
+      {
+        "level": 3,
+        "text": "If You Didn't Pass (6/10)",
+        "line": 276
+      },
+      {
+        "level": 2,
+        "text": "Certificate & Badge",
+        "line": 284
+      },
+      {
+        "level": 2,
+        "text": "Additional Practice",
+        "line": 294
+      },
+      {
+        "level": 2,
+        "text": "Ready to Continue?",
+        "line": 315
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "Quiz Instructions",
+    "page_number": null,
+    "heading_count": 31,
+    "word_count": 2018,
+    "relative_path": "module-2-simulation\\quiz.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-2-simulation\\summary.md",
+    "frontmatter": {
+      "sidebar_position": 15
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Summary & Key Takeaways",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Module 2 Complete: You Now Understand Robotics Simulation!",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "The Three Core Pillars of Simulation",
+        "line": 9
+      },
+      {
+        "level": 3,
+        "text": "1. **Physics** - The Virtual World",
+        "line": 11
+      },
+      {
+        "level": 3,
+        "text": "2. **Sensors** - Virtual Perception",
+        "line": 30
+      },
+      {
+        "level": 3,
+        "text": "3. **Middleware Bridge** - ROS 2 \u2194 Gazebo",
+        "line": 49
+      },
+      {
+        "level": 2,
+        "text": "The Five Key Concepts",
+        "line": 67
+      },
+      {
+        "level": 2,
+        "text": "Quick Reference: Essential Commands",
+        "line": 79
+      },
+      {
+        "level": 3,
+        "text": "Gazebo Management",
+        "line": 81
+      },
+      {
+        "level": 1,
+        "text": "Launch Gazebo with world",
+        "line": 84
+      },
+      {
+        "level": 1,
+        "text": "Gazebo headless (server only, faster)",
+        "line": 87
+      },
+      {
+        "level": 1,
+        "text": "Validate SDF file syntax",
+        "line": 90
+      },
+      {
+        "level": 1,
+        "text": "List available models",
+        "line": 93
+      },
+      {
+        "level": 3,
+        "text": "ROS 2 Integration",
+        "line": 97
+      },
+      {
+        "level": 1,
+        "text": "List all topics (includes simulated sensors)",
+        "line": 100
+      },
+      {
+        "level": 1,
+        "text": "View simulated camera",
+        "line": 103
+      },
+      {
+        "level": 1,
+        "text": "View simulated LiDAR",
+        "line": 106
+      },
+      {
+        "level": 1,
+        "text": "Subscribe to simulated odometry",
+        "line": 109
+      },
+      {
+        "level": 1,
+        "text": "Send movement commands",
+        "line": 112
+      },
+      {
+        "level": 1,
+        "text": "Record sensor data (rosbag)",
+        "line": 116
+      },
+      {
+        "level": 3,
+        "text": "Visualization",
+        "line": 121
+      },
+      {
+        "level": 1,
+        "text": "3D visualization of simulation",
+        "line": 124
+      },
+      {
+        "level": 1,
+        "text": "Monitor active nodes",
+        "line": 127
+      },
+      {
+        "level": 1,
+        "text": "Graph topology",
+        "line": 130
+      },
+      {
+        "level": 1,
+        "text": "Topic inspector",
+        "line": 133
+      },
+      {
+        "level": 1,
+        "text": "Image viewer",
+        "line": 136
+      },
+      {
+        "level": 3,
+        "text": "Debugging",
+        "line": 140
+      },
+      {
+        "level": 1,
+        "text": "Run Gazebo with verbose logging",
+        "line": 143
+      },
+      {
+        "level": 1,
+        "text": "Check ROS 2 + Gazebo connection",
+        "line": 146
+      },
+      {
+        "level": 1,
+        "text": "Monitor topic frequency",
+        "line": 149
+      },
+      {
+        "level": 1,
+        "text": "Record and inspect messages",
+        "line": 152
+      },
+      {
+        "level": 2,
+        "text": "What You Can Now Do",
+        "line": 159
+      },
+      {
+        "level": 2,
+        "text": "Connection to Module 1: ROS 2 Fundamentals",
+        "line": 174
+      },
+      {
+        "level": 2,
+        "text": "Connection to Module 3: NVIDIA Isaac Sim",
+        "line": 194
+      },
+      {
+        "level": 2,
+        "text": "Common Misconceptions Clarified",
+        "line": 210
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"Simulation is just theory, not practical\"",
+        "line": 212
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"Simulated robots behave exactly like real robots\"",
+        "line": 218
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"I don't need simulation if I have real hardware\"",
+        "line": 225
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"Gazebo is outdated compared to Isaac Sim\"",
+        "line": 232
+      },
+      {
+        "level": 3,
+        "text": "\u274c \"Perfect simulation means perfect hardware results\"",
+        "line": 237
+      },
+      {
+        "level": 2,
+        "text": "Module Competency Checklist",
+        "line": 246
+      },
+      {
+        "level": 3,
+        "text": "Knowledge (Know)",
+        "line": 248
+      },
+      {
+        "level": 3,
+        "text": "Skills (Do)",
+        "line": 255
+      },
+      {
+        "level": 3,
+        "text": "Application (Apply)",
+        "line": 265
+      },
+      {
+        "level": 2,
+        "text": "Key Insights to Remember",
+        "line": 275
+      },
+      {
+        "level": 3,
+        "text": "1. **Simulation is about Approximation, Not Perfection**",
+        "line": 277
+      },
+      {
+        "level": 3,
+        "text": "2. **Physics Parameters Determine Everything**",
+        "line": 282
+      },
+      {
+        "level": 3,
+        "text": "3. **Sensor Realism Matters**",
+        "line": 288
+      },
+      {
+        "level": 3,
+        "text": "4. **Early Hardware Validation Saves Time**",
+        "line": 293
+      },
+      {
+        "level": 3,
+        "text": "5. **ROS 2 is Your Bridge**",
+        "line": 298
+      },
+      {
+        "level": 2,
+        "text": "Common Mistakes Made in This Module",
+        "line": 305
+      },
+      {
+        "level": 2,
+        "text": "Resources for Continued Learning",
+        "line": 317
+      },
+      {
+        "level": 3,
+        "text": "Official Documentation",
+        "line": 319
+      },
+      {
+        "level": 3,
+        "text": "Community",
+        "line": 324
+      },
+      {
+        "level": 3,
+        "text": "Books & Papers",
+        "line": 329
+      },
+      {
+        "level": 3,
+        "text": "Tools & Extensions",
+        "line": 334
+      },
+      {
+        "level": 2,
+        "text": "Next Steps After This Module",
+        "line": 341
+      },
+      {
+        "level": 3,
+        "text": "Immediate (This Week)",
+        "line": 343
+      },
+      {
+        "level": 3,
+        "text": "Short-term (Next Week)",
+        "line": 349
+      },
+      {
+        "level": 3,
+        "text": "Medium-term (This Month)",
+        "line": 355
+      },
+      {
+        "level": 3,
+        "text": "Advanced",
+        "line": 362
+      },
+      {
+        "level": 2,
+        "text": "Module Statistics",
+        "line": 370
+      },
+      {
+        "level": 2,
+        "text": "One More Thing: The Philosophy of Simulation",
+        "line": 385
+      },
+      {
+        "level": 2,
+        "text": "Certificate & Badge",
+        "line": 398
+      },
+      {
+        "level": 2,
+        "text": "Ready for Module 3?",
+        "line": 408
+      }
+    ],
+    "chapter": "Module 2 Simulation",
+    "section": "Module 2 Complete: You Now Understand Robotics Simulation!",
+    "page_number": null,
+    "heading_count": 65,
+    "word_count": 1949,
+    "relative_path": "module-2-simulation\\summary.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\best-practices.md",
+    "frontmatter": {
+      "sidebar_position": 6
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Best Practices & Production Patterns",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "1. Performance Optimization",
+        "line": 7
+      },
+      {
+        "level": 3,
+        "text": "GPU Memory Management",
+        "line": 9
+      },
+      {
+        "level": 1,
+        "text": "\u274c BAD: Large batch sizes",
+        "line": 16
+      },
+      {
+        "level": 1,
+        "text": "\u2705 GOOD: Stream-based processing",
+        "line": 19
+      },
+      {
+        "level": 3,
+        "text": "Model Quantization",
+        "line": 30
+      },
+      {
+        "level": 1,
+        "text": "Original FP32 model: 350 MB, 45ms inference",
+        "line": 37
+      },
+      {
+        "level": 1,
+        "text": "Quantized INT8 model: 90 MB, 12ms inference (3.75x speedup)",
+        "line": 40
+      },
+      {
+        "level": 1,
+        "text": "Export to ONNX for maximum compatibility",
+        "line": 47
+      },
+      {
+        "level": 3,
+        "text": "Model Selection for Robotics",
+        "line": 59
+      },
+      {
+        "level": 2,
+        "text": "2. Real-Time Guarantees",
+        "line": 86
+      },
+      {
+        "level": 3,
+        "text": "Meeting Hard Deadlines",
+        "line": 88
+      },
+      {
+        "level": 1,
+        "text": "Usage",
+        "line": 128
+      },
+      {
+        "level": 3,
+        "text": "Resource Allocation",
+        "line": 150
+      },
+      {
+        "level": 2,
+        "text": "3. Safety & Fault Tolerance",
+        "line": 171
+      },
+      {
+        "level": 3,
+        "text": "Emergency Stop (E-Stop)",
+        "line": 173
+      },
+      {
+        "level": 1,
+        "text": "Usage in control loop",
+        "line": 202
+      },
+      {
+        "level": 3,
+        "text": "Watchdog Timer",
+        "line": 220
+      },
+      {
+        "level": 1,
+        "text": "Usage",
+        "line": 256
+      },
+      {
+        "level": 2,
+        "text": "4. Debugging & Monitoring",
+        "line": 275
+      },
+      {
+        "level": 3,
+        "text": "Structured Logging",
+        "line": 277
+      },
+      {
+        "level": 1,
+        "text": "Configure logger",
+        "line": 284
+      },
+      {
+        "level": 1,
+        "text": "Structured logging (machine-readable)",
+        "line": 296
+      },
+      {
+        "level": 1,
+        "text": "Usage",
+        "line": 306
+      },
+      {
+        "level": 3,
+        "text": "Performance Profiling",
+        "line": 312
+      },
+      {
+        "level": 1,
+        "text": "Usage",
+        "line": 334
+      },
+      {
+        "level": 1,
+        "text": "Output shows:",
+        "line": 340
+      },
+      {
+        "level": 1,
+        "text": "ncalls  tottime  cumtime",
+        "line": 341
+      },
+      {
+        "level": 1,
+        "text": "1       0.050   0.150    model.inference()  <- where time is spent",
+        "line": 342
+      },
+      {
+        "level": 1,
+        "text": "100     0.025   0.040    post_processing()",
+        "line": 343
+      },
+      {
+        "level": 3,
+        "text": "Visualization with Isaac Sight",
+        "line": 346
+      },
+      {
+        "level": 1,
+        "text": "Publish data for visualization",
+        "line": 349
+      },
+      {
+        "level": 1,
+        "text": "Isaac Sight automatically shows:",
+        "line": 372
+      },
+      {
+        "level": 1,
+        "text": "- Bounding boxes overlay on camera",
+        "line": 373
+      },
+      {
+        "level": 1,
+        "text": "- Robot trajectory in 3D",
+        "line": 374
+      },
+      {
+        "level": 1,
+        "text": "- Sensor data streams",
+        "line": 375
+      },
+      {
+        "level": 1,
+        "text": "- Real-time performance metrics",
+        "line": 376
+      },
+      {
+        "level": 2,
+        "text": "5. Handling Sensor Failures",
+        "line": 381
+      },
+      {
+        "level": 3,
+        "text": "Graceful Degradation",
+        "line": 383
+      },
+      {
+        "level": 3,
+        "text": "Timeout Handling",
+        "line": 428
+      },
+      {
+        "level": 2,
+        "text": "6. Testing & Validation",
+        "line": 462
+      },
+      {
+        "level": 3,
+        "text": "Unit Tests for Perception",
+        "line": 464
+      },
+      {
+        "level": 3,
+        "text": "Integration Tests",
+        "line": 503
+      },
+      {
+        "level": 2,
+        "text": "7. Optimization Checklist",
+        "line": 534
+      },
+      {
+        "level": 2,
+        "text": "8. Common Pitfalls & How to Avoid Them",
+        "line": 578
+      },
+      {
+        "level": 2,
+        "text": "9. Production Deployment Pattern",
+        "line": 591
+      },
+      {
+        "level": 2,
+        "text": "Summary",
+        "line": 625
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "1. Performance Optimization",
+    "page_number": null,
+    "heading_count": 47,
+    "word_count": 1876,
+    "relative_path": "module-3-isaac\\best-practices.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\code-examples.md",
+    "frontmatter": {
+      "sidebar_position": 5
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Code Examples: Isaac SDK in Practice",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Example 1: Real-Time Object Detection",
+        "line": 7
+      },
+      {
+        "level": 1,
+        "text": "Example usage",
+        "line": 99
+      },
+      {
+        "level": 1,
+        "text": "Install dependencies",
+        "line": 170
+      },
+      {
+        "level": 1,
+        "text": "Run the script (uses webcam)",
+        "line": 173
+      },
+      {
+        "level": 2,
+        "text": "Example 2: Inverse Kinematics & Motion Planning",
+        "line": 190
+      },
+      {
+        "level": 1,
+        "text": "Example usage",
+        "line": 337
+      },
+      {
+        "level": 2,
+        "text": "Example 3: PID Control Loop",
+        "line": 423
+      },
+      {
+        "level": 1,
+        "text": "Simulation",
+        "line": 563
+      },
+      {
+        "level": 2,
+        "text": "Example 4: Sensor Fusion with Kalman Filter",
+        "line": 696
+      },
+      {
+        "level": 1,
+        "text": "Simulation: Noisy position and velocity estimation",
+        "line": 779
+      },
+      {
+        "level": 2,
+        "text": "Summary of Examples",
+        "line": 909
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "Example 1: Real-Time Object Detection",
+    "page_number": null,
+    "heading_count": 12,
+    "word_count": 2807,
+    "relative_path": "module-3-isaac\\code-examples.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\core-concepts.md",
+    "frontmatter": {
+      "sidebar_position": 3
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Core Concepts & Theory",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Five Pillars of Isaac SDK",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "1. Nodes: Independent Computational Units",
+        "line": 17
+      },
+      {
+        "level": 3,
+        "text": "What is a Node?",
+        "line": 19
+      },
+      {
+        "level": 3,
+        "text": "Types of Nodes",
+        "line": 29
+      },
+      {
+        "level": 3,
+        "text": "Node Scheduling",
+        "line": 66
+      },
+      {
+        "level": 2,
+        "text": "2. Graphs: Connecting Nodes into Pipelines",
+        "line": 100
+      },
+      {
+        "level": 3,
+        "text": "What is a Graph?",
+        "line": 102
+      },
+      {
+        "level": 3,
+        "text": "Example Graph Architecture",
+        "line": 110
+      },
+      {
+        "level": 3,
+        "text": "Data Flow Types",
+        "line": 156
+      },
+      {
+        "level": 2,
+        "text": "3. Perception: AI Vision for Robots",
+        "line": 175
+      },
+      {
+        "level": 3,
+        "text": "The Perception Pipeline",
+        "line": 177
+      },
+      {
+        "level": 3,
+        "text": "Key Perception Tasks",
+        "line": 213
+      },
+      {
+        "level": 3,
+        "text": "Why GPU Acceleration Matters",
+        "line": 245
+      },
+      {
+        "level": 2,
+        "text": "4. Planning: Motion Generation",
+        "line": 265
+      },
+      {
+        "level": 3,
+        "text": "Motion Planning Overview",
+        "line": 267
+      },
+      {
+        "level": 3,
+        "text": "Planning Hierarchy",
+        "line": 271
+      },
+      {
+        "level": 3,
+        "text": "RMP-Flow: Isaac's Motion Planning Algorithm",
+        "line": 311
+      },
+      {
+        "level": 2,
+        "text": "5. Control: Real-Time Execution",
+        "line": 350
+      },
+      {
+        "level": 3,
+        "text": "Control System Architecture",
+        "line": 352
+      },
+      {
+        "level": 3,
+        "text": "PID Control (The Workhorse)",
+        "line": 402
+      },
+      {
+        "level": 3,
+        "text": "Force Control",
+        "line": 420
+      },
+      {
+        "level": 2,
+        "text": "Integration: How It All Works Together",
+        "line": 447
+      },
+      {
+        "level": 3,
+        "text": "Complete System Architecture",
+        "line": 449
+      },
+      {
+        "level": 3,
+        "text": "Example: Real-World Manipulation Task",
+        "line": 510
+      },
+      {
+        "level": 2,
+        "text": "Key Data Types in Isaac",
+        "line": 553
+      },
+      {
+        "level": 3,
+        "text": "Camera Image",
+        "line": 555
+      },
+      {
+        "level": 3,
+        "text": "Detection",
+        "line": 563
+      },
+      {
+        "level": 3,
+        "text": "Pose3D",
+        "line": 575
+      },
+      {
+        "level": 3,
+        "text": "JointState",
+        "line": 587
+      },
+      {
+        "level": 3,
+        "text": "Trajectory (Time-Parameterized Path)",
+        "line": 603
+      },
+      {
+        "level": 2,
+        "text": "Summary of Core Concepts",
+        "line": 620
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "The Five Pillars of Isaac SDK",
+    "page_number": null,
+    "heading_count": 32,
+    "word_count": 2614,
+    "relative_path": "module-3-isaac\\core-concepts.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\hands-on-tutorial.md",
+    "frontmatter": {
+      "sidebar_position": 4
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Hands-On Tutorial: Building Your First AI Robot System",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Overview",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "What We're Building",
+        "line": 13
+      },
+      {
+        "level": 2,
+        "text": "Part 1: Environment Setup",
+        "line": 46
+      },
+      {
+        "level": 3,
+        "text": "Prerequisites",
+        "line": 48
+      },
+      {
+        "level": 3,
+        "text": "Step 1: Verify Isaac Installation",
+        "line": 57
+      },
+      {
+        "level": 1,
+        "text": "Check if Isaac is installed",
+        "line": 60
+      },
+      {
+        "level": 1,
+        "text": "Should output: Isaac SDK 2026.1 or later",
+        "line": 62
+      },
+      {
+        "level": 1,
+        "text": "Verify CUDA availability",
+        "line": 64
+      },
+      {
+        "level": 1,
+        "text": "Should output: True",
+        "line": 66
+      },
+      {
+        "level": 1,
+        "text": "Check NVIDIA GPU",
+        "line": 68
+      },
+      {
+        "level": 1,
+        "text": "Should show your GPU with CUDA compute capability >= 7.0",
+        "line": 70
+      },
+      {
+        "level": 3,
+        "text": "Step 2: Create Project Directory",
+        "line": 73
+      },
+      {
+        "level": 1,
+        "text": "Create workspace",
+        "line": 76
+      },
+      {
+        "level": 1,
+        "text": "Set environment",
+        "line": 80
+      },
+      {
+        "level": 1,
+        "text": "Verify setup",
+        "line": 84
+      },
+      {
+        "level": 3,
+        "text": "Step 3: Download Pre-trained Models",
+        "line": 88
+      },
+      {
+        "level": 1,
+        "text": "Create models directory",
+        "line": 93
+      },
+      {
+        "level": 1,
+        "text": "Download YOLOv8 model (lightweight version)",
+        "line": 96
+      },
+      {
+        "level": 1,
+        "text": "Download YOLOv8n (nano, ~3MB)",
+        "line": 100
+      },
+      {
+        "level": 1,
+        "text": "For robotics, nano is ideal: 5ms inference on Jetson",
+        "line": 104
+      },
+      {
+        "level": 1,
+        "text": "Models now ready in ~/.yolov8/",
+        "line": 107
+      },
+      {
+        "level": 2,
+        "text": "Part 2: Create the Perception Node",
+        "line": 112
+      },
+      {
+        "level": 3,
+        "text": "What This Node Does",
+        "line": 114
+      },
+      {
+        "level": 3,
+        "text": "Python Implementation",
+        "line": 122
+      },
+      {
+        "level": 3,
+        "text": "Running the Perception Node",
+        "line": 254
+      },
+      {
+        "level": 1,
+        "text": "Terminal 1: Start perception node",
+        "line": 257
+      },
+      {
+        "level": 1,
+        "text": "Expected output:",
+        "line": 260
+      },
+      {
+        "level": 1,
+        "text": "[INFO] Loading YOLOv8 model...",
+        "line": 261
+      },
+      {
+        "level": 1,
+        "text": "[INFO] \u2713 Model loaded on GPU",
+        "line": 262
+      },
+      {
+        "level": 1,
+        "text": "[INFO] \u2713 Perception node started",
+        "line": 263
+      },
+      {
+        "level": 1,
+        "text": "[INFO]   Listening on: /camera/rgb/image_raw",
+        "line": 264
+      },
+      {
+        "level": 1,
+        "text": "[INFO]   Publishing to: /detections/objects",
+        "line": 265
+      },
+      {
+        "level": 1,
+        "text": "[INFO] Frame 30: 3 objects, avg inference: 12.4ms",
+        "line": 266
+      },
+      {
+        "level": 2,
+        "text": "Part 3: Create the Motion Planning Node",
+        "line": 271
+      },
+      {
+        "level": 3,
+        "text": "What This Node Does",
+        "line": 273
+      },
+      {
+        "level": 3,
+        "text": "Python Implementation",
+        "line": 281
+      },
+      {
+        "level": 2,
+        "text": "Part 4: Create the Control Node",
+        "line": 492
+      },
+      {
+        "level": 3,
+        "text": "What This Node Does",
+        "line": 494
+      },
+      {
+        "level": 3,
+        "text": "Python Implementation",
+        "line": 502
+      },
+      {
+        "level": 2,
+        "text": "Part 5: Bring It All Together",
+        "line": 704
+      },
+      {
+        "level": 3,
+        "text": "Create a Launch File",
+        "line": 706
+      },
+      {
+        "level": 3,
+        "text": "Launch the System",
+        "line": 750
+      },
+      {
+        "level": 1,
+        "text": "Terminal 1: Launch all nodes",
+        "line": 753
+      },
+      {
+        "level": 1,
+        "text": "You should see:",
+        "line": 756
+      },
+      {
+        "level": 1,
+        "text": "[perception-1] \u2713 Perception node started",
+        "line": 757
+      },
+      {
+        "level": 1,
+        "text": "[planning-1] \u2713 Planning node started",
+        "line": 758
+      },
+      {
+        "level": 1,
+        "text": "[control-1] \u2713 Control node started",
+        "line": 759
+      },
+      {
+        "level": 2,
+        "text": "Part 6: Visualize and Debug",
+        "line": 764
+      },
+      {
+        "level": 3,
+        "text": "Using Isaac Sight",
+        "line": 766
+      },
+      {
+        "level": 1,
+        "text": "Terminal 2: Open Isaac Sight",
+        "line": 771
+      },
+      {
+        "level": 1,
+        "text": "In the browser UI:",
+        "line": 774
+      },
+      {
+        "level": 1,
+        "text": "1. Connect to localhost:3000",
+        "line": 775
+      },
+      {
+        "level": 1,
+        "text": "2. Select \"Visualization\" tab",
+        "line": 776
+      },
+      {
+        "level": 1,
+        "text": "3. Watch the robot execute the trajectory in real-time",
+        "line": 777
+      },
+      {
+        "level": 1,
+        "text": "4. See perception detections overlay on camera feed",
+        "line": 778
+      },
+      {
+        "level": 1,
+        "text": "5. Monitor PID error and torque commands",
+        "line": 779
+      },
+      {
+        "level": 3,
+        "text": "Data Logging",
+        "line": 782
+      },
+      {
+        "level": 2,
+        "text": "Part 7: Run Your First Picking Task",
+        "line": 844
+      },
+      {
+        "level": 3,
+        "text": "Step-by-Step Execution",
+        "line": 846
+      },
+      {
+        "level": 1,
+        "text": "1. Start simulation",
+        "line": 849
+      },
+      {
+        "level": 1,
+        "text": "2. Monitor performance",
+        "line": 852
+      },
+      {
+        "level": 1,
+        "text": "3. Open Isaac Sight (browser)",
+        "line": 855
+      },
+      {
+        "level": 1,
+        "text": "Navigate to http://localhost:3000",
+        "line": 857
+      },
+      {
+        "level": 1,
+        "text": "4. Watch the robot:",
+        "line": 859
+      },
+      {
+        "level": 1,
+        "text": "- Arm detects objects in the bin",
+        "line": 860
+      },
+      {
+        "level": 1,
+        "text": "- Plans collision-free trajectory",
+        "line": 861
+      },
+      {
+        "level": 1,
+        "text": "- Moves smoothly to pick object",
+        "line": 862
+      },
+      {
+        "level": 1,
+        "text": "- Opens gripper to release",
+        "line": 863
+      },
+      {
+        "level": 1,
+        "text": "- Returns to home position",
+        "line": 864
+      },
+      {
+        "level": 1,
+        "text": "- Repeats for next object",
+        "line": 865
+      },
+      {
+        "level": 1,
+        "text": "After 1-2 minutes, you should see:",
+        "line": 867
+      },
+      {
+        "level": 1,
+        "text": "\u2713 2 objects successfully picked",
+        "line": 868
+      },
+      {
+        "level": 1,
+        "text": "\u2713 Average cycle time: 1.2 seconds",
+        "line": 869
+      },
+      {
+        "level": 1,
+        "text": "\u2713 Zero collisions",
+        "line": 870
+      },
+      {
+        "level": 1,
+        "text": "\u2713 Smooth motion with no jerking",
+        "line": 871
+      },
+      {
+        "level": 2,
+        "text": "Troubleshooting",
+        "line": 876
+      },
+      {
+        "level": 3,
+        "text": "Problem: \"Inference too slow (>50ms)\"",
+        "line": 878
+      },
+      {
+        "level": 3,
+        "text": "Problem: \"Trajectory not smooth\"",
+        "line": 884
+      },
+      {
+        "level": 3,
+        "text": "Problem: \"Robot shaking (oscillating)\"",
+        "line": 890
+      },
+      {
+        "level": 2,
+        "text": "Summary",
+        "line": 898
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "Overview",
+    "page_number": null,
+    "heading_count": 81,
+    "word_count": 2685,
+    "relative_path": "module-3-isaac\\hands-on-tutorial.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\index.md",
+    "frontmatter": {
+      "sidebar_position": 1
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 3: Isaac SDK & AI Robot Programming",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Course Overview",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "What You'll Learn",
+        "line": 9
+      },
+      {
+        "level": 3,
+        "text": "Learning Outcomes",
+        "line": 22
+      },
+      {
+        "level": 4,
+        "text": "Knowledge Outcomes (Know)",
+        "line": 26
+      },
+      {
+        "level": 4,
+        "text": "Skill Outcomes (Do)",
+        "line": 34
+      },
+      {
+        "level": 4,
+        "text": "Application Outcomes (Apply)",
+        "line": 43
+      },
+      {
+        "level": 3,
+        "text": "Module Structure",
+        "line": 52
+      },
+      {
+        "level": 3,
+        "text": "Prerequisites",
+        "line": 64
+      },
+      {
+        "level": 3,
+        "text": "Time Commitment",
+        "line": 75
+      },
+      {
+        "level": 3,
+        "text": "How to Use This Module",
+        "line": 84
+      },
+      {
+        "level": 3,
+        "text": "What Makes This Different",
+        "line": 106
+      },
+      {
+        "level": 3,
+        "text": "Building on Previous Modules",
+        "line": 118
+      },
+      {
+        "level": 3,
+        "text": "Getting Help",
+        "line": 137
+      },
+      {
+        "level": 3,
+        "text": "Key Concepts at a Glance",
+        "line": 147
+      },
+      {
+        "level": 3,
+        "text": "Performance Expectations (After This Module)",
+        "line": 159
+      },
+      {
+        "level": 3,
+        "text": "Next Steps After This Module",
+        "line": 169
+      },
+      {
+        "level": 3,
+        "text": "Quick Start",
+        "line": 186
+      },
+      {
+        "level": 2,
+        "text": "Module at a Glance",
+        "line": 198
+      },
+      {
+        "level": 2,
+        "text": "Learning Timeline",
+        "line": 223
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "Course Overview",
+    "page_number": null,
+    "heading_count": 20,
+    "word_count": 1677,
+    "relative_path": "module-3-isaac\\index.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\introduction.md",
+    "frontmatter": {
+      "sidebar_position": 2
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Introduction: Why Isaac SDK for AI Robot Programming",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Convergence of AI and Physical Systems",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "The Problem Isaac Solves",
+        "line": 28
+      },
+      {
+        "level": 3,
+        "text": "1. **Multiple Incompatible Frameworks**",
+        "line": 32
+      },
+      {
+        "level": 3,
+        "text": "2. **Simulation-to-Reality Gap**",
+        "line": 41
+      },
+      {
+        "level": 3,
+        "text": "3. **Performance Constraints**",
+        "line": 49
+      },
+      {
+        "level": 3,
+        "text": "4. **Sensor-to-Control Pipeline Complexity**",
+        "line": 57
+      },
+      {
+        "level": 2,
+        "text": "Enter NVIDIA Isaac SDK (2019-Present)",
+        "line": 65
+      },
+      {
+        "level": 3,
+        "text": "Isaac's Architecture",
+        "line": 81
+      },
+      {
+        "level": 2,
+        "text": "Why Isaac for AI Robotics?",
+        "line": 125
+      },
+      {
+        "level": 3,
+        "text": "1. **Unified Development-to-Deployment Pipeline**",
+        "line": 127
+      },
+      {
+        "level": 3,
+        "text": "2. **Native AI/ML Integration**",
+        "line": 130
+      },
+      {
+        "level": 3,
+        "text": "3. **Physics-Accurate Simulation**",
+        "line": 137
+      },
+      {
+        "level": 3,
+        "text": "4. **Complete Robotics Stack**",
+        "line": 143
+      },
+      {
+        "level": 3,
+        "text": "5. **Industry Support**",
+        "line": 151
+      },
+      {
+        "level": 2,
+        "text": "Isaac vs Alternatives",
+        "line": 160
+      },
+      {
+        "level": 2,
+        "text": "How Isaac Works (Quick Overview)",
+        "line": 172
+      },
+      {
+        "level": 2,
+        "text": "What This Module Covers",
+        "line": 211
+      },
+      {
+        "level": 3,
+        "text": "Skills You'll Gain",
+        "line": 222
+      },
+      {
+        "level": 2,
+        "text": "Real-World Applications",
+        "line": 231
+      },
+      {
+        "level": 3,
+        "text": "Manufacturing",
+        "line": 233
+      },
+      {
+        "level": 3,
+        "text": "Humanoid Locomotion",
+        "line": 240
+      },
+      {
+        "level": 3,
+        "text": "Autonomous Vehicles",
+        "line": 247
+      },
+      {
+        "level": 2,
+        "text": "Isaac in 2026: Current State",
+        "line": 254
+      },
+      {
+        "level": 2,
+        "text": "Prerequisites for This Module",
+        "line": 265
+      },
+      {
+        "level": 2,
+        "text": "Module Structure",
+        "line": 277
+      },
+      {
+        "level": 2,
+        "text": "Looking Ahead",
+        "line": 289
+      },
+      {
+        "level": 2,
+        "text": "A Note on Hardware",
+        "line": 298
+      },
+      {
+        "level": 2,
+        "text": "Getting the Most from This Module",
+        "line": 309
+      },
+      {
+        "level": 3,
+        "text": "Tips for Success",
+        "line": 311
+      },
+      {
+        "level": 3,
+        "text": "Time Estimate",
+        "line": 318
+      },
+      {
+        "level": 2,
+        "text": "Summary",
+        "line": 326
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "The Convergence of AI and Physical Systems",
+    "page_number": null,
+    "heading_count": 32,
+    "word_count": 1959,
+    "relative_path": "module-3-isaac\\introduction.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\quiz.md",
+    "frontmatter": {
+      "sidebar_position": 8
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 3 Quiz: Test Your Understanding",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Quiz Instructions",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "Question 1: Isaac SDK Architecture (Multiple Choice)",
+        "line": 13
+      },
+      {
+        "level": 2,
+        "text": "Question 2: GPU Acceleration Impact (Multiple Choice)",
+        "line": 28
+      },
+      {
+        "level": 2,
+        "text": "Question 3: Perception Pipeline (True/False)",
+        "line": 47
+      },
+      {
+        "level": 2,
+        "text": "Question 4: Motion Planning (Multiple Choice)",
+        "line": 69
+      },
+      {
+        "level": 2,
+        "text": "Question 5: PID Control (True/False)",
+        "line": 90
+      },
+      {
+        "level": 2,
+        "text": "Question 6: Real-Time Guarantees (Multiple Choice)",
+        "line": 122
+      },
+      {
+        "level": 2,
+        "text": "Question 7: Sensor Fusion (True/False)",
+        "line": 148
+      },
+      {
+        "level": 2,
+        "text": "Question 8: Model Deployment (Multiple Choice)",
+        "line": 177
+      },
+      {
+        "level": 2,
+        "text": "Question 9: Sim-to-Real Transfer (Multiple Choice)",
+        "line": 209
+      },
+      {
+        "level": 2,
+        "text": "Question 10: System Integration (Multiple Choice)",
+        "line": 246
+      },
+      {
+        "level": 2,
+        "text": "Answer Key & Scoring",
+        "line": 299
+      },
+      {
+        "level": 2,
+        "text": "Feedback for Each Score Range",
+        "line": 322
+      },
+      {
+        "level": 3,
+        "text": "If you scored 9-10 \u2b50\u2b50\u2b50",
+        "line": 324
+      },
+      {
+        "level": 3,
+        "text": "If you scored 7-8 \u2b50\u2b50",
+        "line": 337
+      },
+      {
+        "level": 3,
+        "text": "If you scored 6 \u2b50",
+        "line": 348
+      },
+      {
+        "level": 3,
+        "text": "If you scored less than 6 \ud83d\udd04",
+        "line": 359
+      },
+      {
+        "level": 2,
+        "text": "Common Misconceptions",
+        "line": 380
+      },
+      {
+        "level": 3,
+        "text": "Misconception 1: \"GPU acceleration isn't needed for robotics\"",
+        "line": 382
+      },
+      {
+        "level": 3,
+        "text": "Misconception 2: \"Perfect simulation guarantees real-world success\"",
+        "line": 385
+      },
+      {
+        "level": 3,
+        "text": "Misconception 3: \"Component testing is enough\"",
+        "line": 388
+      },
+      {
+        "level": 3,
+        "text": "Misconception 4: \"Larger models are always better\"",
+        "line": 391
+      },
+      {
+        "level": 3,
+        "text": "Misconception 5: \"Real-time programming is the same as fast programming\"",
+        "line": 394
+      },
+      {
+        "level": 2,
+        "text": "Study Tips for Next Time",
+        "line": 399
+      },
+      {
+        "level": 2,
+        "text": "After the Quiz",
+        "line": 420
+      },
+      {
+        "level": 3,
+        "text": "If You Passed (7+/10)",
+        "line": 422
+      },
+      {
+        "level": 3,
+        "text": "If You Didn't Pass (6/10)",
+        "line": 428
+      },
+      {
+        "level": 2,
+        "text": "Certificate & Badge",
+        "line": 436
+      },
+      {
+        "level": 2,
+        "text": "Additional Practice",
+        "line": 446
+      },
+      {
+        "level": 3,
+        "text": "Mini-Challenges",
+        "line": 450
+      },
+      {
+        "level": 3,
+        "text": "Advanced Topics",
+        "line": 456
+      },
+      {
+        "level": 3,
+        "text": "Real Hardware",
+        "line": 462
+      },
+      {
+        "level": 2,
+        "text": "Your Learning Path",
+        "line": 470
+      },
+      {
+        "level": 2,
+        "text": "Ready to Continue?",
+        "line": 486
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "Quiz Instructions",
+    "page_number": null,
+    "heading_count": 35,
+    "word_count": 2928,
+    "relative_path": "module-3-isaac\\quiz.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-3-isaac\\summary.md",
+    "frontmatter": {
+      "sidebar_position": 7
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Summary & Key Takeaways",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "What You've Learned",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "The Five Pillars (Revisited)",
+        "line": 9
+      },
+      {
+        "level": 3,
+        "text": "1. **Nodes: Independent Computation Units**",
+        "line": 11
+      },
+      {
+        "level": 3,
+        "text": "2. **Graphs: Data Flow Pipelines**",
+        "line": 27
+      },
+      {
+        "level": 3,
+        "text": "3. **Perception: Understanding the World**",
+        "line": 53
+      },
+      {
+        "level": 3,
+        "text": "4. **Planning: Generating Motion Strategies**",
+        "line": 70
+      },
+      {
+        "level": 3,
+        "text": "5. **Control: Real-Time Execution**",
+        "line": 88
+      },
+      {
+        "level": 2,
+        "text": "Architecture Overview",
+        "line": 105
+      },
+      {
+        "level": 2,
+        "text": "Connection to Previous Modules",
+        "line": 146
+      },
+      {
+        "level": 3,
+        "text": "Module 1: ROS 2 Fundamentals",
+        "line": 148
+      },
+      {
+        "level": 3,
+        "text": "Module 2: Digital Twins & Simulation",
+        "line": 157
+      },
+      {
+        "level": 3,
+        "text": "Module 3: Isaac SDK & AI Robot Programming (This Module)",
+        "line": 166
+      },
+      {
+        "level": 2,
+        "text": "Real-World Applications",
+        "line": 173
+      },
+      {
+        "level": 3,
+        "text": "Use Case 1: Manufacturing (Parts Picking)",
+        "line": 175
+      },
+      {
+        "level": 3,
+        "text": "Use Case 2: Humanoid Locomotion",
+        "line": 193
+      },
+      {
+        "level": 3,
+        "text": "Use Case 3: Autonomous Delivery",
+        "line": 209
+      },
+      {
+        "level": 2,
+        "text": "The Learning Arc",
+        "line": 222
+      },
+      {
+        "level": 2,
+        "text": "Key Insights",
+        "line": 247
+      },
+      {
+        "level": 3,
+        "text": "Insight 1: Real-Time is Hard",
+        "line": 249
+      },
+      {
+        "level": 3,
+        "text": "Insight 2: Perception is Expensive",
+        "line": 254
+      },
+      {
+        "level": 3,
+        "text": "Insight 3: Feedback Loops are Fundamental",
+        "line": 258
+      },
+      {
+        "level": 3,
+        "text": "Insight 4: Simulation Saves Time",
+        "line": 263
+      },
+      {
+        "level": 3,
+        "text": "Insight 5: Safety is First",
+        "line": 267
+      },
+      {
+        "level": 2,
+        "text": "Skills You've Mastered",
+        "line": 274
+      },
+      {
+        "level": 3,
+        "text": "\u2705 **Understand** Isaac Architecture",
+        "line": 278
+      },
+      {
+        "level": 3,
+        "text": "\u2705 **Build** AI Perception Pipelines",
+        "line": 283
+      },
+      {
+        "level": 3,
+        "text": "\u2705 **Design** Motion Planning Systems",
+        "line": 288
+      },
+      {
+        "level": 3,
+        "text": "\u2705 **Implement** Real-Time Control",
+        "line": 293
+      },
+      {
+        "level": 3,
+        "text": "\u2705 **Optimize** for Production",
+        "line": 298
+      },
+      {
+        "level": 3,
+        "text": "\u2705 **Debug** Complex Systems",
+        "line": 303
+      },
+      {
+        "level": 2,
+        "text": "Common Questions",
+        "line": 310
+      },
+      {
+        "level": 3,
+        "text": "Q: Do I need a GPU?",
+        "line": 312
+      },
+      {
+        "level": 3,
+        "text": "Q: How do I transition from simulation to real hardware?",
+        "line": 315
+      },
+      {
+        "level": 3,
+        "text": "Q: What if my model is too slow?",
+        "line": 318
+      },
+      {
+        "level": 3,
+        "text": "Q: How do I make my robot safe?",
+        "line": 321
+      },
+      {
+        "level": 3,
+        "text": "Q: Can I use Isaac with my existing ROS 2 system?",
+        "line": 324
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 329
+      },
+      {
+        "level": 3,
+        "text": "Short Term (Next Week)",
+        "line": 331
+      },
+      {
+        "level": 3,
+        "text": "Medium Term (Next Month)",
+        "line": 337
+      },
+      {
+        "level": 3,
+        "text": "Long Term (Next Quarter)",
+        "line": 343
+      },
+      {
+        "level": 2,
+        "text": "Resources for Continued Learning",
+        "line": 351
+      },
+      {
+        "level": 3,
+        "text": "Official Documentation",
+        "line": 353
+      },
+      {
+        "level": 3,
+        "text": "Research Papers (If You Want Deep Dives)",
+        "line": 358
+      },
+      {
+        "level": 3,
+        "text": "Community",
+        "line": 364
+      },
+      {
+        "level": 2,
+        "text": "Module Summary Statistics",
+        "line": 371
+      },
+      {
+        "level": 2,
+        "text": "Closing Thoughts",
+        "line": 386
+      },
+      {
+        "level": 2,
+        "text": "Checklist: Are You Ready?",
+        "line": 407
+      },
+      {
+        "level": 2,
+        "text": "Your Journey Continues",
+        "line": 426
+      }
+    ],
+    "chapter": "Module 3 Isaac",
+    "section": "What You've Learned",
+    "page_number": null,
+    "heading_count": 49,
+    "word_count": 1906,
+    "relative_path": "module-3-isaac\\summary.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\best-practices.md",
+    "frontmatter": {
+      "sidebar_position": 6
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Best Practices & Production Patterns",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "1. Real-Time Performance Optimization",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "Audio Processing Pipeline",
+        "line": 5
+      },
+      {
+        "level": 3,
+        "text": "Multi-Threaded Architecture",
+        "line": 21
+      },
+      {
+        "level": 2,
+        "text": "2. Safety & Human-Robot Interaction",
+        "line": 59
+      },
+      {
+        "level": 3,
+        "text": "Supervised Autonomy Pattern",
+        "line": 61
+      },
+      {
+        "level": 3,
+        "text": "Emergency Stop Implementation",
+        "line": 81
+      },
+      {
+        "level": 3,
+        "text": "Constraint Enforcement",
+        "line": 105
+      },
+      {
+        "level": 2,
+        "text": "3. Error Recovery & Robustness",
+        "line": 134
+      },
+      {
+        "level": 3,
+        "text": "Graceful Degradation",
+        "line": 136
+      },
+      {
+        "level": 3,
+        "text": "Timeout & Deadlock Prevention",
+        "line": 162
+      },
+      {
+        "level": 2,
+        "text": "4. Sensor Fusion & Perception Robustness",
+        "line": 196
+      },
+      {
+        "level": 3,
+        "text": "Multi-Modal Perception",
+        "line": 198
+      },
+      {
+        "level": 2,
+        "text": "5. Model Deployment & Optimization",
+        "line": 232
+      },
+      {
+        "level": 3,
+        "text": "Model Selection for Production",
+        "line": 234
+      },
+      {
+        "level": 3,
+        "text": "Quantization for Edge",
+        "line": 254
+      },
+      {
+        "level": 2,
+        "text": "6. Debugging & Telemetry",
+        "line": 281
+      },
+      {
+        "level": 3,
+        "text": "Structured Logging",
+        "line": 283
+      },
+      {
+        "level": 1,
+        "text": "Usage",
+        "line": 301
+      },
+      {
+        "level": 3,
+        "text": "Performance Profiling",
+        "line": 307
+      },
+      {
+        "level": 2,
+        "text": "7. Testing Strategy",
+        "line": 332
+      },
+      {
+        "level": 3,
+        "text": "Unit Tests",
+        "line": 334
+      },
+      {
+        "level": 3,
+        "text": "Integration Tests",
+        "line": 357
+      },
+      {
+        "level": 2,
+        "text": "8. Deployment Checklist",
+        "line": 377
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "1. Real-Time Performance Optimization",
+    "page_number": null,
+    "heading_count": 24,
+    "word_count": 1029,
+    "relative_path": "module-4-voice\\best-practices.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\code-examples.md",
+    "frontmatter": {
+      "sidebar_position": 5
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Code Examples: Voice-to-Action in Practice",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Example 1: Real-Time Speech Recognition",
+        "line": 3
+      },
+      {
+        "level": 1,
+        "text": "Usage",
+        "line": 80
+      },
+      {
+        "level": 2,
+        "text": "Example 2: NLP Intent and Entity Extraction",
+        "line": 109
+      },
+      {
+        "level": 1,
+        "text": "Example usage",
+        "line": 191
+      },
+      {
+        "level": 2,
+        "text": "Example 3: LLM Reasoning for Task Planning",
+        "line": 229
+      },
+      {
+        "level": 1,
+        "text": "Example usage",
+        "line": 312
+      },
+      {
+        "level": 2,
+        "text": "Example 4: Humanoid Inverse Kinematics",
+        "line": 347
+      },
+      {
+        "level": 1,
+        "text": "Example usage",
+        "line": 443
+      },
+      {
+        "level": 2,
+        "text": "Example 5: Complete Voice-to-Action Pipeline",
+        "line": 470
+      },
+      {
+        "level": 1,
+        "text": "Run",
+        "line": 529
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "Example 1: Real-Time Speech Recognition",
+    "page_number": null,
+    "heading_count": 11,
+    "word_count": 1304,
+    "relative_path": "module-4-voice\\code-examples.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\core-concepts.md",
+    "frontmatter": {
+      "sidebar_position": 3
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Core Concepts & Theory",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Five Components of Voice-to-Action",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "1. Speech Recognition",
+        "line": 25
+      },
+      {
+        "level": 3,
+        "text": "How It Works",
+        "line": 27
+      },
+      {
+        "level": 3,
+        "text": "Key Models for Robotics",
+        "line": 51
+      },
+      {
+        "level": 3,
+        "text": "Handling Noisy Environments",
+        "line": 68
+      },
+      {
+        "level": 3,
+        "text": "Latency Budget",
+        "line": 95
+      },
+      {
+        "level": 2,
+        "text": "2. NLP Semantic Parsing",
+        "line": 114
+      },
+      {
+        "level": 3,
+        "text": "Extracting Intent and Entities",
+        "line": 116
+      },
+      {
+        "level": 3,
+        "text": "Semantic Role Labeling",
+        "line": 146
+      },
+      {
+        "level": 3,
+        "text": "Handling Ambiguity",
+        "line": 166
+      },
+      {
+        "level": 2,
+        "text": "3. LLM Reasoning & Planning",
+        "line": 186
+      },
+      {
+        "level": 3,
+        "text": "Grounding Language Models to Robotics",
+        "line": 188
+      },
+      {
+        "level": 3,
+        "text": "Action Primitives",
+        "line": 215
+      },
+      {
+        "level": 3,
+        "text": "LLM Context and Memory",
+        "line": 245
+      },
+      {
+        "level": 2,
+        "text": "4. Humanoid Kinematics & Dynamics",
+        "line": 268
+      },
+      {
+        "level": 3,
+        "text": "Understanding Humanoid Robots",
+        "line": 270
+      },
+      {
+        "level": 3,
+        "text": "Forward & Inverse Kinematics",
+        "line": 307
+      },
+      {
+        "level": 3,
+        "text": "Balance and Stability",
+        "line": 346
+      },
+      {
+        "level": 2,
+        "text": "5. Real-Time Coordination",
+        "line": 374
+      },
+      {
+        "level": 3,
+        "text": "The Full Pipeline Under Real-Time Constraints",
+        "line": 376
+      },
+      {
+        "level": 3,
+        "text": "Parallel Processing Architecture",
+        "line": 395
+      },
+      {
+        "level": 3,
+        "text": "Error Recovery",
+        "line": 429
+      },
+      {
+        "level": 2,
+        "text": "System Integration (Modules 1-4)",
+        "line": 463
+      },
+      {
+        "level": 3,
+        "text": "How Everything Connects",
+        "line": 465
+      },
+      {
+        "level": 2,
+        "text": "Summary: The Five Concepts",
+        "line": 507
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "The Five Components of Voice-to-Action",
+    "page_number": null,
+    "heading_count": 26,
+    "word_count": 1902,
+    "relative_path": "module-4-voice\\core-concepts.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\hands-on-tutorial.md",
+    "frontmatter": {
+      "sidebar_position": 4
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Hands-On Tutorial: Building the Capstone System",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Overview: Building \"Humanoid Kitchen Assistant\"",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "Architecture",
+        "line": 12
+      },
+      {
+        "level": 2,
+        "text": "Phase 1: Setup (0-1 hour)",
+        "line": 32
+      },
+      {
+        "level": 3,
+        "text": "Step 1: Install Dependencies",
+        "line": 34
+      },
+      {
+        "level": 1,
+        "text": "Core dependencies",
+        "line": 37
+      },
+      {
+        "level": 1,
+        "text": "Audio processing",
+        "line": 41
+      },
+      {
+        "level": 1,
+        "text": "Humanoid simulation",
+        "line": 44
+      },
+      {
+        "level": 1,
+        "text": "LLM (using Ollama for local LLMs)",
+        "line": 47
+      },
+      {
+        "level": 1,
+        "text": "Install from https://ollama.ai or use API",
+        "line": 48
+      },
+      {
+        "level": 1,
+        "text": "Verification",
+        "line": 50
+      },
+      {
+        "level": 3,
+        "text": "Step 2: Download Models",
+        "line": 60
+      },
+      {
+        "level": 1,
+        "text": "Whisper model (base size = 74MB, ~100ms inference)",
+        "line": 63
+      },
+      {
+        "level": 1,
+        "text": "Humanoid URDF (UR10e + humanoid torso)",
+        "line": 70
+      },
+      {
+        "level": 3,
+        "text": "Step 3: Verify Setup",
+        "line": 76
+      },
+      {
+        "level": 1,
+        "text": "Test voice input",
+        "line": 79
+      },
+      {
+        "level": 1,
+        "text": "Test Whisper",
+        "line": 87
+      },
+      {
+        "level": 1,
+        "text": "Test ROS 2",
+        "line": 92
+      },
+      {
+        "level": 2,
+        "text": "Phase 2: Voice Recognition (1-2 hours)",
+        "line": 101
+      },
+      {
+        "level": 3,
+        "text": "Create Speech Recognizer Node",
+        "line": 103
+      },
+      {
+        "level": 3,
+        "text": "Test Voice Recognition",
+        "line": 240
+      },
+      {
+        "level": 1,
+        "text": "Terminal 1: Run speech recognizer",
+        "line": 243
+      },
+      {
+        "level": 1,
+        "text": "Terminal 2: Monitor output",
+        "line": 246
+      },
+      {
+        "level": 1,
+        "text": "Say something: \"Make a sandwich\"",
+        "line": 249
+      },
+      {
+        "level": 1,
+        "text": "Expected output: \"make a sandwich\"",
+        "line": 250
+      },
+      {
+        "level": 2,
+        "text": "Phase 3: Command Parsing (2-3 hours)",
+        "line": 255
+      },
+      {
+        "level": 3,
+        "text": "Create NLP Command Parser",
+        "line": 257
+      },
+      {
+        "level": 3,
+        "text": "Test Command Parsing",
+        "line": 388
+      },
+      {
+        "level": 1,
+        "text": "Terminal 1: Run speech recognizer",
+        "line": 391
+      },
+      {
+        "level": 1,
+        "text": "Terminal 2: Run command parser",
+        "line": 394
+      },
+      {
+        "level": 1,
+        "text": "Terminal 3: Monitor output",
+        "line": 397
+      },
+      {
+        "level": 1,
+        "text": "Say: \"Bring me coffee from the kitchen\"",
+        "line": 400
+      },
+      {
+        "level": 1,
+        "text": "Expected:",
+        "line": 401
+      },
+      {
+        "level": 1,
+        "text": "intent: RETRIEVE",
+        "line": 402
+      },
+      {
+        "level": 1,
+        "text": "object: coffee",
+        "line": 403
+      },
+      {
+        "level": 1,
+        "text": "location: kitchen",
+        "line": 404
+      },
+      {
+        "level": 2,
+        "text": "Phase 4: Motion Execution (3-4 hours)",
+        "line": 409
+      },
+      {
+        "level": 3,
+        "text": "Create Humanoid Motion Controller",
+        "line": 411
+      },
+      {
+        "level": 2,
+        "text": "Phase 5: Integration & Testing (4-5 hours)",
+        "line": 568
+      },
+      {
+        "level": 3,
+        "text": "Launch Full System",
+        "line": 570
+      },
+      {
+        "level": 1,
+        "text": "capstone_launch.py",
+        "line": 573
+      },
+      {
+        "level": 3,
+        "text": "End-to-End Testing",
+        "line": 600
+      },
+      {
+        "level": 1,
+        "text": "Launch entire system",
+        "line": 603
+      },
+      {
+        "level": 1,
+        "text": "Test flow",
+        "line": 606
+      },
+      {
+        "level": 1,
+        "text": "Should see:",
+        "line": 608
+      },
+      {
+        "level": 1,
+        "text": "1. Speech recognized",
+        "line": 609
+      },
+      {
+        "level": 1,
+        "text": "2. Command parsed",
+        "line": 610
+      },
+      {
+        "level": 1,
+        "text": "3. Robot executes motion",
+        "line": 611
+      },
+      {
+        "level": 1,
+        "text": "4. Success feedback",
+        "line": 612
+      },
+      {
+        "level": 2,
+        "text": "Capstone Milestones Checklist",
+        "line": 617
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "Overview: Building \"Humanoid Kitchen Assistant\"",
+    "page_number": null,
+    "heading_count": 50,
+    "word_count": 1497,
+    "relative_path": "module-4-voice\\hands-on-tutorial.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\index.md",
+    "frontmatter": {
+      "sidebar_position": 4
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 4: Voice-to-Action & Humanoid Robot Capstone",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Course Overview",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "What You'll Learn",
+        "line": 16
+      },
+      {
+        "level": 3,
+        "text": "Learning Outcomes",
+        "line": 28
+      },
+      {
+        "level": 4,
+        "text": "Knowledge Outcomes (Know)",
+        "line": 32
+      },
+      {
+        "level": 4,
+        "text": "Skill Outcomes (Do)",
+        "line": 40
+      },
+      {
+        "level": 4,
+        "text": "Application Outcomes (Apply)",
+        "line": 49
+      },
+      {
+        "level": 3,
+        "text": "Module Structure",
+        "line": 58
+      },
+      {
+        "level": 3,
+        "text": "Prerequisites",
+        "line": 70
+      },
+      {
+        "level": 3,
+        "text": "Time Commitment",
+        "line": 81
+      },
+      {
+        "level": 3,
+        "text": "How to Use This Module",
+        "line": 91
+      },
+      {
+        "level": 3,
+        "text": "What Makes This Different",
+        "line": 109
+      },
+      {
+        "level": 3,
+        "text": "Capstone Project Overview",
+        "line": 121
+      },
+      {
+        "level": 3,
+        "text": "Key Metrics (By End of Module)",
+        "line": 140
+      },
+      {
+        "level": 3,
+        "text": "Integration with Previous Modules",
+        "line": 151
+      },
+      {
+        "level": 3,
+        "text": "Next Steps After This Module",
+        "line": 169
+      },
+      {
+        "level": 3,
+        "text": "Getting Help During Capstone",
+        "line": 192
+      },
+      {
+        "level": 2,
+        "text": "Module at a Glance",
+        "line": 204
+      },
+      {
+        "level": 2,
+        "text": "Your Learning Journey",
+        "line": 239
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "Course Overview",
+    "page_number": null,
+    "heading_count": 19,
+    "word_count": 1558,
+    "relative_path": "module-4-voice\\index.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\introduction.md",
+    "frontmatter": {
+      "sidebar_position": 2
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Introduction: From Voice to Action",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Final Frontier: Making Robots Understand Language",
+        "line": 3
+      },
+      {
+        "level": 3,
+        "text": "Scenario 1: Home Assistant",
+        "line": 14
+      },
+      {
+        "level": 3,
+        "text": "Scenario 2: Manufacturing Assistant",
+        "line": 26
+      },
+      {
+        "level": 3,
+        "text": "Scenario 3: Healthcare Robot",
+        "line": 36
+      },
+      {
+        "level": 2,
+        "text": "What Changed in AI (2023-2026)",
+        "line": 45
+      },
+      {
+        "level": 3,
+        "text": "The LLM Revolution",
+        "line": 49
+      },
+      {
+        "level": 2,
+        "text": "The Voice-to-Action Pipeline",
+        "line": 71
+      },
+      {
+        "level": 3,
+        "text": "Architecture Overview",
+        "line": 73
+      },
+      {
+        "level": 2,
+        "text": "Why This Matters",
+        "line": 133
+      },
+      {
+        "level": 3,
+        "text": "For Users",
+        "line": 135
+      },
+      {
+        "level": 3,
+        "text": "For Developers",
+        "line": 140
+      },
+      {
+        "level": 3,
+        "text": "For Society",
+        "line": 145
+      },
+      {
+        "level": 2,
+        "text": "The Capstone Project",
+        "line": 150
+      },
+      {
+        "level": 3,
+        "text": "What You'll Build",
+        "line": 154
+      },
+      {
+        "level": 3,
+        "text": "Capstone Milestones",
+        "line": 184
+      },
+      {
+        "level": 2,
+        "text": "Technical Challenges & Solutions",
+        "line": 196
+      },
+      {
+        "level": 3,
+        "text": "Challenge 1: Real-Time Voice Processing",
+        "line": 198
+      },
+      {
+        "level": 3,
+        "text": "Challenge 2: Ambiguous Commands",
+        "line": 209
+      },
+      {
+        "level": 3,
+        "text": "Challenge 3: Maintaining Balance",
+        "line": 219
+      },
+      {
+        "level": 3,
+        "text": "Challenge 4: Sim-to-Real Gap",
+        "line": 229
+      },
+      {
+        "level": 2,
+        "text": "Key Technologies in This Module",
+        "line": 244
+      },
+      {
+        "level": 3,
+        "text": "1. Speech Recognition",
+        "line": 246
+      },
+      {
+        "level": 3,
+        "text": "2. Natural Language Processing",
+        "line": 252
+      },
+      {
+        "level": 3,
+        "text": "3. Humanoid Kinematics",
+        "line": 258
+      },
+      {
+        "level": 3,
+        "text": "4. Real-Time Coordination",
+        "line": 263
+      },
+      {
+        "level": 2,
+        "text": "Learning Arc for This Module",
+        "line": 270
+      },
+      {
+        "level": 2,
+        "text": "What You'll Walk Away With",
+        "line": 285
+      },
+      {
+        "level": 2,
+        "text": "Real-World Examples",
+        "line": 299
+      },
+      {
+        "level": 3,
+        "text": "Tesla Optimus",
+        "line": 301
+      },
+      {
+        "level": 3,
+        "text": "Boston Dynamics Atlas",
+        "line": 307
+      },
+      {
+        "level": 3,
+        "text": "Toyota T-HR3",
+        "line": 312
+      },
+      {
+        "level": 2,
+        "text": "Expectations & Scope",
+        "line": 321
+      },
+      {
+        "level": 3,
+        "text": "What's In Scope",
+        "line": 323
+      },
+      {
+        "level": 3,
+        "text": "What's Out of Scope (Advanced Topics)",
+        "line": 332
+      },
+      {
+        "level": 3,
+        "text": "If You Get Stuck",
+        "line": 338
+      },
+      {
+        "level": 2,
+        "text": "Your Mission",
+        "line": 346
+      },
+      {
+        "level": 2,
+        "text": "Ready?",
+        "line": 362
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "The Final Frontier: Making Robots Understand Language",
+    "page_number": null,
+    "heading_count": 38,
+    "word_count": 1718,
+    "relative_path": "module-4-voice\\introduction.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\quiz.md",
+    "frontmatter": {
+      "sidebar_position": 8
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Module 4 Quiz: Test Your Understanding",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "Quiz Instructions",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "Question 1: Voice-to-Action Pipeline (Multiple Choice)",
+        "line": 13
+      },
+      {
+        "level": 2,
+        "text": "Question 2: Whisper Speech Recognition (True/False)",
+        "line": 34
+      },
+      {
+        "level": 2,
+        "text": "Question 3: NLP Intent Extraction (Multiple Choice)",
+        "line": 55
+      },
+      {
+        "level": 2,
+        "text": "Question 4: LLM Grounding (Multiple Choice)",
+        "line": 85
+      },
+      {
+        "level": 2,
+        "text": "Question 5: Real-Time Constraints (True/False)",
+        "line": 123
+      },
+      {
+        "level": 2,
+        "text": "Question 6: Humanoid Balance Control (Multiple Choice)",
+        "line": 154
+      },
+      {
+        "level": 2,
+        "text": "Question 7: Error Recovery (True/False)",
+        "line": 190
+      },
+      {
+        "level": 2,
+        "text": "Question 8: Performance Optimization (Multiple Choice)",
+        "line": 218
+      },
+      {
+        "level": 2,
+        "text": "Question 9: Model Deployment (Multiple Choice)",
+        "line": 255
+      },
+      {
+        "level": 2,
+        "text": "Question 10: End-to-End System Integration (Multiple Choice)",
+        "line": 294
+      },
+      {
+        "level": 2,
+        "text": "Answer Key & Scoring",
+        "line": 335
+      },
+      {
+        "level": 2,
+        "text": "Feedback by Score",
+        "line": 358
+      },
+      {
+        "level": 3,
+        "text": "If you scored 9-10 \u2b50\u2b50\u2b50",
+        "line": 360
+      },
+      {
+        "level": 3,
+        "text": "If you scored 7-8 \u2b50\u2b50",
+        "line": 367
+      },
+      {
+        "level": 3,
+        "text": "If you scored 6 \u2b50",
+        "line": 374
+      },
+      {
+        "level": 3,
+        "text": "If you scored less than 6 \ud83d\udd04",
+        "line": 381
+      },
+      {
+        "level": 2,
+        "text": "Capstone Completion Checklist",
+        "line": 391
+      },
+      {
+        "level": 2,
+        "text": "Resources for Review",
+        "line": 408
+      },
+      {
+        "level": 2,
+        "text": "Congratulations! \ud83c\udf93",
+        "line": 427
+      },
+      {
+        "level": 2,
+        "text": "Next Steps",
+        "line": 446
+      },
+      {
+        "level": 3,
+        "text": "Immediate",
+        "line": 448
+      },
+      {
+        "level": 3,
+        "text": "Short Term",
+        "line": 454
+      },
+      {
+        "level": 3,
+        "text": "Long Term",
+        "line": 459
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "Quiz Instructions",
+    "page_number": null,
+    "heading_count": 25,
+    "word_count": 2073,
+    "relative_path": "module-4-voice\\quiz.md"
+  },
+  {
+    "file_path": "F:\\project\\practice\\hackthon\\AI-Text-Book\\docs\\module-4-voice\\summary.md",
+    "frontmatter": {
+      "sidebar_position": 7
+    },
+    "headings": [
+      {
+        "level": 1,
+        "text": "Summary & Key Takeaways",
+        "line": 1
+      },
+      {
+        "level": 2,
+        "text": "The Complete Journey: Modules 1-4",
+        "line": 3
+      },
+      {
+        "level": 2,
+        "text": "The Five Layers (Revisited)",
+        "line": 27
+      },
+      {
+        "level": 3,
+        "text": "Layer 1: Speech Recognition",
+        "line": 29
+      },
+      {
+        "level": 3,
+        "text": "Layer 2: NLP Semantic Parsing",
+        "line": 36
+      },
+      {
+        "level": 3,
+        "text": "Layer 3: LLM Reasoning",
+        "line": 43
+      },
+      {
+        "level": 3,
+        "text": "Layer 4: Motion Planning",
+        "line": 50
+      },
+      {
+        "level": 3,
+        "text": "Layer 5: Real-Time Control",
+        "line": 57
+      },
+      {
+        "level": 2,
+        "text": "Integration: How It All Works Together",
+        "line": 66
+      },
+      {
+        "level": 2,
+        "text": "Real-World Performance Metrics",
+        "line": 111
+      },
+      {
+        "level": 2,
+        "text": "Skills You've Mastered",
+        "line": 128
+      },
+      {
+        "level": 3,
+        "text": "Technical Skills",
+        "line": 130
+      },
+      {
+        "level": 3,
+        "text": "Architectural Skills",
+        "line": 141
+      },
+      {
+        "level": 3,
+        "text": "Production Skills",
+        "line": 149
+      },
+      {
+        "level": 2,
+        "text": "Connection to Industry",
+        "line": 158
+      },
+      {
+        "level": 3,
+        "text": "Real Products Using These Concepts",
+        "line": 160
+      },
+      {
+        "level": 2,
+        "text": "Next Career Steps",
+        "line": 183
+      },
+      {
+        "level": 3,
+        "text": "Immediate (After This Module)",
+        "line": 185
+      },
+      {
+        "level": 3,
+        "text": "Short Term (3-6 Months)",
+        "line": 191
+      },
+      {
+        "level": 3,
+        "text": "Medium Term (6-12 Months)",
+        "line": 204
+      },
+      {
+        "level": 3,
+        "text": "Companies Hiring Physical AI Engineers",
+        "line": 210
+      },
+      {
+        "level": 2,
+        "text": "Lessons Learned",
+        "line": 218
+      },
+      {
+        "level": 3,
+        "text": "Technical Lessons",
+        "line": 220
+      },
+      {
+        "level": 3,
+        "text": "Architectural Lessons",
+        "line": 227
+      },
+      {
+        "level": 3,
+        "text": "Business Lessons",
+        "line": 234
+      },
+      {
+        "level": 2,
+        "text": "What Sets This Textbook Apart",
+        "line": 243
+      },
+      {
+        "level": 2,
+        "text": "Frequently Asked Questions",
+        "line": 256
+      },
+      {
+        "level": 2,
+        "text": "Your Capstone Achievement",
+        "line": 275
+      },
+      {
+        "level": 2,
+        "text": "Final Thoughts",
+        "line": 292
+      },
+      {
+        "level": 2,
+        "text": "What Comes Next",
+        "line": 309
+      },
+      {
+        "level": 3,
+        "text": "Your Options",
+        "line": 311
+      },
+      {
+        "level": 3,
+        "text": "Resources for Continued Learning",
+        "line": 318
+      },
+      {
+        "level": 2,
+        "text": "Capstone Project Checklist",
+        "line": 326
+      }
+    ],
+    "chapter": "Module 4 Voice",
+    "section": "The Complete Journey: Modules 1-4",
+    "page_number": null,
+    "heading_count": 33,
+    "word_count": 1576,
+    "relative_path": "module-4-voice\\summary.md"
+  }
+]

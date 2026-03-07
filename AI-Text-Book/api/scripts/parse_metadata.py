@@ -6,7 +6,7 @@ Extracts chapter, section, and heading hierarchy from frontmatter and markdown h
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Any  # Fix: Add Any, remove unused Optional
 import json
 import yaml
 
@@ -14,7 +14,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 
-def parse_frontmatter(content: str) -> Dict[str, any]:
+def parse_frontmatter(content: str) -> Dict[str, Any]:
     """
     Parse YAML frontmatter from markdown content.
 
@@ -39,7 +39,7 @@ def parse_frontmatter(content: str) -> Dict[str, any]:
     return {}
 
 
-def extract_heading_hierarchy(content: str) -> List[Dict[str, any]]:
+def extract_heading_hierarchy(content: str) -> List[Dict[str, Any]]:
     """
     Extract heading hierarchy from markdown content.
 
@@ -126,7 +126,7 @@ def infer_chapter_section(file_path: str, frontmatter: Dict, headings: List[Dict
     return metadata
 
 
-def parse_file_metadata(file_path: str, content: str) -> Dict[str, any]:
+def parse_file_metadata(file_path: str, content: str) -> Dict[str, Any]:
     """
     Parse complete metadata from a markdown file.
 
@@ -189,7 +189,9 @@ def main():
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
-            metadata = parse_file_metadata(file_info["relative_path"], content)
+            metadata = parse_file_metadata(file_path, content)  # Use absolute path
+            # But keep relative path for display
+            metadata["relative_path"] = file_info["relative_path"]
             all_metadata.append(metadata)
 
         # Save metadata
