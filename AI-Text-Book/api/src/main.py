@@ -7,6 +7,12 @@ import os
 import sys
 import logging
 
+# Load .env before any other imports so os.getenv() calls see the values.
+# Resolve path relative to this file: api/src/../.env → api/.env
+from dotenv import load_dotenv
+_ENV_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+load_dotenv(_ENV_PATH, override=False)
+
 # Ensure api/src/ is on the path so flat imports (middleware, db, services)
 # resolve correctly regardless of the working directory.
 _SRC_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -113,8 +119,12 @@ app = FastAPI(
 # Allowed origins are sourced from env to avoid hardcoding domains.
 _CORS_ALLOWED_ORIGINS: list[str] = list(filter(None, [
     "http://localhost:3000",        # Docusaurus dev server
+    "http://localhost:3001",        # Docusaurus production serve
+    "http://localhost:3002",        # Docusaurus production serve (alt port)
     "http://localhost:8000",        # API dev server
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    "http://127.0.0.1:3002",
     os.getenv("FRONTEND_URL"),      # Primary production frontend
     os.getenv("FRONTEND_URL_ALT"),  # Alternate / preview URL (e.g. Vercel preview)
     os.getenv("CORS_ORIGIN_1"),     # Additional origins if needed

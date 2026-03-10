@@ -70,7 +70,7 @@ def retry_with_backoff(
                     await asyncio.sleep(actual_delay)
                     delay *= backoff_factor
 
-            raise except Exception as e:  # unreachable but satisfies type checkers
+            raise  # unreachable but satisfies type checkers
 
         return wrapper
     return decorator

@@ -12,6 +12,7 @@ import {
   ChatApiRequest,
   ChatApiResponse,
   ApiCitation,
+  SelectionContext,
 } from '../services/chatApi';
 import { Mode } from '../types/mode';
 
@@ -87,6 +88,11 @@ export interface UseChatReturn {
   // Actions
   sendMessage: (message: string, mode?: Mode, filters?: ChatApiRequest['filters']) => Promise<void>;
   sendMessageStream: (message: string, mode?: Mode, filters?: ChatApiRequest['filters']) => Promise<void>;
+  /**
+   * Smart auto-routing: book_only by default, selected_text if context provided,
+   * auto-falls back to general_knowledge if the textbook has no answer.
+   */
+  sendMessageAuto: (message: string, selectionContext?: SelectionContext, tone?: string) => Promise<void>;
   clearMessages: () => void;
   setMode: (mode: Mode) => void;
   clearError: () => void;
@@ -300,6 +306,112 @@ export function useChat(initialMode: Mode = Mode.BOOK_ONLY): UseChatReturn {
   );
 
   /**
+   * Smart auto-routing message send with streaming.
+   * - selected_text mode when selectionContext is provided
+   * - book_only mode otherwise
+   * - auto-falls back to general_knowledge if the textbook refused the query
+   */
+  const sendMessageAuto = useCallback(
+    async (message: string, selectionContext?: SelectionContext, tone?: string) => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      const primaryMode = selectionContext ? Mode.SELECTED_TEXT : Mode.BOOK_ONLY;
+
+      addMessage({
+        id: `user-${Date.now()}`,
+        role: 'user',
+        content: message,
+        timestamp: new Date(),
+      });
+
+      addMessage({
+        id: `assistant-${Date.now()}`,
+        role: 'assistant',
+        content: '',
+        timestamp: new Date(),
+        isStreaming: true,
+      });
+
+      setState((prev) => ({ ...prev, isStreaming: true, error: null }));
+
+      const runStream = async (
+        request: ChatApiRequest,
+        isFallback: boolean
+      ): Promise<boolean> => {
+        let fullContent = '';
+        let citations: ApiCitation[] = [];
+        let metadata: any = {};
+        let refused = false;
+
+        for await (const event of chatApi.sendMessageStream(request)) {
+          if (event.data) {
+            const { type, content, citations: evCit, metadata: evMeta } = event.data;
+            if (type === 'message_chunk' && content) {
+              fullContent += content;
+              updateLastMessage({ content: fullContent });
+            } else if (type === 'citations' && evCit) {
+              citations = evCit;
+              updateLastMessage({ citations });
+            } else if (type === 'metadata' && evMeta) {
+              metadata = evMeta;
+              refused = !!evMeta.refused;
+              updateLastMessage({
+                metadata: isFallback ? { ...evMeta, usedFallback: true } : evMeta,
+              });
+            }
+          }
+
+          if (event.event === 'done') {
+            if (!isFallback && refused) {
+              // Reset placeholder for fallback stream
+              updateLastMessage({ content: '', citations: [], isStreaming: true, metadata: {} });
+            } else {
+              updateLastMessage({
+                isStreaming: false,
+                ...(isFallback ? { metadata: { ...metadata, usedFallback: true } } : {}),
+              });
+            }
+            break;
+          } else if (event.event === 'error') {
+            throw new Error(event.data?.error || 'Streaming error occurred');
+          }
+        }
+
+        return refused;
+      };
+
+      try {
+        const primaryRequest: ChatApiRequest = {
+          message,
+          mode: primaryMode,
+          ...(tone ? { tone } : {}),
+          ...(selectionContext ? { selection_context: selectionContext } : {}),
+        };
+
+        const wasRefused = await runStream(primaryRequest, false);
+
+        if (wasRefused) {
+          await runStream({ message, mode: Mode.GENERAL_KNOWLEDGE, ...(tone ? { tone } : {}) }, true);
+        }
+
+        setState((prev) => ({ ...prev, isStreaming: false }));
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        setState((prev) => ({ ...prev, isStreaming: false, error: errorMessage }));
+        updateLastMessage({
+          content: `Sorry, I encountered an error: ${errorMessage}`,
+          isStreaming: false,
+          metadata: { error: true },
+        });
+      }
+    },
+    [addMessage, updateLastMessage]
+  );
+
+  /**
    * Clear all messages
    */
   const clearMessages = useCallback(() => {
@@ -329,6 +441,7 @@ export function useChat(initialMode: Mode = Mode.BOOK_ONLY): UseChatReturn {
     currentMode: state.currentMode,
     sendMessage,
     sendMessageStream,
+    sendMessageAuto,
     clearMessages,
     setMode,
     clearError,

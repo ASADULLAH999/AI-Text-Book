@@ -186,29 +186,52 @@ class CitationService:
         citations: List[Dict[str, Any]],
     ) -> List[Dict[str, Any]]:
         """
-        Remove duplicate citations based on chunk_id.
+        Remove duplicate citations.
+
+        Deduplicates first by chunk_id, then by (chapter, section) keeping the
+        highest-scored citation per unique source location.  This prevents the
+        same textbook section from appearing multiple times in the UI.
 
         Args:
             citations: List of citations
 
         Returns:
-            Deduplicated citation list
+            Deduplicated citation list, renumbered from 1.
         """
-        seen_chunk_ids = set()
-        unique_citations = []
-
+        # Pass 1: deduplicate by chunk_id
+        seen_chunk_ids: set = set()
+        by_chunk: List[Dict[str, Any]] = []
         for citation in citations:
             chunk_id = citation.get("chunk_id")
             if chunk_id and chunk_id not in seen_chunk_ids:
                 seen_chunk_ids.add(chunk_id)
-                unique_citations.append(citation)
+                by_chunk.append(citation)
 
-        if len(unique_citations) < len(citations):
+        # Pass 2: deduplicate by (chapter, section) — keep highest score per location
+        best: Dict[tuple, Dict[str, Any]] = {}
+        for citation in by_chunk:
+            source = citation.get("source", {})
+            key = (source.get("chapter", ""), source.get("section", ""))
+            score = citation.get("score", 0.0)
+            if key not in best or score > best[key].get("score", 0.0):
+                best[key] = citation
+
+        # Preserve original score-descending order, renumber
+        seen_ids = {id(c) for c in best.values()}
+        unique = [c for c in by_chunk if id(c) in seen_ids]
+        unique.sort(key=lambda c: c.get("score", 0.0), reverse=True)
+
+        # Renumber citations sequentially
+        for idx, citation in enumerate(unique):
+            citation["number"] = idx + 1
+            citation["id"] = f"cite-{idx + 1}"
+
+        if len(unique) < len(citations):
             logger.info(
-                f"Deduplicated citations: {len(citations)} → {len(unique_citations)}"
+                f"Deduplicated citations: {len(citations)} → {len(unique)}"
             )
 
-        return unique_citations
+        return unique
 
     def validate_tone_isolation(
         self,

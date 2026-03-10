@@ -6,8 +6,8 @@
 import { Mode } from '../types/mode';
 
 // API configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
-const API_TIMEOUT = parseInt(process.env.REACT_APP_API_TIMEOUT || '30000', 10);
+const API_BASE_URL = 'http://localhost:8000';
+const API_TIMEOUT = 30000;
 
 /**
  * Selection context for Selected-Text mode.
@@ -121,6 +121,8 @@ export class ChatApiClient {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout);
 
+    console.log('[ChatAPI] Request →', JSON.stringify(request, null, 2));
+
     try {
       const response = await fetch(`${this.baseUrl}/api/v1/chat`, {
         method: 'POST',
@@ -135,10 +137,17 @@ export class ChatApiClient {
 
       if (!response.ok) {
         const error: ApiError = await response.json();
+        console.error('[ChatAPI] Error response ←', error);
         throw new Error(error.error.message || `HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data: ChatApiResponse = await response.json();
+      console.log('[ChatAPI] Response ←', JSON.stringify({
+        refused: data.refused,
+        citations: data.citations?.length ?? 0,
+        metadata: data.metadata,
+        message_preview: data.message?.slice(0, 120),
+      }, null, 2));
       return data;
     } catch (error) {
       if (error instanceof Error) {

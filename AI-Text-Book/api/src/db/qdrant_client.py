@@ -70,11 +70,11 @@ class QdrantClientSingleton:
             exists = any(c.name == collection_name for c in collections.collections)
 
             if not exists:
-                # Create collection with 3072-dimensional vectors (text-embedding-3-large)
+                # Create collection with 1536-dimensional vectors (text-embedding-3-small)
                 client.create_collection(
                     collection_name=collection_name,
                     vectors_config=VectorParams(
-                        size=3072,
+                        size=1536,
                         distance=Distance.COSINE,
                     ),
                 )
@@ -92,7 +92,7 @@ class QdrantClientSingleton:
         cls,
         query_vector: List[float],
         top_k: int = 10,
-        score_threshold: float = 0.7,
+        score_threshold: float = 0.2,
         metadata_filter: Optional[Dict[str, Any]] = None,
     ) -> List[Dict[str, Any]]:
         """

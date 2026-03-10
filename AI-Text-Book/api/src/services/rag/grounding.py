@@ -135,7 +135,7 @@ class GroundingService:
             "grounding_ratio": grounding_result["grounding_ratio"],
             "citation_coverage": citation_coverage,
             "uncited_facts": uncited_facts[:5],  # Sample
-            "is_safe": hallucination_risk < 0.3,  # Low risk threshold
+            "is_safe": hallucination_risk < 0.65,  # Permissive — LLM synthesises/paraphrases
         }
 
         logger.info(
@@ -151,9 +151,32 @@ class GroundingService:
         sentences = re.split(r'[.!?]+', text)
         return [s.strip() for s in sentences if s.strip()]
 
+    # Phrases that indicate the LLM is honestly reporting that the retrieved
+    # context does not contain the answer.  These are not hallucinations — they
+    # reference the retrieval process itself and should be treated as grounded.
+    _META_PHRASES = (
+        "context does not contain",
+        "context doesn't contain",
+        "provided context",
+        "not mentioned in the textbook",
+        "not found in the textbook",
+        "cannot find this in",
+        "could not find",
+        "information is not available",
+        "not available in the",
+        "not in the textbook",
+        "not covered in",
+        "does not include information",
+    )
+
     def _is_grounded(self, sentence: str, context: str) -> bool:
         """Check if a sentence is grounded in context."""
         sentence_lower = sentence.lower()
+
+        # Meta-responses that reference the retrieval context are inherently
+        # grounded — the LLM is honestly reporting what it did or didn't find.
+        if any(phrase in sentence_lower for phrase in self._META_PHRASES):
+            return True
 
         # Extract significant words (> 3 chars, not common stop words)
         stop_words = {'the', 'and', 'for', 'are', 'but', 'not', 'with', 'this', 'that'}

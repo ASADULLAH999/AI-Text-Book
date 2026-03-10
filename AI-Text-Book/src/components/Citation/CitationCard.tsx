@@ -56,12 +56,74 @@ export default function CitationCard({
   const confidenceColor = getConfidenceColor(confidenceLevel);
 
   /**
-   * Handle citation click
+   * Map Qdrant chapter name → Docusaurus URL path segment.
+   * These are the exact chapter strings stored in the vector DB.
+   */
+  const CHAPTER_SLUG: Record<string, string> = {
+    'Module 1 Ros2':       'module-1-ros2',
+    'Module 2 Simulation': 'module-2-simulation',
+    'Module 3 Isaac':      'module-3-isaac',
+    'Module 4 Voice':      'module-4-voice',
+  };
+
+  /**
+   * Infer the doc page file slug from a section heading string.
+   * Section names in Qdrant are H1/H2 headings from within doc pages, not
+   * file names, so we match on keywords to identify the right page.
+   */
+  const inferPageSlug = (section: string): string => {
+    const s = section.toLowerCase();
+    if (/quiz/.test(s)) return 'quiz';
+    if (/summary|key takeaway|complete/.test(s)) return 'summary';
+    if (/best practice|professional pattern|production pattern/.test(s)) return 'best-practices';
+    if (/example|code example|pattern/.test(s)) return 'code-examples';
+    if (/hands.on|tutorial|build your first|step \d|goal/.test(s)) return 'hands-on-tutorial';
+    if (/core concept|pillar|theory/.test(s)) return 'core-concepts';
+    if (/introduction|why |matter|revolution|challenge/.test(s)) return 'introduction';
+    if (/overview|index/.test(s)) return 'index';
+    return '';
+  };
+
+  /** Convert any string to a URL-safe anchor fragment. */
+  const toAnchor = (text: string): string =>
+    text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+
+  /**
+   * Build a Docusaurus URL from citation source metadata.
+   *
+   * Examples:
+   *   chapter="Module 1 Ros2", section="The Robotics Revolution", heading="Summary"
+   *     → /docs/module-1-ros2/introduction#summary
+   *   chapter="Module 1 Ros2", section="Goal", heading=null
+   *     → /docs/module-1-ros2/hands-on-tutorial
+   */
+  const buildCitationUrl = (): string => {
+    const rawChapter = citation.source.chapter?.trim() || '';
+    const rawSection = citation.source.section?.trim() || '';
+
+    const chapterSlug = CHAPTER_SLUG[rawChapter] || rawChapter.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+    const pageSlug    = inferPageSlug(rawSection);
+
+    const parts = ['/docs', chapterSlug, pageSlug].filter(Boolean);
+    let url = parts.join('/');
+
+    // Use heading as anchor (most specific), fall back to section anchor
+    const anchorText = citation.source.heading || rawSection;
+    if (anchorText) {
+      url += `#${toAnchor(anchorText)}`;
+    }
+
+    return url;
+  };
+
+  /**
+   * Handle citation click — navigate to the corresponding doc section.
    */
   const handleClick = () => {
     if (onClick) {
       onClick(citation);
     }
+    window.location.href = buildCitationUrl();
   };
 
   /**

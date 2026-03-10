@@ -15,9 +15,9 @@ class RetrievalService:
 
     def __init__(
         self,
-        top_k: int = 20,
-        score_threshold: float = 0.7,
-        rerank_top_n: int = 5,
+        top_k: int = 50,
+        score_threshold: float = 0.2,
+        rerank_top_n: int = 15,
     ):
         """
         Initialize the retrieval service.
@@ -154,6 +154,15 @@ class RetrievalService:
 
         logger.debug(f"Reranking {len(chunks)} chunks")
 
+        # Extract technical terms from query: function names (foo()), identifiers
+        # (foo_bar), and significant words (> 4 chars).  These are boosted when
+        # found verbatim in a chunk so that code-heavy content ranks higher.
+        import re as _re
+        tech_terms = [
+            t.strip("()") for t in _re.findall(r'\b\w[\w_]*(?:\(\))?\b', query)
+            if len(t.strip("()")) > 4
+        ]
+
         # Calculate reranking scores
         reranked = []
         query_lower = query.lower()
@@ -168,6 +177,12 @@ class RetrievalService:
             chunk_words = set(chunk_text.split())
             overlap_score = len(query_words & chunk_words) / max(len(query_words), 1)
 
+            # Technical term exact-match boost: rewards chunks that contain
+            # specific function/identifier names from the query verbatim.
+            # This surfaces code-heavy chunks that embeddings often miss.
+            tech_hits = sum(1 for t in tech_terms if t.lower() in chunk_text)
+            tech_boost = min(tech_hits / max(len(tech_terms), 1), 1.0)
+
             # Metadata completeness score
             metadata = chunk.get("metadata", {})
             metadata_score = sum([
@@ -179,9 +194,10 @@ class RetrievalService:
 
             # Combined reranking score (weighted average)
             rerank_score = (
-                0.6 * vector_score +
-                0.3 * overlap_score +
-                0.1 * metadata_score
+                0.50 * vector_score +
+                0.20 * overlap_score +
+                0.20 * tech_boost +
+                0.10 * metadata_score
             )
 
             chunk_with_rerank = {
@@ -189,6 +205,7 @@ class RetrievalService:
                 "rerank_score": rerank_score,
                 "vector_score": vector_score,
                 "overlap_score": overlap_score,
+                "tech_boost": tech_boost,
                 "metadata_score": metadata_score,
             }
             reranked.append(chunk_with_rerank)
@@ -235,9 +252,9 @@ _retrieval_service = None
 
 
 def get_retrieval_service(
-    top_k: int = 20,
-    score_threshold: float = 0.7,
-    rerank_top_n: int = 5,
+    top_k: int = 50,
+    score_threshold: float = 0.2,
+    rerank_top_n: int = 15,
 ) -> RetrievalService:
     """Get or create the singleton RetrievalService instance."""
     global _retrieval_service

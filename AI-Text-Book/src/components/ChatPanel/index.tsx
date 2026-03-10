@@ -1,68 +1,59 @@
 /**
  * ChatPanel Component
- * T060–T086 [US2/US3/US4] — Floating RAG chatbot panel.
- *
- * Provides:
- *  - Mode selection (Book-Only / Selected-Text / General-Knowledge) [US3]
- *  - Tone selection [US4]
- *  - Text-selection preview and context passing [US2]
- *  - Streaming/non-streaming message exchange
- *  - Citation display per message
+ * Pure book-only RAG chatbot — answers strictly from textbook content.
  */
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useChat } from '../../hooks/useChat';
 import { useTone } from '../../hooks/useTone';
-import { useTextSelection } from '../../hooks/useTextSelection';
-import { Mode, MODE_CONFIGS } from '../../types/mode';
 import { Tone, TONE_CONFIGS } from '../../types/tone';
+import { Mode } from '../../types/mode';
+import type { SelectionContext } from '../../services/chatApi';
 import CitationCard from '../Citation/CitationCard';
 import type { ApiCitation } from '../../services/chatApi';
 import styles from './styles.module.css';
 
-/** Maximum character limit for the input textarea */
 const MAX_INPUT_CHARS = 2000;
+const GREETING = "Hi! I am your Textbook Assistant. Ask me anything about the course!";
 
-/** Color class per mode */
-const MODE_COLOR: Record<Mode, string> = {
-  [Mode.BOOK_ONLY]: styles.modeSelectorBtn_blue,
-  [Mode.SELECTED_TEXT]: styles.modeSelectorBtn_purple,
-  [Mode.GENERAL_KNOWLEDGE]: styles.modeSelectorBtn_amber,
-};
-
-const MODE_BADGE_COLOR: Record<Mode, string> = {
-  [Mode.BOOK_ONLY]: styles.modeBadge_blue,
-  [Mode.SELECTED_TEXT]: styles.modeBadge_purple,
-  [Mode.GENERAL_KNOWLEDGE]: styles.modeBadge_amber,
-};
+export interface ChatPanelProps {
+  /** Selected text passed in from Root via SelectionMenu */
+  pendingSelection?: string | null;
+  /** Called when ChatPanel has consumed/dismissed the pending selection */
+  onSelectionCleared?: () => void;
+}
 
 /**
  * ChatPanel — fixed floating chat assistant panel.
  */
-export default function ChatPanel(): JSX.Element {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+export default function ChatPanel({
+  pendingSelection,
+  onSelectionCleared,
+}: ChatPanelProps): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [useStreaming, setUseStreaming] = useState(true);
 
   const messageListRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Core hooks
+  const { currentTone, setTone } = useTone();
+
   const {
     messages,
     isLoading,
     isStreaming,
     error,
-    currentMode,
-    sendMessage,
-    sendMessageStream,
+    sendMessageAuto,
     clearMessages,
-    setMode,
     clearError,
   } = useChat(Mode.BOOK_ONLY);
 
-  const { currentTone, setTone } = useTone();
-  const { selection, clearSelection, hasValidSelection } = useTextSelection();
+  // Auto-open when a text selection arrives
+  useEffect(() => {
+    if (pendingSelection) {
+      setIsOpen(true);
+    }
+  }, [pendingSelection]);
 
   // Auto-scroll to latest message
   useEffect(() => {
@@ -79,50 +70,29 @@ export default function ChatPanel(): JSX.Element {
     }
   }, [inputValue]);
 
-  /**
-   * Handle form submission.
-   */
   const handleSubmit = useCallback(
     async (e?: React.FormEvent) => {
       if (e) e.preventDefault();
-
       const trimmed = inputValue.trim();
       if (!trimmed || isLoading || isStreaming) return;
-
       setInputValue('');
 
-      // Build filters: carry selected-text context in Selected-Text mode
-      const filters =
-        currentMode === Mode.SELECTED_TEXT && hasValidSelection && selection
-          ? {
-              selected_text: selection.text,
-              token_count: selection.tokenCount,
-            }
-          : undefined;
+      // Build selection context if text was highlighted
+      const selectionCtx: SelectionContext | undefined = pendingSelection
+        ? {
+            selected_text: pendingSelection,
+            token_count: Math.ceil(pendingSelection.length / 4),
+          }
+        : undefined;
 
-      if (useStreaming) {
-        await sendMessageStream(trimmed, currentMode, filters as any);
-      } else {
-        await sendMessage(trimmed, currentMode, filters as any);
+      // Clear the pending selection before sending
+      if (pendingSelection && onSelectionCleared) {
+        onSelectionCleared();
       }
 
-      // Clear selection after sending in Selected-Text mode
-      if (currentMode === Mode.SELECTED_TEXT) {
-        clearSelection();
-      }
+      await sendMessageAuto(trimmed, selectionCtx, currentTone);
     },
-    [
-      inputValue,
-      isLoading,
-      isStreaming,
-      currentMode,
-      hasValidSelection,
-      selection,
-      useStreaming,
-      sendMessageStream,
-      sendMessage,
-      clearSelection,
-    ]
+    [inputValue, isLoading, isStreaming, sendMessageAuto, pendingSelection, onSelectionCleared, currentTone]
   );
 
   /**
@@ -155,9 +125,23 @@ export default function ChatPanel(): JSX.Element {
 
   const busy = isLoading || isStreaming;
 
+  // When closed: render small FAB only
+  if (!isOpen) {
+    return (
+      <button
+        className={styles.fab}
+        onClick={() => setIsOpen(true)}
+        aria-label="Open chat assistant"
+        title="Ask the Textbook"
+      >
+        💬
+      </button>
+    );
+  }
+
   return (
     <div
-      className={`${styles.chatPanel}${isCollapsed ? ` ${styles.collapsed}` : ''}`}
+      className={styles.chatPanel}
       role="complementary"
       aria-label="AI Textbook Assistant"
     >
@@ -167,12 +151,6 @@ export default function ChatPanel(): JSX.Element {
           <h2 className={styles.title}>
             <span className={styles.icon}>🤖</span>
             Ask the Textbook
-            {/* Mode badge */}
-            <span
-              className={`${styles.modeBadge} ${MODE_BADGE_COLOR[currentMode]}`}
-            >
-              {MODE_CONFIGS[currentMode].icon} {MODE_CONFIGS[currentMode].label}
-            </span>
           </h2>
 
           <div className={styles.headerActions}>
@@ -188,84 +166,46 @@ export default function ChatPanel(): JSX.Element {
             )}
             <button
               className={styles.collapseButton}
-              onClick={() => setIsCollapsed((prev) => !prev)}
-              title={isCollapsed ? 'Expand' : 'Collapse'}
-              aria-label={isCollapsed ? 'Expand chat' : 'Collapse chat'}
+              onClick={() => setIsOpen(false)}
+              title="Close chat"
+              aria-label="Close chat"
             >
-              {isCollapsed ? '▲' : '▼'}
+              ✕
             </button>
           </div>
         </div>
 
-        {/* Mode selector */}
-        {!isCollapsed && (
-          <>
-            <div className={styles.modeSelectorButtons}>
-              {Object.values(Mode).map((mode) => {
-                const cfg = MODE_CONFIGS[mode];
-                const isActive = currentMode === mode;
+        {/* ── Tone selector ──────────────────────────────── */}
+        <div className={styles.toneSelectorWrapper}>
+          <label className={styles.toneSelectorLabel} htmlFor="tone-select">
+            Tone:
+          </label>
+          <div className={styles.toneSelectorControl}>
+            <select
+              id="tone-select"
+              className={styles.toneSelectorSelect}
+              value={currentTone}
+              onChange={(e) => setTone(e.target.value as Tone)}
+              aria-label="Response tone"
+            >
+              {Object.values(Tone).map((tone) => {
+                const cfg = TONE_CONFIGS[tone];
                 return (
-                  <button
-                    key={mode}
-                    className={[
-                      styles.modeSelectorBtn,
-                      MODE_COLOR[mode],
-                      isActive ? styles.modeSelectorBtnActive : '',
-                    ].join(' ')}
-                    onClick={() => setMode(mode)}
-                    disabled={busy}
-                    title={cfg.description}
-                    aria-pressed={isActive}
-                  >
-                    <span className={styles.modeSelectorIcon}>{cfg.icon}</span>
-                    <span className={styles.modeSelectorLabel}>{cfg.label}</span>
-                  </button>
+                  <option key={tone} value={tone}>
+                    {cfg.icon} {cfg.label}
+                  </option>
                 );
               })}
-            </div>
-
-            {/* Tone selector */}
-            <div className={styles.toneSelectorWrapper}>
-              <span className={styles.toneSelectorLabel}>Tone:</span>
-              <div className={styles.toneSelectorControl}>
-                <select
-                  className={styles.toneSelectorSelect}
-                  value={currentTone}
-                  onChange={(e) => setTone(e.target.value as Tone)}
-                  disabled={busy}
-                  aria-label="Response tone"
-                >
-                  {Object.values(Tone).map((tone) => {
-                    const cfg = TONE_CONFIGS[tone];
-                    return (
-                      <option key={tone} value={tone}>
-                        {cfg.icon} {cfg.label}
-                      </option>
-                    );
-                  })}
-                </select>
-                <span className={styles.toneSelectorDesc}>
-                  {TONE_CONFIGS[currentTone].description}
-                </span>
-              </div>
-            </div>
-          </>
-        )}
+            </select>
+          </div>
+          <span className={styles.toneSelectorDesc}>
+            {TONE_CONFIGS[currentTone].description}
+          </span>
+        </div>
       </div>
 
-      {/* ── Body (hidden when collapsed) ──────────────────── */}
-      {!isCollapsed && (
-        <div className={styles.content}>
-          {/* General Knowledge disclaimer */}
-          {currentMode === Mode.GENERAL_KNOWLEDGE && (
-            <div className={styles.generalKnowledgeBanner} role="note">
-              <span className={styles.generalKnowledgeBannerIcon}>⚠️</span>
-              <span className={styles.generalKnowledgeBannerText}>
-                General Knowledge mode may include information outside the textbook. Verify important facts independently.
-              </span>
-            </div>
-          )}
-
+      {/* ── Body ──────────────────────────────────────────── */}
+      <div className={styles.content}>
           {/* Error banner */}
           {error && (
             <div className={styles.error} role="alert">
@@ -280,6 +220,26 @@ export default function ChatPanel(): JSX.Element {
             </div>
           )}
 
+          {/* Selection preview banner */}
+          {pendingSelection && (
+            <div className={styles.selectionPreviewBanner} role="status" aria-live="polite">
+              <span className={styles.selectionPreviewLabel}>📌 Asking about:</span>
+              <span className={styles.selectionPreviewText}>
+                {pendingSelection.length > 120
+                  ? pendingSelection.slice(0, 120) + '…'
+                  : pendingSelection}
+              </span>
+              <button
+                className={styles.selectionPreviewClear}
+                onClick={onSelectionCleared}
+                aria-label="Clear selected text"
+                title="Remove selection context"
+              >
+                ×
+              </button>
+            </div>
+          )}
+
           {/* Message list */}
           <div
             className={styles.messageList}
@@ -288,17 +248,15 @@ export default function ChatPanel(): JSX.Element {
             aria-live="polite"
             aria-label="Chat messages"
           >
-            {messages.length === 0 ? (
-              <div className={styles.emptyState}>
-                <div className={styles.emptyIcon}>💬</div>
-                <h4>Ask the textbook anything</h4>
-                <p>
-                  {currentMode === Mode.SELECTED_TEXT
-                    ? 'Select text on the page, then ask a question about it.'
-                    : "Type a question and I'll answer using the textbook content."}
-                </p>
+            {/* Greeting — always shown as first item */}
+            <div className={styles.assistantMessage}>
+              <div className={styles.messageHeader}>
+                <span className={styles.messageRole}>🤖 Assistant</span>
               </div>
-            ) : (
+              <div className={styles.messageContent}>{GREETING}</div>
+            </div>
+
+            {messages.length > 0 && (
               messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -323,13 +281,6 @@ export default function ChatPanel(): JSX.Element {
                       </span>
                     )}
                   </div>
-
-                  {/* Refusal notice */}
-                  {msg.refused && (
-                    <div className={styles.refusalNotice}>
-                      ⚠️ This question falls outside the textbook content. Switch to General Knowledge mode for broader answers.
-                    </div>
-                  )}
 
                   {/* Error badge */}
                   {msg.metadata?.error && (
@@ -373,25 +324,6 @@ export default function ChatPanel(): JSX.Element {
 
           {/* ── Input form ────────────────────────────────── */}
           <form className={styles.chatInputForm} onSubmit={handleSubmit}>
-            {/* Selection preview */}
-            {currentMode === Mode.SELECTED_TEXT && selection && (
-              <div className={styles.selectionPreviewBanner}>
-                <span className={styles.selectionPreviewLabel}>Selection:</span>
-                <span className={styles.selectionPreviewText}>
-                  {selection.text.slice(0, 80)}
-                  {selection.text.length > 80 ? '…' : ''}
-                </span>
-                <button
-                  type="button"
-                  className={styles.selectionPreviewClear}
-                  onClick={clearSelection}
-                  aria-label="Clear selection"
-                >
-                  ×
-                </button>
-              </div>
-            )}
-
             <div className={styles.inputContainer}>
               <textarea
                 ref={textareaRef}
@@ -402,14 +334,11 @@ export default function ChatPanel(): JSX.Element {
                 }
                 onKeyDown={handleKeyDown}
                 placeholder={
-                  currentMode === Mode.SELECTED_TEXT && !hasValidSelection
-                    ? 'Select text on the page first…'
-                    : 'Ask a question…'
+                  pendingSelection
+                    ? 'Ask a question about the selected text…'
+                    : 'Ask about the course content…'
                 }
-                disabled={
-                  busy ||
-                  (currentMode === Mode.SELECTED_TEXT && !hasValidSelection)
-                }
+                disabled={busy}
                 rows={1}
                 aria-label="Chat input"
               />
@@ -427,11 +356,7 @@ export default function ChatPanel(): JSX.Element {
               <button
                 type="submit"
                 className={styles.sendButton}
-                disabled={
-                  !inputValue.trim() ||
-                  busy ||
-                  (currentMode === Mode.SELECTED_TEXT && !hasValidSelection)
-                }
+                disabled={!inputValue.trim() || busy}
                 aria-label="Send message"
               >
                 ➤
@@ -439,20 +364,10 @@ export default function ChatPanel(): JSX.Element {
             </div>
 
             <div className={styles.helperText}>
-              <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for newline ·{' '}
-              <label style={{ cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={useStreaming}
-                  onChange={(e) => setUseStreaming(e.target.checked)}
-                  style={{ marginRight: 4 }}
-                />
-                Stream
-              </label>
+              <kbd>Enter</kbd> to send · <kbd>Shift+Enter</kbd> for newline
             </div>
           </form>
         </div>
-      )}
     </div>
   );
 }

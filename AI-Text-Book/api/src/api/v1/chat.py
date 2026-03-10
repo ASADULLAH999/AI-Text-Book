@@ -195,6 +195,80 @@ async def chat(request: ChatRequest) -> ChatResponse:
         )
 
 
+def _get_vector_size(vectors: Any) -> Any:
+    """Extract vector size from single VectorParams or Dict[str, VectorParams]."""
+    if hasattr(vectors, "size"):
+        return vectors.size
+    if isinstance(vectors, dict) and vectors:
+        first = next(iter(vectors.values()))
+        return first.size if hasattr(first, "size") else "unknown"
+    return "unknown"
+
+
+@router.get(
+    "/debug/qdrant",
+    summary="Debug Qdrant retrieval",
+    description="Test Qdrant connection, collection info, and a sample retrieval",
+)
+async def debug_qdrant(query: str = "What is ROS2?") -> Dict[str, Any]:
+    """Debug endpoint: shows collection stats and retrieval results for a test query."""
+    from db.qdrant_client import qdrant_client
+    from services.rag.embedding import get_query_embedding_service
+
+    result: Dict[str, Any] = {}
+
+    # 1. Collection info
+    try:
+        client = qdrant_client.get_client()
+        collection_name = qdrant_client.get_collection_name()
+        info = client.get_collection(collection_name)
+        result["collection"] = {
+            "name": collection_name,
+            "vectors_count": info.vectors_count,
+            "points_count": info.points_count,
+            "vector_size": _get_vector_size(info.config.params.vectors),
+            "status": str(info.status),
+        }
+    except Exception as e:
+        result["collection"] = {"error": str(e)}
+
+    # 2. Embed query
+    try:
+        embedding_service = get_query_embedding_service()
+        embedding = await embedding_service.embed_query(query)
+        result["embedding"] = {
+            "query": query,
+            "dimensions": len(embedding),
+            "sample": embedding[:5],
+        }
+    except Exception as e:
+        result["embedding"] = {"error": str(e)}
+
+    # 3. Raw Qdrant search (low threshold)
+    try:
+        chunks = await qdrant_client.search(
+            query_vector=embedding,
+            top_k=5,
+            score_threshold=0.1,
+        )
+        result["retrieval"] = {
+            "chunks_found": len(chunks),
+            "chunks": [
+                {
+                    "chunk_id": c.get("chunk_id"),
+                    "score": round(c.get("score", 0), 4),
+                    "text_preview": (c.get("text") or "")[:120],
+                    "metadata": c.get("metadata"),
+                }
+                for c in chunks
+            ],
+        }
+    except Exception as e:
+        result["retrieval"] = {"error": str(e)}
+
+    return result
+
+
 @router.get(
     "/health",
     summary="Health check",
@@ -270,10 +344,15 @@ async def stream_chat_response(
             }
             yield f"event: citations\ndata: {json.dumps(citation_data)}\n\n"
 
-        # Send metadata
+        # Send metadata — include refused inside the metadata dict so the
+        # frontend hook can read it as event.data.metadata.refused
+        combined_meta = {
+            **result.get("metadata", {}),
+            "refused": result.get("refused", False),
+        }
         metadata_data = {
             "type": "metadata",
-            "metadata": result.get("metadata", {}),
+            "metadata": combined_meta,
             "refused": result.get("refused", False),
         }
         yield f"event: metadata\ndata: {json.dumps(metadata_data)}\n\n"

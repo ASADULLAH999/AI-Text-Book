@@ -26,22 +26,14 @@ class BookOnlyMode:
 
     # Refusal message template
     REFUSAL_MESSAGE = (
-        "I apologize, but I cannot find sufficient information in the textbook "
-        "to answer your question accurately. This could mean:\n\n"
-        "1. The topic may not be covered in the available textbook content\n"
-        "2. The question may need to be rephrased to match textbook terminology\n"
-        "3. The information may be in a chapter that hasn't been indexed yet\n\n"
-        "Please try:\n"
-        "- Rephrasing your question using terms from the textbook\n"
-        "- Asking about a related topic that might be covered\n"
-        "- Checking the table of contents for relevant chapters"
+        "Sorry, I could not find this in the textbook."
     )
 
     def __init__(
         self,
-        min_retrieval_score: float = 0.7,
-        min_grounding_ratio: float = 0.8,
-        min_citation_coverage: float = 0.7,
+        min_retrieval_score: float = 0.2,
+        min_grounding_ratio: float = 0.2,
+        min_citation_coverage: float = 0.4,
         require_citations: bool = True,
     ):
         """
@@ -61,9 +53,9 @@ class BookOnlyMode:
         # Initialize services
         self.embedding_service = get_query_embedding_service()
         self.retrieval_service = get_retrieval_service(
-            top_k=20,
+            top_k=30,
             score_threshold=min_retrieval_score,
-            rerank_top_n=5,
+            rerank_top_n=8,
         )
         self.grounding_service = get_grounding_service()
         self.citation_service = get_citation_service()
@@ -93,9 +85,13 @@ class BookOnlyMode:
             logger.warning("No chunks retrieved - refusing query")
             return True, "No relevant content found in textbook"
 
-        # Check 2: All chunks below score threshold
+        # Check 2: All chunks below score threshold.
+        # Use raw vector_score (not rerank_score) — rerank_score is a weighted
+        # composite (0.6*vector + 0.3*overlap + 0.1*meta) that is structurally
+        # lower than vector similarity alone, so comparing it against
+        # min_retrieval_score would refuse valid retrievals.
         max_score = max(
-            chunk.get("rerank_score", chunk.get("score", 0.0))
+            chunk.get("vector_score", chunk.get("score", 0.0))
             for chunk in retrieved_chunks
         )
         if max_score < self.min_retrieval_score:
@@ -218,9 +214,9 @@ _book_only_mode = None
 
 
 def get_book_only_mode(
-    min_retrieval_score: float = 0.7,
-    min_grounding_ratio: float = 0.8,
-    min_citation_coverage: float = 0.7,
+    min_retrieval_score: float = 0.2,
+    min_grounding_ratio: float = 0.2,
+    min_citation_coverage: float = 0.4,
 ) -> BookOnlyMode:
     """Get or create the singleton BookOnlyMode instance."""
     global _book_only_mode

@@ -185,9 +185,9 @@ class FeatureFlagsConfig(BaseSettings):
 # =========================
 class Settings(BaseSettings):
 
-    openai: OpenAIConfig = Field(default_factory=lambda: OpenAIConfig())
-    qdrant: QdrantConfig = Field(default_factory=lambda: QdrantConfig())
-    postgres: PostgresConfig = Field(default_factory=lambda: PostgresConfig())
+    openai: OpenAIConfig = Field(default_factory=lambda: OpenAIConfig())  # type: ignore[call-arg]
+    qdrant: QdrantConfig = Field(default_factory=lambda: QdrantConfig())  # type: ignore[call-arg]
+    postgres: PostgresConfig = Field(default_factory=lambda: PostgresConfig())  # type: ignore[call-arg]
 
     app: AppConfig = Field(default_factory=AppConfig)
     cors: CORSConfig = Field(default_factory=CORSConfig)
