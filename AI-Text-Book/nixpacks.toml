@@ -1,7 +1,7 @@
 providers = ["python"]
 
 [phases.setup]
-nixPkgs = ["python311", "gcc", "libffi", "openssl"]
+nixPkgs = ["python312", "gcc", "libffi", "openssl"]
 
 [phases.install]
 cmds = ["pip install -r api/requirements.txt"]
