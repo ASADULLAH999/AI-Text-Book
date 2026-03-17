@@ -125,6 +125,7 @@ _CORS_ALLOWED_ORIGINS: list[str] = list(filter(None, [
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001",
     "http://127.0.0.1:3002",
+    "https://ai-text-book-ten.vercel.app",  # Production Vercel frontend
     os.getenv("FRONTEND_URL"),      # Primary production frontend
     os.getenv("FRONTEND_URL_ALT"),  # Alternate / preview URL (e.g. Vercel preview)
     os.getenv("CORS_ORIGIN_1"),     # Additional origins if needed
