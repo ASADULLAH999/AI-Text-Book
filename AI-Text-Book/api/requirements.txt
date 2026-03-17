@@ -10,7 +10,6 @@ psycopg[pool]==3.3.3
 
 # AI/ML Libraries
 openai==1.40.0
-cohere==5.5.0
 sentence-transformers==3.2.1
 transformers==4.46.3
 tokenizers==0.20.3
