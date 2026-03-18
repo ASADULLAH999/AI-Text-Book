@@ -6,7 +6,7 @@
 import { Mode } from '../types/mode';
 
 // API configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE_URL = 'https://ai-text-book-production-54ed.up.railway.app';
 const API_TIMEOUT = 30000;
 
 /**
