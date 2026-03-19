@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCookieConsent } from '../../hooks/useCookieConsent';
 import styles from './styles.module.css';
 
@@ -15,12 +15,16 @@ export default function CookieConsent() {
     closeBanner,
   } = useCookieConsent();
 
-  const [analyticsEnabled, setAnalyticsEnabled] = useState(
-    preferences?.analytics ?? false
-  );
-  const [preferencesEnabled, setPreferencesEnabled] = useState(
-    preferences?.preferences ?? false
-  );
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [preferencesEnabled, setPreferencesEnabled] = useState(false);
+
+  // Fix: sync toggle state when preferences load from localStorage
+  useEffect(() => {
+    if (preferences) {
+      setAnalyticsEnabled(preferences.analytics ?? false);
+      setPreferencesEnabled(preferences.preferences ?? false);
+    }
+  }, [preferences]);
 
   const handleCustomize = () => {
     closeBanner();
@@ -52,6 +56,13 @@ export default function CookieConsent() {
                 </a>
               </p>
             </div>
+            <button
+              onClick={rejectNonEssential}
+              className={styles.bannerDismiss}
+              aria-label="Dismiss cookie banner"
+            >
+              ✕
+            </button>
             <div className={styles.bannerButtons}>
               <button
                 onClick={acceptAll}

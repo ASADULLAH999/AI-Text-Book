@@ -235,8 +235,30 @@ article a:hover {
     padding: var(--space-2);
   }
 
+  /* Fix: reduce brand font size so search bar doesn't overlap title */
+  .navbar__brand {
+    font-size: var(--font-size-lg) !important;
+  }
+
+  /* Fix: push search bar to its own row below the brand on very small screens */
+  .navbar__search {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
   article {
     padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar__brand {
+    font-size: var(--font-size-base) !important;
+  }
+
+  /* Hide search bar text placeholder on very small screens */
+  .DocSearch-Button-Placeholder {
+    display: none;
   }
 }
 

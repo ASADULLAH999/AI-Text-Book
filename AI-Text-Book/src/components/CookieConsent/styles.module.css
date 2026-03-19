@@ -36,7 +36,24 @@
 
 .bannerText {
   flex: 1;
-  min-width: 300px;
+  min-width: 0;
+}
+
+.bannerDismiss {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  align-self: flex-start;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.bannerDismiss:hover {
+  color: #ff6b35;
 }
 
 .bannerTitle {

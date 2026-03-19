@@ -165,6 +165,10 @@ export const Hero: React.FC<HeroProps> = ({ onStartReading }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Skip canvas animation on mobile to save battery and prevent jank
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) return;
+
     // Set canvas size
     const updateCanvasSize = () => {
       canvas.width = canvas.offsetWidth;
